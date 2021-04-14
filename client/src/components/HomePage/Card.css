@@ -1,6 +1,6 @@
 .bottom-text{
   margin-top: 2%;
-  color: grey;
+  /* color: grey; */
   margin-left: 2%;
   margin-bottom: 1%;
   width: 30%;
@@ -10,7 +10,7 @@
 .card-container{
   overflow:hidden;
   box-shadow: 0px 0px 15px -5px;
-  background-color: #6d6ca6;
+  /* background-color: #6d6ca6; */
   transition: ease-in;
   display:inline-block;
   margin-left: 2%;
@@ -21,13 +21,13 @@
 .card-container:hover{
   transform: scale(1.1);
   box-shadow: 0px 0px 15px 0px;
-  background-color: #dd3e42;
+  /* background-color: #dd3e42; */
 }
 
 .card-content{
   margin: 1rem;
   margin-top: 0.5rem;
-  color: white;
+  /* color: white; */
   font-family: 'Work Sans', sans-serif;
 }
 
@@ -39,6 +39,6 @@ h3, p{
 .card-icon{
   margin-bottom: 0.5rem;
   margin-right: 0.5rem;
-  color:	#f0ccb3;
+  /* color:	#f0ccb3; */
 }
 

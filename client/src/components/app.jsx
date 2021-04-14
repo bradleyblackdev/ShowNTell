@@ -1,9 +1,9 @@
 /* eslint-disable max-len */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-return-assign */
-/* eslint-disable import/no-named-as-default */
-/* eslint-disable import/no-named-as-default-member */
-/* eslint-disable import/extensions */
+// /* eslint-disable import/no-named-as-default */
+// /* eslint-disable import/no-named-as-default-member */
+// /* eslint-disable import/extensions */
 /* eslint-disable consistent-return */
 import React, { useState } from 'react';
 import axios from 'axios';
@@ -17,6 +17,13 @@ import Notifs from './Notifications/notifs.jsx';
 import SearchFeed from './SearchBar/searchFeed.jsx';
 import ShowFeed from './Subscriptions/showFeed.jsx';
 
+import {ThemeProvider} from 'styled-components';
+import {GlobalStyles} from './Styles/globalstyles';
+import ColorScheme from 'color-scheme';
+import {theme1, theme2} from './Themes/themes';
+
+
+
 const App = () => {
   const [posts, setPosts] = useState();
   const [user, setUser] = useState();
@@ -25,6 +32,36 @@ const App = () => {
   const [searchedShows, setSearchedShows] = useState([]);
   const [userClicked, setUsersClicked] = useState(false);
   const [test, setTest] = useState(false);
+
+  const [theme, setTheme] = useState(250);
+  const changeTheme = ({target: {value}}) => {
+    setTheme(value);
+  };
+
+  const theme1 = () => {
+    const scheme1 = new ColorScheme;
+    scheme1.from_hue(Math.floor(Math.random() * 360))
+      .scheme('contrast');
+    const colors = scheme1.colors();
+    const pickNeutral = (bgColor) => {
+      const r = parseInt(bgColor.slice(0, 2), 16);
+      const g = parseInt(bgColor.slice(2, 4), 16);
+      const b = parseInt(bgColor.slice(4, 6), 16);
+      return (((r * 0.299) + (g * 0.587) + (b * 0.114)) > 186) ?
+        'black' : 
+        'white';
+    };
+    return {
+      neutral: pickNeutral(colors[0]),
+      primary: `#${colors[0]}`,
+      secondary: `#${colors[1]}`,
+      tertiary: `#${colors[2]}`,
+      quaternary: `#${colors[3]}`,
+      contrast: `#${colors[4]}`
+    };
+  };
+
+
 
   const changeView = (newView) => {
     setView(newView);
@@ -135,32 +172,42 @@ const App = () => {
 
   return (
     <div>
-      {user
-        ? (
-          <Nav
-            user={user}
-            search={search}
-            onClick={changeView}
-            logout={logout}
-            setSearch={setSearch}
-            onSearch={searchShows}
-          />
-        )
-        : (
-          <a
-            className="login-button"
-            href="/auth/google"
+      <ThemeProvider theme={theme1(theme)}>
+        <GlobalStyles/>
+        <select onClick={changeTheme}>
+          <option value='null'>Movie Mode</option>
+          <option value="theme1">theme1</option>
+          <option value="theme2">theme2</option>
+        </select>
+        {user
+          ? (
+            <Nav
+              user={user}
+              search={search}
+              onClick={changeView}
+              logout={logout}
+              setSearch={setSearch}
+              onSearch={searchShows}
+            />
+          )
+          : (
+            <a
+              className="login-button"
+              href="/auth/google"
             // onClick={() => axios.get('/auth/google').then(({ data }) => console.log(data))}
-          >
+            >
             LOGIN WITH GOOGLE
-          </a>
-        )}
-      {getUser()}
-      {getPosts()}
-      {userClicked ? (
-        <button onClick={handleShowFeed}>Show Home Feed</button>
-      ) : null}
-      {getView()}
+            </a>
+          )}
+        {getUser()}
+        {getPosts()}
+        {userClicked ?
+          (
+            <button onClick={handleShowFeed}>Show Home Feed</button>
+          ) : 
+          null}
+        {getView()}
+      </ThemeProvider>
     </div>
   );
 };
