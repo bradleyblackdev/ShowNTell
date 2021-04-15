@@ -1,9 +1,9 @@
 /* eslint-disable max-len */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-return-assign */
-/* eslint-disable import/no-named-as-default */
-/* eslint-disable import/no-named-as-default-member */
-/* eslint-disable import/extensions */
+// /* eslint-disable import/no-named-as-default */
+// /* eslint-disable import/no-named-as-default-member */
+// /* eslint-disable import/extensions */
 /* eslint-disable consistent-return */
 import React, { useState } from 'react';
 import axios from 'axios';
@@ -16,6 +16,13 @@ import DMs from './DMs/dms.jsx';
 import Notifs from './Notifications/notifs.jsx';
 import SearchFeed from './SearchBar/searchFeed.jsx';
 import ShowFeed from './Subscriptions/showFeed.jsx';
+import {MovieMode, classicTheme} from './MovieMode/MovieMode.jsx';
+
+import {ThemeProvider} from 'styled-components';
+import {GlobalStyles} from './Styles/globalstyles';
+
+
+
 
 const App = () => {
   const [posts, setPosts] = useState();
@@ -25,6 +32,9 @@ const App = () => {
   const [searchedShows, setSearchedShows] = useState([]);
   const [userClicked, setUsersClicked] = useState(false);
   const [test, setTest] = useState(false);
+  const [subs, setSubs] = useState([]);
+  const [gotSubs, setGotSubs] = useState(false);
+  const [theme, setTheme] = useState(classicTheme);
 
   const changeView = (newView) => {
     setView(newView);
@@ -55,6 +65,20 @@ const App = () => {
         .catch();
     }
     // }
+  };
+
+
+  const getSubs = () => {
+    if (user && !gotSubs) {
+      const promises = user.subscriptions.map((showId) => axios.get(`/show/${showId}`).catch());
+      Promise.all(promises)
+        .then((results) => results.map((show) => show.data))
+        .then((shows) => {
+          setSubs(shows);
+          setGotSubs(true);
+        })
+        .catch();
+    }
   };
 
   const logout = () => {
@@ -113,7 +137,7 @@ const App = () => {
       return <HomePage />;
     }
     if (view === 'sub') {
-      return <Sub user={user} setView={setView} />;
+      return <Sub user={user} setView={setView} subs={subs} getSubs={getSubs} setSubs={setSubs} gotSubs={gotSubs} setGotSubs={setGotSubs}/>;
     }
     if (view === 'post') {
       return <Post user={user} createPost={createPost} />;
@@ -135,32 +159,42 @@ const App = () => {
 
   return (
     <div>
-      {user
-        ? (
-          <Nav
-            user={user}
-            search={search}
-            onClick={changeView}
-            logout={logout}
-            setSearch={setSearch}
-            onSearch={searchShows}
-          />
-        )
-        : (
-          <a
-            className="login-button"
-            href="/auth/google"
+      <ThemeProvider theme={theme}>
+        <GlobalStyles/>
+        {user
+          ? (
+            <div>
+              <Nav
+                user={user}
+                search={search}
+                onClick={changeView}
+                logout={logout}
+                setSearch={setSearch}
+                onSearch={searchShows}
+              />
+              <MovieMode subs={subs} theme={theme} setTheme={setTheme}/>
+            </div>
+
+          )
+          : (
+            <a
+              className="login-button"
+              href="/auth/google"
             // onClick={() => axios.get('/auth/google').then(({ data }) => console.log(data))}
-          >
+            >
             LOGIN WITH GOOGLE
-          </a>
-        )}
-      {getUser()}
-      {getPosts()}
-      {userClicked ? (
-        <button onClick={handleShowFeed}>Show Home Feed</button>
-      ) : null}
-      {getView()}
+            </a>
+          )}
+        {getUser()}
+        {getPosts()}
+        {getSubs()}
+        {userClicked ?
+          (
+            <button onClick={handleShowFeed}>Show Home Feed</button>
+          ) : 
+          null}
+        {getView()}
+      </ThemeProvider>
     </div>
   );
 };
