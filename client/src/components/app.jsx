@@ -16,11 +16,11 @@ import DMs from './DMs/dms.jsx';
 import Notifs from './Notifications/notifs.jsx';
 import SearchFeed from './SearchBar/searchFeed.jsx';
 import ShowFeed from './Subscriptions/showFeed.jsx';
+import {MovieMode, classicTheme} from './MovieMode/MovieMode.jsx';
 
 import {ThemeProvider} from 'styled-components';
 import {GlobalStyles} from './Styles/globalstyles';
-import ColorScheme from 'color-scheme';
-import {theme1, theme2} from './Themes/themes';
+
 
 
 
@@ -32,36 +32,9 @@ const App = () => {
   const [searchedShows, setSearchedShows] = useState([]);
   const [userClicked, setUsersClicked] = useState(false);
   const [test, setTest] = useState(false);
-
-  const [theme, setTheme] = useState(250);
-  const changeTheme = ({target: {value}}) => {
-    setTheme(value);
-  };
-
-  const theme1 = () => {
-    const scheme1 = new ColorScheme;
-    scheme1.from_hue(Math.floor(Math.random() * 360))
-      .scheme('contrast');
-    const colors = scheme1.colors();
-    const pickNeutral = (bgColor) => {
-      const r = parseInt(bgColor.slice(0, 2), 16);
-      const g = parseInt(bgColor.slice(2, 4), 16);
-      const b = parseInt(bgColor.slice(4, 6), 16);
-      return (((r * 0.299) + (g * 0.587) + (b * 0.114)) > 186) ?
-        'black' : 
-        'white';
-    };
-    return {
-      neutral: pickNeutral(colors[0]),
-      primary: `#${colors[0]}`,
-      secondary: `#${colors[1]}`,
-      tertiary: `#${colors[2]}`,
-      quaternary: `#${colors[3]}`,
-      contrast: `#${colors[4]}`
-    };
-  };
-
-
+  const [subs, setSubs] = useState([]);
+  const [gotSubs, setGotSubs] = useState(false);
+  const [theme, setTheme] = useState(classicTheme);
 
   const changeView = (newView) => {
     setView(newView);
@@ -92,6 +65,20 @@ const App = () => {
         .catch();
     }
     // }
+  };
+
+
+  const getSubs = () => {
+    if (user && !gotSubs) {
+      const promises = user.subscriptions.map((showId) => axios.get(`/show/${showId}`).catch());
+      Promise.all(promises)
+        .then((results) => results.map((show) => show.data))
+        .then((shows) => {
+          setSubs(shows);
+          setGotSubs(true);
+        })
+        .catch();
+    }
   };
 
   const logout = () => {
@@ -150,7 +137,7 @@ const App = () => {
       return <HomePage />;
     }
     if (view === 'sub') {
-      return <Sub user={user} setView={setView} />;
+      return <Sub user={user} setView={setView} subs={subs} getSubs={getSubs} setSubs={setSubs} gotSubs={gotSubs} setGotSubs={setGotSubs}/>;
     }
     if (view === 'post') {
       return <Post user={user} createPost={createPost} />;
@@ -172,23 +159,22 @@ const App = () => {
 
   return (
     <div>
-      <ThemeProvider theme={theme1(theme)}>
+      <ThemeProvider theme={theme}>
         <GlobalStyles/>
-        <select onClick={changeTheme}>
-          <option value='null'>Movie Mode</option>
-          <option value="theme1">theme1</option>
-          <option value="theme2">theme2</option>
-        </select>
         {user
           ? (
-            <Nav
-              user={user}
-              search={search}
-              onClick={changeView}
-              logout={logout}
-              setSearch={setSearch}
-              onSearch={searchShows}
-            />
+            <div>
+              <Nav
+                user={user}
+                search={search}
+                onClick={changeView}
+                logout={logout}
+                setSearch={setSearch}
+                onSearch={searchShows}
+              />
+              <MovieMode subs={subs} theme={theme} setTheme={setTheme}/>
+            </div>
+
           )
           : (
             <a
@@ -201,6 +187,7 @@ const App = () => {
           )}
         {getUser()}
         {getPosts()}
+        {getSubs()}
         {userClicked ?
           (
             <button onClick={handleShowFeed}>Show Home Feed</button>

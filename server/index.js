@@ -5,6 +5,7 @@ const axios = require('axios');
 const cors = require('cors');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
+const Vibrant = require('node-vibrant');
 require('dotenv').config();
 require('./db/index');
 
@@ -478,6 +479,16 @@ app.get('/likedPost/:id', (req, res) => {
       }
     });
   });
+});
+
+app.get('/theme', (req, res) => {
+  const query = req.query.name;
+  return axios(`https://api.themoviedb.org/3/search/tv?api_key=${process.env.TMDB_API_KEY}cb&language=en-US&query=${query}}&page=1&include_adult=false`)
+    .then(({data: {results}}) => {
+      const backdropURL = `https://image.tmdb.org/t/p/original/${results[0].backdrop_path}`;
+      Vibrant.from(backdropURL).getPalette()
+        .then(palette => res.send({palette, backdropURL}));
+    });
 });
 
 app.listen(3000, () => {

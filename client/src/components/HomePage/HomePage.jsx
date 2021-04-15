@@ -12,7 +12,6 @@ const HomePage = () => (
   <div>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans&display=swap" rel="stylesheet" />
-    ;
     <div className="top-of-page">
       <link
         href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@700&display=swap"
