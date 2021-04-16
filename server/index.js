@@ -10,6 +10,7 @@ require('./db/index');
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
+const youtubeApi = process.env.YOUTUBE_API_KEY;
 const Notifs = require('twilio')(accountSid, authToken);
 const { GoogleStrategy } = require('./oauth/passport');
 const { Users, Posts, Shows, Replys } = require('./db/schema.js');
@@ -17,6 +18,7 @@ const { Users, Posts, Shows, Replys } = require('./db/schema.js');
 const app = express();
 
 const client = path.resolve(__dirname, '..', 'client', 'dist');
+
 
 let userInfo = null;
 
@@ -213,6 +215,31 @@ app.get('/show/:id', (req, res) => {
     .then((result) => res.status(200).send(result))
     .catch(() => res.status(500).send());
 });
+
+app.get('/trailer/:query', (req, res) => {
+  const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${req.params.query}trailer&channelType=any&key=${youtubeApi}`;
+  return axios(url)
+    .then(({ data }) => data)
+    .then((data) => res.status(200).send(data))
+    .catch();
+});
+
+// const youtube = 'https://www.googleapis.com/youtube/v3/search'
+// app.get('/trailer/:query', async (req, res, next) => {
+//   try {
+//     // const city = 'new+orleans';
+//     // const type = 'bicycle_store';
+//     // const query =
+//     const search = `${req.params.query} trailer`
+//     const {data} = await axios.get(
+//       //https://www.googleapis.com/youtube/v3/search?part=snippet&q=trailer&topicId=%2Fm%2F02vxn&key=AIzaSyB_r6Upq6213L9mrmRcjyaqMhlUpumQLks
+//       `${youtube}?part=snippet&q=${search}&channelType=any&key=${youtubeApi}`
+//     );
+//     res.json(data);
+//   } catch (err) {
+//     next(err);
+//   }
+// });
 
 app.put('/subscribe/:id', (req, res) => {
   const { id } = req.params;

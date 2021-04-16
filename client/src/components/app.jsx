@@ -25,6 +25,8 @@ const App = () => {
   const [searchedShows, setSearchedShows] = useState([]);
   const [userClicked, setUsersClicked] = useState(false);
   const [test, setTest] = useState(false);
+  //////
+  const [trailers, setTrailers] = useState({})
 
   const changeView = (newView) => {
     setView(newView);
@@ -107,6 +109,14 @@ const App = () => {
       .then(() => axios.get('/user').then(({ data }) => setUser(data)))
       .catch();
   };
+///////
+  const getTrailer = () => {
+    axios.get('/trailer')
+    .then(({data}) =>
+    console.log(data),
+    setTrailers(data))
+    .catch()
+  }
 
   const getView = () => {
     if (view === 'homePage') {
@@ -128,7 +138,7 @@ const App = () => {
       return <Notifs user={user} setUser={setUser} />;
     }
     if (view === 'search') {
-      return <SearchFeed shows={searchedShows} onClick={addShow} />;
+      return <SearchFeed shows={searchedShows} onClick={addShow} trailers={trailer} />;
     }
     return <ShowFeed showId={view} subscribe={subscribe} />;
   };
