@@ -44,9 +44,18 @@ const replySchema = mongoose.Schema({
 
 const Replys = mongoose.model('Replys', replySchema);
 
+const messageSchema = mongoose.Schema({
+  messages: Array,
+  messageid: Number,
+
+});
+
+const Messages = mongoose.model('Messages', messageSchema);
+
 module.exports = {
   Users,
   Shows,
   Posts,
   Replys,
+  Messages,
 };

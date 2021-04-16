@@ -7,14 +7,17 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 require('dotenv').config();
 require('./db/index');
+const http = require('http');
+
+const app = express();
+const server = http.createServer(app);
+const io = require('socket.io')(server);
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const Notifs = require('twilio')(accountSid, authToken);
 const { GoogleStrategy } = require('./oauth/passport');
 const { Users, Posts, Shows, Replys } = require('./db/schema.js');
-
-const app = express();
 
 const client = path.resolve(__dirname, '..', 'client', 'dist');
 
@@ -31,6 +34,13 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser((user, done) => {
   done(null, user);
+});
+
+io.on('connection', (socket) => {
+  console.log('a user connected');
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
 });
 
 app.use(
@@ -480,7 +490,7 @@ app.get('/likedPost/:id', (req, res) => {
   });
 });
 
-app.listen(3000, () => {
+server.listen(3000, () => {
   // eslint-disable-next-line no-console
   console.log('http://localhost:3000');
 });

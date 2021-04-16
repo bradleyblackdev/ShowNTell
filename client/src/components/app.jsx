@@ -16,6 +16,7 @@ import DMs from './DMs/dms.jsx';
 import Notifs from './Notifications/notifs.jsx';
 import SearchFeed from './SearchBar/searchFeed.jsx';
 import ShowFeed from './Subscriptions/showFeed.jsx';
+import ChatWindow from './DMs/chatWindow.jsx';
 
 const App = () => {
   const [posts, setPosts] = useState();
@@ -25,6 +26,7 @@ const App = () => {
   const [searchedShows, setSearchedShows] = useState([]);
   const [userClicked, setUsersClicked] = useState(false);
   const [test, setTest] = useState(false);
+  const [cWindowOpen, setcWindowOpen] = useState(false);
 
   const changeView = (newView) => {
     setView(newView);
@@ -108,6 +110,10 @@ const App = () => {
       .catch();
   };
 
+  const toggleChatWindow = () => {
+    setcWindowOpen(!cWindowOpen);
+  };
+
   const getView = () => {
     if (view === 'homePage') {
       return <HomePage />;
@@ -138,12 +144,14 @@ const App = () => {
       {user
         ? (
           <Nav
+            toggleChatWindow={toggleChatWindow}
             user={user}
             search={search}
             onClick={changeView}
             logout={logout}
             setSearch={setSearch}
             onSearch={searchShows}
+
           />
         )
         : (
@@ -161,6 +169,10 @@ const App = () => {
         <button onClick={handleShowFeed}>Show Home Feed</button>
       ) : null}
       {getView()}
+     { cWindowOpen ?
+      <ChatWindow toggleChatWindow={toggleChatWindow}/>
+      : ''
+    }
     </div>
   );
 };
