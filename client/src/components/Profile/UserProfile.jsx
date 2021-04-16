@@ -9,15 +9,16 @@ import styled from 'styled-components';
 import './profile.css'; 
 
 const Button = styled.button`
-color: black;
+color: white;
 font-size: 1em;
 margin-top: .8em;
 padding: 0.25em 1em;
-border: 2px solid lightgray; 
+border: 1px solid black; 
 border-radius: 3px;
-background: whitesmoke;
+font-family: 'Montserrat', sans-serif;
+background: transparent;
 margin-left: 83px;
-margin-bottom: 100px;
+margin-bottom: 140px;
 
 
 
@@ -29,7 +30,7 @@ const UserProfile = () => {
       <div className="body">
         <div className="userProfile">
           <div>
-            <h3>Profile</h3>
+            
             <div className="profile">
               <img className="cartoon" src={cartoon} alt=""/>
               <h3>Name:</h3>
