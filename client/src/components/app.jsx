@@ -23,6 +23,7 @@ import {GlobalStyles} from './Styles/globalstyles';
 
 
 
+import UserProfile from './Profile/UserProfile.jsx';
 
 const App = () => {
   const [posts, setPosts] = useState();
@@ -141,6 +142,9 @@ const App = () => {
     }
     if (view === 'post') {
       return <Post user={user} createPost={createPost} />;
+    }
+    if (view === 'user') {
+      return <UserProfile user={user} createPost={createPost} />;
     }
     if (view === 'home') {
       return <HomeFeed handleUserClick={handleUserClick} user={user} posts={posts} setPosts={setPosts} />;

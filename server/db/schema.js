@@ -9,6 +9,8 @@ const userSchema = mongoose.Schema({
   notifs: Array,
   follows: Array,
   subscriptions: Array,
+  friends: Array,
+  img: { data: Buffer, contentType: String }
 });
 
 const Users = mongoose.model('Users', userSchema);
