@@ -530,6 +530,7 @@ const tvRec = 'https://api.themoviedb.org/3/discover/tv?';
 
 //https://api.themoviedb.org/3/discover/movie?api_key=c4beeba3761a8ef52fff82a164fa4205&first_air_date=2006-09-15&with_genres=80&vote_average.gte=5&vote_average.lte=10
 
+//TV RECOMMENDATIONS
 app.get('/tvRecs', ((req, res) => {
   
   const releaseStart = '2006-09-15'; //beginning release date from subscribe
