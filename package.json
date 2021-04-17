@@ -10,7 +10,6 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged",
       "pre-push": ""
     }
   },
@@ -33,7 +32,7 @@
   "dependencies": {
     "axios": "^0.21.0",
     "body-parser": "^1.19.0",
-    "bootstrap": "^4.5.3",
+    "bootstrap": "^4.6.0",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "css-loader": "^5.0.1",
@@ -43,14 +42,17 @@
     "file-loader": "^6.2.0",
     "jquery": "^3.5.1",
     "mongoose": "^5.10.15",
+    "node-vibrant": "^3.1.6",
     "passport": "^0.4.1",
     "passport-google-oauth": "^2.0.0",
     "path": "^0.12.7",
     "react": "^17.0.1",
+    "react-bootstrap": "^1.5.2",
     "react-dom": "^17.0.1",
     "react-horizontal-scrolling-menu": "^0.7.8",
     "react-icons": "^4.1.0",
     "style-loader": "^2.0.0",
+    "styled-components": "^5.2.3",
     "twilio": "^3.52.0",
     "url-loader": "^4.1.1"
   },

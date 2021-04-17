@@ -3,7 +3,7 @@
 }
 
 .home-title{
-  color:white;
+  /* color:white; */
   font-weight: bold;
   font-size: 28px;
   font-family: 'Work Sans', sans-serif;
@@ -22,23 +22,23 @@
   font-family: 'Work Sans', sans-serif;
   border-radius: 25px;
   border-style: solid;
-  border-color: #1d3b61;
-  background-color: #1d3b61;
+  /* border-color: #1d3b61; */
+  /* background-color: #1d3b61; */
   margin-top: 5%;
-  color: white;
+  /* color: white; */
 }
 
 .post-show{
   font-family: 'Work Sans', sans-serif;
   text-decoration: none;
-  color:  white;
+  /* color:  white; */
   font-size: 18px;
   margin-left: 10%;
   font-weight: bold;
 }
 
 .post-show:hover {
-  color: #dd3e42;
+  /* color: #dd3e42; */
  }
 
 #post-show-title{
@@ -50,14 +50,14 @@
 
 .post-author {
   margin-left: 15%;
-  color: #408ac8;
+  /* color: #408ac8; */
   font-size: 14px;
   font-weight: bold;
  }
 
 
  #post-content{
-  color: white;
+  /* color: white; */
   margin-left: 15%;
   margin-bottom: 5%;
   font-size: 14px;
@@ -68,18 +68,18 @@
     display: inline-block;
     width: 5%;
     margin-right: 2%;
-    color: #f0ccb3;
+    /* color: #f0ccb3; */
 }
 
 .liked-button{
   font-size: 24px;
   display: inline-block;
   margin-right: 2%;
-  color: #dd3e42;
+  /* color: #dd3e42; */
 }
 .comment-btn{
   font-size: 24px;
-  color: #f0ccb3;
+  /* color: #f0ccb3; */
 }
 
 .like-count{
@@ -99,7 +99,7 @@
 }
 .post-comment-btn{
   font-size: 24px;
-  color: #f0ccb3;
+  /* color: #f0ccb3; */
   margin-left: 26%;
   position: relative;
   bottom: 38px;
@@ -109,9 +109,9 @@
 
 }
 .comment-txt-box{
-  background-color: #1d3b61;
-  color: white;
-  border-color: white;
+  /* background-color: #1d3b61; */
+  /* color: white; */
+  /* border-color: white; */
   border-radius: 25px;
   border-style: solid;
   margin-right: 3%;
@@ -126,10 +126,10 @@
 
 .submit-post-comment-btn{
   position: inline-block;
-  background-color: #1d3b61;
-  border-color: white;
+  /* background-color: #1d3b61; */
+  /* border-color: white; */
   border-radius: 25px;
-  color: white;
+  /* color: white; */
   border-style: solid;
   padding: 3px 8px;
 }
@@ -137,10 +137,10 @@
 .comment {
   font-family: 'Work Sans', sans-serif;
   border-style: solid;
-  border-color: white;
+  /* border-color: white; */
   border-radius: 25px;
   margin-top: 2%;
-  color: white;
+  /* color: white; */
   margin-left: 10%;
  }
 
@@ -148,20 +148,20 @@
   margin-top: 3.5%;
   margin-left: 5%;
   margin-bottom: -2%;
-  color: #408ac8;
+  /* color: #408ac8; */
   font-size: 14px;
  }
 
  #comment-content{
-  color: white;
+  /* color: white; */
   margin-left: 10%;
  }
 
  .reply-comment-txt-box{
-  color: white;
+  /* color: white; */
   border-style: solid;
-  border-color: #1d3b61;
-  background-color: #140e3e;
+  /* border-color: #1d3b61; */
+  /* background-color: #140e3e; */
   margin-right: 3%;
   height: 50px;
   width: 200px;
@@ -177,22 +177,22 @@
 }
 
 .submit-reply-comment-btn{
-  background-color: #140e3e;
-  border-color: white;
+  /* background-color: #140e3e; */
+  /* border-color: white; */
   border-radius: 25px;
-  color: white;
+  /* color: white; */
   border-style: solid;
   padding: 3px 8px;
 }
 
 .x-btn{
   position: relative;
-  color: white;
+  /* color: white; */
   font-size: 16px;
   margin-left: 2%;
   top: 4px;
 }
 
 .x-btn:hover{
-  color:#dd3e42;
+  /* color:#dd3e42; */
 }

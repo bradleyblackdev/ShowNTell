@@ -16,29 +16,29 @@ const Nav = ({ user, onClick, logout, search, setSearch, onSearch }) => (
       title="home feed"
     />
     <ul className="navbar">
-      <li onClick={() => onClick('home')} id="home-icon" className="views" title="home feed">
+      <li onClick={() => onClick('home')} id="home-icon" className="navbutton views" title="home feed">
         <FaHome />
         {/* <p id="home-icon-hover">home</p> */}
         {' '}
       </li>
-      <li onClick={() => onClick('sub')} className="views" title="subscriptions">
+      <li onClick={() => onClick('user')} className="navbutton views" title="subscriptions">
         {' '}
         <FaStar />
       </li>
-      <li onClick={() => onClick('post')} className="views" title="create a post">
+      <li onClick={() => onClick('post')} className="navbutton views" title="create a post">
         {' '}
         <FaPen />
         {' '}
       </li>
-      <li onClick={() => onClick('notifs')} className="views" title="notifications">
+      <li onClick={() => onClick('notifs')} className="navbutton views" title="notifications">
         <FaBell />
         {' '}
       </li>
-      <li onClick={() => onClick('DMs')} className="views" title="messages">
+      <li onClick={() => onClick('DMs')} className="navbutton views" title="messages">
         <FaEnvelope />
         {' '}
       </li>
-      <li onClick={logout} title="log out"><FaDoorOpen /></li>
+      <li className="navbutton" onClick={logout} title="log out"><FaDoorOpen /></li>
       <li>
         {' '}
         <div className="wrap">
