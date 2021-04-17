@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> dcef8e766110021f3a2fdf8ec0ce59b8974b98f4
 module.exports = {
   env: {
     es6: true,
@@ -56,6 +59,7 @@ module.exports = {
     'react/display-name': 0,
   },
 };
+<<<<<<< HEAD
 =======
 module.exports = {
   env: {
@@ -115,3 +119,5 @@ module.exports = {
   },
 };
 >>>>>>> 5924b2f9d1ae8fc4cea00c27ecdaf0953b485af6
+=======
+>>>>>>> dcef8e766110021f3a2fdf8ec0ce59b8974b98f4

@@ -2,6 +2,7 @@ import React, { } from 'react';
 import './chatWindow.css';
 
 const ChatFriendsList = ({ friend }) => {
+  
   return (
     <div>
       <li className="friendlist-friend clearfix">
