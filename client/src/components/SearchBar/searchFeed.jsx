@@ -2,13 +2,17 @@ import React from 'react';
 import SearchFeedEntry from './searchEntry.jsx';
 import './search.css';
 
-const SearchFeed = ({ shows, onClick, arrow }) => (
-  <div>
-    <div className="search-results-header">Search results: </div>
-    <div className="scrolling-container">
-      {shows.map(({ show }, i) => <SearchFeedEntry classname="search-feed-entry" key={show + i} show={show} onClick={onClick} />)}
+const SearchFeed = ({ shows, onClick, arrow, setShow }) => {
+  console.log(shows, 'SHOWS ON SEARCH FEED');
+
+  return (
+    <div>
+      <div className="search-results-header">Search results: </div>
+      <div className="scrolling-container">
+        {shows.map((show, i) => <SearchFeedEntry classname="search-feed-entry" key={i} show={show} onClick={onClick} setShow={setShow}/>)}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default SearchFeed;

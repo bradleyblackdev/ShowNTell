@@ -52,6 +52,7 @@
 .show-img {
   color: white;
   font-family: 'Work Sans', sans-serif;
+  max-width: 100%;
 }
 
 .unavail-img {

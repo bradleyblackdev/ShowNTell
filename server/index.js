@@ -9,6 +9,8 @@ const Vibrant = require('node-vibrant');
 require('dotenv').config();
 require('./db/index');
 
+
+const tmdbApiKey = process.env.TMDB_API_KEY;
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const youtubeApi = process.env.YOUTUBE_API_KEY;
@@ -189,58 +191,7 @@ app.put('/sendMessage/:id/:text', (req, res) => {
   });
 });
 
-app.get('/search/:query', (req, res) => {
-  const url = `http://api.tvmaze.com/search/shows?q=${req.params.query}`;
-  return axios(url)
-    .then(({ data }) => data)
-    .then((data) => res.status(200).send(data))
-    .catch();
-});
 
-app.get('/show/:id', (req, res) => {
-  Shows.find({ id: req.params.id })
-    .then((record) => {
-      if (record.length > 0) {
-        return record[0];
-      }
-      return axios(`http://api.tvmaze.com/shows/${req.params.id}`)
-        .then(({ data }) => Shows.create({
-          id: data.id,
-          name: data.name,
-          posts: [],
-          subscriberCount: 0,
-        }))
-        .then((result) => result)
-        .catch();
-    })
-    .then((result) => res.status(200).send(result))
-    .catch(() => res.status(500).send());
-});
-
-app.get('/trailer/:query', (req, res) => {
-  const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${req.params.query}trailer&channelType=any&key=${youtubeApi}`;
-  return axios(url)
-    .then(({ data }) => data)
-    .then((data) => res.status(200).send(data))
-    .catch();
-});
-
-// const youtube = 'https://www.googleapis.com/youtube/v3/search'
-// app.get('/trailer/:query', async (req, res, next) => {
-//   try {
-//     // const city = 'new+orleans';
-//     // const type = 'bicycle_store';
-//     // const query =
-//     const search = `${req.params.query} trailer`
-//     const {data} = await axios.get(
-//       //https://www.googleapis.com/youtube/v3/search?part=snippet&q=trailer&topicId=%2Fm%2F02vxn&key=AIzaSyB_r6Upq6213L9mrmRcjyaqMhlUpumQLks
-//       `${youtube}?part=snippet&q=${search}&channelType=any&key=${youtubeApi}`
-//     );
-//     res.json(data);
-//   } catch (err) {
-//     next(err);
-//   }
-// });
 
 app.put('/subscribe/:id', (req, res) => {
   const { id } = req.params;
@@ -508,9 +459,53 @@ app.get('/likedPost/:id', (req, res) => {
   });
 });
 
+
+// NEW SEARCH REQUEST
+app.get('/search/:query', (req, res) => {
+  const movie = `https://api.themoviedb.org/3/search/multi?api_key=${tmdbApiKey}&query=${req.params.query}`;
+
+  axios.get(movie)
+    .then(({data: {results}}) =>{
+      res.status(200).send(results);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+});
+
+
+app.get('/show/:id', (req, res) => {
+  Shows.find({ id: req.params.id })
+    .then((record) => {
+      if (record.length > 0) {
+        return record[0];
+      }
+      return axios(`https://api.themoviedb.org/3/search/multi?api_key=${tmdbApiKey}&query=${req.params.id}`)
+        .then(({ data }) => Shows.create({
+          id: data.id,
+          name: data.title,
+          posts: [],
+          subscriberCount: 0,
+        }))
+        .then((result) => result)
+        .catch();
+    })
+    .then((result) => res.status(200).send(result))
+    .catch(() => res.status(500).send());
+});
+
+//Get Trailers
+app.get('/trailer/:query', (req, res) => {
+  const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${req.params.query}trailer&channelType=any&key=${youtubeApi}`;
+  return axios(url)
+    .then(({ data }) => data.items[0])
+    .then((data) => res.status(200).send(data))
+    .catch();
+});
+
 app.get('/theme', (req, res) => {
   const query = req.query.name;
-  return axios(`https://api.themoviedb.org/3/search/tv?api_key=${process.env.TMDB_API_KEY}cb&language=en-US&query=${query}}&page=1&include_adult=false`)
+  return axios(`https://api.themoviedb.org/3/search/tv?api_key=${process.env.THEME_KEY}cb&language=en-US&query=${query}}&page=1&include_adult=false`)
     .then(({data: {results}}) => {
       const backdropURL = `https://image.tmdb.org/t/p/original/${results[0].backdrop_path}`;
       Vibrant.from(backdropURL).getPalette()

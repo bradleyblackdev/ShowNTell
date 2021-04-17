@@ -2,48 +2,31 @@ import React, { useState } from 'react';
 import './search.css';
 import noImgAvail from './no_img_avail.png';
 
-const SearchFeedEntry = ({ show, onClick }) => {
+const SearchFeedEntry = ({ show, onClick, setShow }) => {
+
+  // console.log(show, 'SEARCH FEED ENTRY SHOW');
   const [state, setState] = useState('');
 
+  const setShowPageObj = (newShow) => {
+
+    setShow(newShow);
+    onClick('showPage');
+  };
   const getSummary = () => {
-    let summary = show.summary.replace(/<p>|<\/p>/g, '');
-    const output = [];
-    while (summary.length > 0) {
-      if (summary.search(/<i>/) !== -1) {
-        output.push(summary.slice(0, summary.search(/<i>/)));
-        summary = summary.slice(summary.search(/<i>/) + 3);
-
-        const italic = summary.slice(0, summary.search(/<\/i/));
-        output.push(<i key={italic + summary.search(/<i>/)}>{italic}</i>);
-        summary = summary.slice(summary.search(/<\/i>/) + 4);
-      } else if (summary.search(/<b>/) !== -1) {
-        output.push(summary.slice(0, summary.search(/<b>/)));
-        summary = summary.slice(summary.search(/<b>/) + 3);
-
-        const bold = summary.slice(0, summary.search(/<\/b/));
-        output.push(<b key={bold + summary.search(/<b>/)}>{bold}</b>);
-        summary = summary.slice(summary.search(/<\/b>/) + 4);
-      } else {
-        output.push(summary);
-        summary = '';
-      }
+    if (show.overview !== null) {
+      return show.overview;
     }
-
-    return output;
   };
-
   const getImage = () => {
-    if (show.image !== null) {
-      return show.image.medium;
+    if (show.poster_path !== null) {
+      return `https://image.tmdb.org/t/p/original/${show.poster_path}`;
     }
   };
-
   const getPicUnavail = () => {
-    if (show.image === null) {
+    if (show.poster_path === null) {
       return noImgAvail;
     }
   };
-
   const Arrow = ({ text, className }) => {
     return (
       <div
@@ -59,24 +42,10 @@ const SearchFeedEntry = ({ show, onClick }) => {
 
   return (
     <div className="show-card">
-      <div className="show-name" value={show.id} onClick={() => onClick(show)}>
-        <div className="show-name">{show.name}</div>
+      <div className="show-name" value={show.id} onClick={() => setShowPageObj(show)}>
         <img className="show-img" src={getImage()} alt="" />
         <img className="unavail-img" src={getPicUnavail()} alt="" />
-        <button
-          className="summary-button"
-          onClick={(event) => {
-            event.stopPropagation();
-            setState(getSummary());
-          }}
-        >
-          show summary
-        </button>
-
-        <div className="show-summary">
-          {state}
-        </div>
-
+        <div className="show-name">{show.title}</div>
       </div>
     </div>
   );
