@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Carousel } from 'react-bootstrap/';
 import axios from 'axios'; 
 import image1 from './carouselPhotos/drive.jpg';
@@ -24,10 +24,10 @@ const Img = styled.div`
     }
 `;
 
-const favorites = ({ sub }) => {
-  // axios.get('/theme', {
-  //   params: sub
-  // }).then()
+const favorites = ({ user }) => {
+const { subscriptions } = user; 
+  console.log("in favorites", subscriptions); 
+ 
   const images = [image3, image2, image4, image5, image1, image7];
   return (
     <Carousel >
