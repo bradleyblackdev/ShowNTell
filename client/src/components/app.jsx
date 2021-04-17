@@ -19,6 +19,7 @@ import ShowFeed from './Subscriptions/showFeed.jsx';
 import {MovieMode, classicTheme} from './MovieMode/MovieMode.jsx';
 import ShowPage from './ShowPage/showPage.jsx';
 
+import styled from 'styled-components';
 import {ThemeProvider} from 'styled-components';
 import {GlobalStyles} from './Styles/globalstyles';
 
@@ -73,12 +74,14 @@ const App = () => {
 
   const getSubs = () => {
     if (user && !gotSubs) {
+      console.log('heres da user subscriptions', user.subscriptions);
       const promises = user.subscriptions.map((showId) => axios.get(`/show/${showId}`).catch());
       Promise.all(promises)
         .then((results) => results.map((show) => show.data))
         .then((shows) => {
-          setSubs(shows);
           setGotSubs(true);
+          setSubs(shows);
+          console.log('heres thos shows', shows);
         })
         .catch();
     }
@@ -111,6 +114,7 @@ const App = () => {
 
   // makes initial search from search bar onclick
   const searchShows = () => {
+    console.log('serching shows', search);
     axios.get(`/search/${search}`).then(({data}) => {
       console.log('data-------', data);
       setSearchedShows(data);
@@ -142,9 +146,15 @@ const App = () => {
       .catch();
   };
 
-  const subscribe = (showId) => {
-    axios.put(`/subscribe/${showId}`)
-      .then(() => axios.get('/user').then(({ data }) => setUser(data)))
+  const subscribe = (show) => {
+    axios.put('/subscribe/', show)
+      .then(() => axios.get('/user').then(({ user }) => {
+        setGotSubs(false);
+        // console.log('heres user scrips from subscribe', user);
+        setUser(user);
+        getSubs();
+      }
+      ))
       .catch();
   };
 ///////
@@ -212,7 +222,7 @@ const App = () => {
             <a
               className="login-button"
               href="/auth/google"
-            // onClick={() => axios.get('/auth/google').then(({ data }) => console.log(data))}
+              // onClick={() => axios.get('/auth/google').then(({ data }) => console.log(data))}
             >
             LOGIN WITH GOOGLE
             </a>
@@ -227,7 +237,7 @@ const App = () => {
           null}
         {getView()}
       </ThemeProvider>
-    </div>
+    </ div>
   );
 };
 

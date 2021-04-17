@@ -6,9 +6,8 @@ import Youtube from './youtube.jsx'
 // import DummieData from '../../data.json';
 
 
-const ShowPage = ({ show }) => {
+const ShowPage = ({ show, subscribe, showId }) => {
   // const [show, setShow] = useState({});
-  console.log('show from showpage', show);
   // const [gotShow, setGotShow] = useState(false);
   const getShowInfo = () => {
     // setShow(DummieData);
@@ -68,9 +67,9 @@ const ShowPage = ({ show }) => {
         Overview:
         {show.overview}
       </div>
-      {/* <button className="sub-btn" onClick={() => subscribe(showId)}>subscribe</button> */}
-      <Youtube show={show}/>
+      <button className="sub-btn" onClick={() => subscribe(show)}>subscribe</button>
       {/* <button className="trailer-button" onClick={() => getTrailer(show.title)}>Trailer</button> */}
+      <Youtube show={show}/>
     </div>
   );
 };

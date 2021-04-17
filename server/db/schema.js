@@ -10,6 +10,8 @@ const userSchema = mongoose.Schema({
   follows: Array,
   subscriptions: Array,
   friends: Array,
+  bio: String,
+  imageUrl: String,
   img: { data: Buffer, contentType: String }
 });
 
@@ -20,6 +22,13 @@ const showSchema = mongoose.Schema({
   id: Number,
   posts: Array,
   subscriberCount: Number,
+  backdropPath: String,
+  genreIds: Array,
+  overview: String,
+  posterPath: String,
+  releaseDate: String,
+  title: String,
+  voteAverage: Number,
 });
 
 const Shows = mongoose.model('Shows', showSchema);
@@ -46,6 +55,14 @@ const replySchema = mongoose.Schema({
 
 const Replys = mongoose.model('Replys', replySchema);
 
+const themeSchema = mongoose.Schema({
+  id: Number,
+  palette: Object,
+  neutral: String,
+  backdropUrl: String,
+});
+
+const Themes = mongoose.model('Themes', themeSchema);
 
 const trailerSchema = mongoose.Schema({
   title: String,
@@ -60,5 +77,6 @@ module.exports = {
   Shows,
   Posts,
   Replys,
+  Themes,
   Trailer
 };

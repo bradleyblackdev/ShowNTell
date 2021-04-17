@@ -16,7 +16,7 @@ const authToken = process.env.TWILIO_AUTH_TOKEN;
 const youtubeApi = process.env.YOUTUBE_API_KEY;
 const Notifs = require('twilio')(accountSid, authToken);
 const { GoogleStrategy } = require('./oauth/passport');
-const { Users, Posts, Shows, Replys } = require('./db/schema.js');
+const { Users, Posts, Shows, Replys, Themes } = require('./db/schema.js');
 
 const app = express();
 
@@ -29,6 +29,8 @@ app.use(express.static(client));
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors());
+app.use('/favicon.ico', express.static(path.resolve(__dirname, 'assets', 'sntfavicon.jpg')));
+
 
 passport.serializeUser((user, done) => {
   done(null, user);
@@ -65,11 +67,13 @@ app.get(
   (req, res) => {
     const newUser = new Users({
       id: Number(req.user.id),
+      // id: Number(req.cookies.showNTellId),
       name: req.user.displayName,
     });
     res.cookie('ShowNTellId', req.user.id);
-
+    // Users.findOne({ id: req.cookies.showNTellId }).then((data) => {
     Users.findOne({ id: Number(req.user.id) }).then((data) => {
+      // console.log('heres tha sign in data', data);
       if (data) {
         res.redirect('/');
         userInfo = data;
@@ -84,8 +88,8 @@ app.get(
 );
 
 app.get('/user', (req, res) => {
-  Users.findOne({ id: req.cookies.ShowNTellId }).then((data) => {
-    userInfo = data;
+  // console.log('heres req.cookies.showntell', req.cookies.ShowNTellId);
+  Users.findOne({ id: req.cookies.ShowNTellId }).then((userInfo) => {
     res.json(userInfo);
   });
 });
@@ -193,34 +197,61 @@ app.put('/sendMessage/:id/:text', (req, res) => {
 
 
 
-app.put('/subscribe/:id', (req, res) => {
+app.put('/subscribe', (req, res) => {
   const { id } = req.params;
-  Users.findOne({ id: req.cookies.ShowNTellId }).then((data) => {
-    userInfo = data;
-    Users.findById(userInfo._id)
-      .then((user) => {
-        if (!user.subscriptions.includes(id)) {
-          userInfo.subscriptions = [...user.subscriptions, id];
-          Users.updateOne(
-            { _id: user._id },
-            { subscriptions: [...user.subscriptions, id] },
-          )
-            .then(() => {
-              Shows.findOne({ id })
-                .then((record) => {
-                  Shows.updateOne(
-                    { id: req.params.id },
-                    { subscriberCount: record.subscriberCount + 1 },
-                  ).catch();
+  const show = req.body;
+  Shows.find({ id })
+    .then((record) => {
+      if (record.length > 0) {
+        return record[0];
+      } else {
+        const releaseDate = show.media_type === 'tv' ? 
+          show.first_air_date : 
+          show.release_date;
+        const title = show.media_type === 'tv' ? 
+          show.name : 
+          show.title;
+        Shows.create({
+          name: title,
+          id: show.id,
+          posts: [],
+          subscriberCount: 0,
+          backdropPath: show.backdrop_path,
+          genreIds: show.genre_ids,
+          overview: show.overview,
+          posterPath: show.poster_path,
+          releaseDate: releaseDate,
+          title: title,
+          voteAverage: show.vote_average,
+        });
+      }
+    }).then(() => {
+      Users.findOne({ id: req.cookies.ShowNTellId }).then(userInfo => {
+        Users.findById(userInfo._id)
+          .then((user) => {
+            if (!user.subscriptions.includes(show.id)) {
+              userInfo.subscriptions = [...user.subscriptions, show.id];
+              Users.updateOne(
+                { _id: user._id },
+                { subscriptions: [...user.subscriptions, show.id] },
+              )
+                .then(() => {
+                  Shows.findOne({ id: show.id })
+                    .then((record) => {
+                      Shows.updateOne(
+                        { id: show.id },
+                        { subscriberCount: record.subscriberCount + 1 },
+                      ).catch();
+                    })
+                    .catch();
                 })
                 .catch();
-            })
-            .catch();
-        }
+            }
+          });
       })
-      .then(() => res.status(200).send())
-      .catch(() => res.status(500).send());
-  });
+        .then(() => res.status(200).send())
+        .catch(() => res.status(500).send());
+    });
 });
 
 app.get('/delete', (req, res) => {
@@ -504,12 +535,26 @@ app.get('/trailer/:query', (req, res) => {
 });
 
 app.get('/theme', (req, res) => {
-  const query = req.query.name;
-  return axios(`https://api.themoviedb.org/3/search/tv?api_key=${process.env.THEME_KEY}cb&language=en-US&query=${query}}&page=1&include_adult=false`)
-    .then(({data: {results}}) => {
-      const backdropURL = `https://image.tmdb.org/t/p/original/${results[0].backdrop_path}`;
-      Vibrant.from(backdropURL).getPalette()
-        .then(palette => res.send({palette, backdropURL}));
+  const id = req.query.id;
+  Themes.findOne({ id })
+    .then(theme => {
+      if (theme) {
+        res.send(theme);
+      } else {
+        const backdropPath = req.query.backdropPath;
+        if (backdropPath) {
+          const backdropUrl = `https://image.tmdb.org/t/p/original/${backdropPath}`;
+          Vibrant.from(backdropUrl).getPalette()
+            .then(palette => {
+              const neutral = palette.Muted.getBodyTextColor();
+              // }).then(() => {
+              res.send({id, backdropPath, palette, neutral, backdropUrl});
+              Themes.create({id, backdropPath, palette, neutral, backdropUrl});
+            });
+        } else {
+          res.send(null);
+        }
+      }
     });
 });
 
