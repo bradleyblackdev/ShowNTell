@@ -39,6 +39,8 @@ const App = () => {
   const [gotSubs, setGotSubs] = useState(false);
   const [theme, setTheme] = useState(classicTheme);
   const [show, setShow] = useState({});
+  const [shows, setShows] = useState({}); 
+
 
   const changeView = (newView) => {
     setView(newView);
@@ -71,6 +73,7 @@ const App = () => {
     // }
   };
 
+  
 
   const getSubs = () => {
     if (user && !gotSubs) {
@@ -152,10 +155,12 @@ const App = () => {
       ))
       .catch();
   };
+  ///////
   const getTrailer = () => {
     axios.get('/trailer')
       .then(({data}) =>
-        setTrailers(data))
+        console.log(data),
+      setTrailers(data))
       .catch();
   };
 
@@ -170,7 +175,7 @@ const App = () => {
       return <Post user={user} createPost={createPost} />;
     }
     if (view === 'user') {
-      return <UserProfile user={user} createPost={createPost} />;
+      return <UserProfile user={user} createPost={createPost} setUser={setUser} shows={shows} setShow={setShow} subs={subs} setSubs={setSubs} getSubs={getSubs}/>;
     }
     if (view === 'home') {
       return <HomeFeed handleUserClick={handleUserClick} user={user} posts={posts} setPosts={setPosts} />;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Carousel } from 'react-bootstrap/';
 import axios from 'axios'; 
 import image1 from './carouselPhotos/drive.jpg';
@@ -24,11 +24,21 @@ const Img = styled.div`
     }
 `;
 
-const favorites = ({ sub }) => {
-  // axios.get('/theme', {
-  //   params: sub
-  // }).then()
-  const images = [image3, image2, image4, image5, image1, image7];
+const favorites = ({ user, shows, subs }) => { 
+
+  const images = [];
+  
+  subs.forEach(sub => {
+    const temp = `https://image.tmdb.org/t/p/original${sub.posterPath}`; 
+    images.push(temp); 
+  });
+  
+  console.log(images); 
+
+  console.log('in favorites', images); 
+ 
+ 
+  
   return (
     <Carousel >
       { images.map((image, i) => (
@@ -37,7 +47,7 @@ const favorites = ({ sub }) => {
             <img
               className="rounded mx-auto d-block w-100"
               src={image}
-              alt="Responsive image"
+              alt="image"
             />
           </Img>
         </Carousel.Item>
