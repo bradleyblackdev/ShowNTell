@@ -68,7 +68,7 @@ const ShowPage = ({ show, subscribe, showId }) => {
         {show.overview}
       </div>
       <button className="sub-btn" onClick={() => subscribe(show)}>subscribe</button>
-      <button className="trailer-button" onClick={() => getTrailer(show.title)}>Trailer</button>
+      {/* <button className="trailer-button" onClick={() => getTrailer(show.title)}>Trailer</button> */}
       <Youtube show={show}/>
     </div>
   );
