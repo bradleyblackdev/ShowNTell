@@ -83,7 +83,7 @@ hr {
 }
 .favorites {
     width: 50%;
-    margin: 10px 300px 200px auto;
+    margin: 200px 300px 200px auto;
     text-align: center;
 }
 .recommendations {
@@ -140,32 +140,6 @@ hr {
 
 
 
-.btn {
-    background: #11cdd4;
-    background-image: -webkit-linear-gradient(top, #11cdd4, #11999e);
-    background-image: -moz-linear-gradient(top, #11cdd4, #11999e);
-    background-image: -ms-linear-gradient(top, #11cdd4, #11999e);
-    background-image: -o-linear-gradient(top, #11cdd4, #11999e);
-    background-image: linear-gradient(to bottom, #11cdd4, #11999e);
-    -webkit-border-radius: 8;
-    -moz-border-radius: 8;
-    border-radius: 8px;
-    font-family: 'Montserrat', sans-serif;
-    color: #ffffff;
-    font-size: 20px;
-    padding: 10px 20px 10px 20px;
-    text-decoration: none;
-  }
-  
-  .btn:hover {
-    background: #30e3cb;
-    background-image: -webkit-linear-gradient(top, #30e3cb, #32bc48d);
-    background-image: -moz-linear-gradient(top, #30e3cb, #32bc48d);
-    background-image: -ms-linear-gradient(top, #30e3cb, #32bc48d);
-    background-image: -o-linear-gradient(top, #30e3cb, #32bc48d);
-    background-image: linear-gradient(to bottom, #30e3cb, #32bc48d);
-    text-decoration: none;
-  }
 
 
   .carousel{position:relative}.carousel.pointer-event{-ms-touch-action:pan-y;touch-action:pan-y}
@@ -216,4 +190,35 @@ hr {
     .carousel-indicators li{transition:none}}
   .carousel-indicators .active{opacity:1}
   .carousel-caption{position:absolute;right:15%;bottom:20px;left:15%;z-index:10;padding-top:20px;padding-bottom:20px;color:#fff;text-align:center}
- 
+
+
+  .dropbtn2 {
+    padding: 12px;
+    margin-right: 80px;
+    font-size: 14px;
+    border-radius: 36px;
+    border-style: solid;
+    background-color: rgba(0, 0, 0, 0);
+  }
+  
+  .dropdown2 {
+    float: left;
+    margin-left: 91px;
+   
+}
+  
+  .dropdown-content2 {
+    display: none;
+    position: absolute;
+    /* background-color: #f1f1f1; */
+    min-width: 160px;
+    z-index: 1;
+  }
+  
+  .dropdown-content2 a {
+    padding: 12px 12px;
+    text-decoration: none;
+    display: block;
+  }
+  
+  .dropdown2:hover .dropdown-content2 {display: block;}
