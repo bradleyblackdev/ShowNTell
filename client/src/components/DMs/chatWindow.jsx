@@ -1,40 +1,65 @@
 import React, { useState } from 'react';
 import ChatMessage from './chatMessage.jsx';
 import './chatWindow.css';
+import ChatFriendsList from './friendsList.jsx'
 
-const ChatWindow = ({ toggleChatWindow, friends, user }) => {
-  const [newMessage, setNewMessage] = useState();
-  const [messages, setMessages] = useState(['asdasd', 'asdasdasd', 'asdasda']);
+const ChatWindow = ({ toggleChatWindow, user }) => {
+  //const [newMessage, setNewMessage] = useState();
+  const [messages, setMessages] = useState([{username:'eebs', message: 'hey', time: '2:12'},{username:'ibrahim', message: 'hi', time: '2:12'},{username:'eebs', message: 'wyd', time: '2:14'},{username:'ibrahim', message: 'nothing', time: '2:20'}]);
   //const [open, setOpen] = useState(false);
-  const [friendList, setFriendList] = useState(false);
+  const [friendListView, setfriendListView] = useState(true);
   const [newMessagesCount, setNewMessagesCount] = useState(0);
+  const [friends, setFriends] = useState([{name: 'eebs'}, {name: 'eebs2'}, {name: 'eebs3'}])
 
-
+  const retrieveMessages = () => {
+    axios.put(`/startMessage/${user.id}/${user.name}`)
+    .then(() => {
+      setMessages(String(id));
+      axios.get('/user')
+        .then((result) => setUser(result.data));
+    });
+  };
 
   return (
     <div className="chat-window">
-      {friendList ? 
+      {friendListView ? 
         (
-          <div>
-            <ul>
-              {friends.map(friend => <li>{friend.name}</li>)}
-            </ul>
+          <div id="live-chat">
+            <header className="clearfix">
+              <a className='chat-close' onClick={() => toggleChatWindow()}>close</a>
+              <a className='chat-back' onClick={() => setfriendListView(!friendListView)}>friends</a>
+              <span className='chat-message-counter'>{newMessagesCount}</span>
+              <h4>{user.name}</h4>
+            </header>
+            <div className='chat'>
+              <div className='chat-history'>
+                <ul>
+                  {friends.map(friend => <ChatFriendsList  key={friend.id} friend={friend}/>)}
+                </ul>
+              </div>
+            </div>
           </div>
+          // <div>
+          //   <ul>
+          //     {friends.map(friend => <li key={friend.id}>{friend.name}</li>)}
+          //   </ul>
+          // </div>
         )
         : (
           <div id="live-chat">
             <header className="clearfix">
-              <a className='chat-close' onClick={() => toggleChatWindow()}>x</a>
+              <a className='chat-close' onClick={() => toggleChatWindow()}>close</a>
+              <a className='chat-back' onClick={() => setfriendListView(!friendListView)}>friends</a>
               <span className='chat-message-counter'>{newMessagesCount}</span>
-              <h4>{user}</h4>
+              <h4>{user.name}</h4>
             </header>
             <div className='chat'>
               <div className='chat-history'>
-                {messages.map(message => <ChatMessage/>)}
+                {messages.map(message => <ChatMessage message={message} key={message.id}/>)}
               </div>
               <form action="#" method="post">
                 <fieldset>
-                  <input type="text" placeholder="Mesajınızı Yazın"></input>
+                  <input type="text" placeholder={user.name}></input>
                   <input type="hidden"></input>
                 </fieldset>
               </form>
@@ -46,7 +71,7 @@ const ChatWindow = ({ toggleChatWindow, friends, user }) => {
 };
 
 {/* <button className="chat-close-button" onClick={() => toggleChatWindow()}>Close</button>
-            <button className="chat-back-button" onClick={() => setFriendList(true)}>Back</button>
+            <button className="chat-back-button" onClick={() => setfriendListView(true)}>Back</button>
             <div className="current-messages">
               <h3>Your messages</h3>
             </div>

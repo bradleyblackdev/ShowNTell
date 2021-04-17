@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { FaHome, FaStar, FaPen, FaBell, FaEnvelope, FaSearch, FaDoorOpen } from 'react-icons/fa';
 import logo from './HomePage/img/logo1.png';
 
-
 const Nav = ({ user, onClick, logout, search, setSearch, onSearch, toggleChatWindow }) => (
   <div>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap" rel="stylesheet" />
@@ -17,29 +16,29 @@ const Nav = ({ user, onClick, logout, search, setSearch, onSearch, toggleChatWin
       title="home feed"
     />
     <ul className="navbar">
-      <li onClick={() => onClick('home')} id="home-icon" className="views" title="home feed">
+      <li onClick={() => onClick('home')} id="home-icon" className="navbutton views" title="home feed">
         <FaHome />
         {/* <p id="home-icon-hover">home</p> */}
         {' '}
       </li>
-      <li onClick={() => onClick('sub')} className="views" title="subscriptions">
+      <li onClick={() => onClick('sub')} className="navbutton views" title="subscriptions">
         {' '}
         <FaStar />
       </li>
-      <li onClick={() => onClick('post')} className="views" title="create a post">
+      <li onClick={() => onClick('post')} className="navbutton views" title="create a post">
         {' '}
         <FaPen />
         {' '}
       </li>
-      <li onClick={() => onClick('notifs')} className="views" title="notifications">
+      <li onClick={() => onClick('notifs')} className="navbutton views" title="notifications">
         <FaBell />
         {' '}
       </li>
-      <li onClick={() => toggleChatWindow()} className="views" title="messages">
+      <li onClick={() => toggleChatWindow()} className="navbutton views" title="messages">
         <FaEnvelope />
         {' '}
       </li>
-      <li onClick={logout} title="log out"><FaDoorOpen /></li>
+      <li className="navbutton" onClick={logout} title="log out"><FaDoorOpen /></li>
       <li>
         {' '}
         <div className="wrap">

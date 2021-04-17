@@ -17,6 +17,9 @@ import Notifs from './Notifications/notifs.jsx';
 import SearchFeed from './SearchBar/searchFeed.jsx';
 import ShowFeed from './Subscriptions/showFeed.jsx';
 import ChatWindow from './DMs/chatWindow.jsx';
+import {MovieMode, classicTheme} from './MovieMode/MovieMode.jsx';
+import {ThemeProvider} from 'styled-components';
+import {GlobalStyles} from './Styles/globalstyles';
 
 const App = () => {
   const [posts, setPosts] = useState();
@@ -27,6 +30,9 @@ const App = () => {
   const [userClicked, setUsersClicked] = useState(false);
   const [test, setTest] = useState(false);
   const [cWindowOpen, setcWindowOpen] = useState(false);
+  const [subs, setSubs] = useState([]);
+  const [gotSubs, setGotSubs] = useState(false);
+  const [theme, setTheme] = useState(classicTheme);
 
   const changeView = (newView) => {
     setView(newView);
@@ -57,6 +63,19 @@ const App = () => {
         .catch();
     }
     // }
+  };
+
+  const getSubs = () => {
+    if (user && !gotSubs) {
+      const promises = user.subscriptions.map((showId) => axios.get(`/show/${showId}`).catch());
+      Promise.all(promises)
+        .then((results) => results.map((show) => show.data))
+        .then((shows) => {
+          setSubs(shows);
+          setGotSubs(true);
+        })
+        .catch();
+    }
   };
 
   const logout = () => {
@@ -119,7 +138,7 @@ const App = () => {
       return <HomePage />;
     }
     if (view === 'sub') {
-      return <Sub user={user} setView={setView} />;
+      return <Sub user={user} setView={setView} subs={subs} getSubs={getSubs} setSubs={setSubs} gotSubs={gotSubs} setGotSubs={setGotSubs}/>;
     }
     if (view === 'post') {
       return <Post user={user} createPost={createPost} />;
@@ -141,38 +160,47 @@ const App = () => {
 
   return (
     <div>
-      {user
-        ? (
-          <Nav
-            toggleChatWindow={toggleChatWindow}
-            user={user}
-            search={search}
-            onClick={changeView}
-            logout={logout}
-            setSearch={setSearch}
-            onSearch={searchShows}
+      <ThemeProvider theme={theme}>
+        <GlobalStyles/>
+        {user
+          ? (
+            <div>
+              <Nav
+                toggleChatWindow={toggleChatWindow}
+                user={user}
+                search={search}
+                onClick={changeView}
+                logout={logout}
+                setSearch={setSearch}
+                onSearch={searchShows}
+              />
+              <MovieMode subs={subs} theme={theme} setTheme={setTheme}/>
+            </div>
 
-          />
-        )
-        : (
-          <a
-            className="login-button"
-            href="/auth/google"
+          )
+          : (
+            <a
+              className="login-button"
+              href="/auth/google"
             // onClick={() => axios.get('/auth/google').then(({ data }) => console.log(data))}
-          >
+            >
             LOGIN WITH GOOGLE
-          </a>
-        )}
-      {getUser()}
-      {getPosts()}
-      {userClicked ? (
-        <button onClick={handleShowFeed}>Show Home Feed</button>
-      ) : null}
-      {getView()}
-     { cWindowOpen ?
-      <ChatWindow toggleChatWindow={toggleChatWindow}/>
-      : ''
-    }
+            </a>
+          )}
+        {getUser()}
+        {getPosts()}
+        {getSubs()}
+        {userClicked ?
+          (
+            <button onClick={handleShowFeed}>Show Home Feed</button>
+          ) : 
+          null}
+        {getView()}
+      </ThemeProvider>
+      { cWindowOpen ? 
+          <ChatWindow user={user} toggleChatWindow={toggleChatWindow}/>
+          : ''
+      }
     </div>
   );
 };

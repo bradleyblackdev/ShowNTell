@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React, { } from 'react';
 import './chatWindow.css';
 
-const ChatMessage = ({ message,  }) => {
+const ChatMessage = ({ message }) => {
   return (
-      // <img src="client\src\components\DMs\greencircle2.1.png"></img>
+    <div>
+      <img src="client\src\components\DMs\greencircle2.1.png"></img>
       <div className="chat-message-content clearfix">
-        <span className="chat-time">13:37</span>
-        <h5>Marco Biedermann</h5>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis, nulla accusamus magni vel debitis numquam qui tempora rem voluptatem delectus!</p>
+        <span className="chat-time">{message.time}</span>
+        <h5>{message.username}</h5>
+        <p>{message.message}</p>
       </div>
+    </div>
   );
 };
 
