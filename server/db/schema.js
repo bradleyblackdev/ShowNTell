@@ -46,9 +46,19 @@ const replySchema = mongoose.Schema({
 
 const Replys = mongoose.model('Replys', replySchema);
 
+
+const trailerSchema = mongoose.Schema({
+  title: String,
+  content: String,
+  video: String
+});
+
+const Trailer = mongoose.model('Trailer', trailerSchema);
+
 module.exports = {
   Users,
   Shows,
   Posts,
   Replys,
+  Trailer
 };
