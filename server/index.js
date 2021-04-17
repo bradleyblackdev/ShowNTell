@@ -525,6 +525,40 @@ app.get('/trailer/:query', (req, res) => {
     .catch();
 });
 
+const movieRec = 'https://api.themoviedb.org/3/discover/movie?';
+const tvRec = 'https://api.themoviedb.org/3/discover/tv?';
+
+//https://api.themoviedb.org/3/discover/movie?api_key=c4beeba3761a8ef52fff82a164fa4205&first_air_date=2006-09-15&with_genres=80&vote_average.gte=5&vote_average.lte=10
+
+app.get('/tvRecs', ((req, res) => {
+  
+  const releaseStart = '2006-09-15'; //beginning release date from subscribe
+  const releaseEnd = '2014-10-22';
+  const genre = 18; //genre from subscribe
+  const ratingStart = 5; //average rating from subscribe
+  const ratingEnd = 10; //average rating end
+
+  axios.get(`${tvRec}api_key=${tmdbApiKey}&air_date.gte=${releaseStart}&air_date.lte=${releaseEnd}&with_genres=${genre}&vote_average.gte=${ratingStart}&vote_average.lte=${ratingEnd}`)
+    .then(({data: {results} }) => {
+      res.send(results);
+    });
+}));
+
+//MOVIE RECOMMENDATIONS
+app.get('/movieRecs', ((req, res) => {
+  
+  const releaseStart = '2014-09-15'; //beginning release date from subscribe
+  const releaseEnd = '2014-10-22'; //ending release date from subscribe
+  const genre = 80; //genre from subscribe
+  const ratingStart = 5; //average rating from subscribe
+  const ratingEnd = 10; //average rating end
+
+  axios.get(`${movieRec}api_key=${tmdbApiKey}&primary_release_date.gte=${releaseStart}&primary_release_date.lte=${releaseEnd}&with_genres=${genre}&vote_average.gte=${ratingStart}&vote_average.lte=${ratingEnd}`)
+    .then(({data: {results} }) => {
+      res.send(results);
+    });
+}));
+
 app.get('/theme', (req, res) => {
   const id = req.query.id;
   Themes.findOne({ id })
