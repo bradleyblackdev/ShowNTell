@@ -27,7 +27,7 @@ import './profile.css';
 
 
 
-const UserProfile = ({ user, setUser }) => {
+const UserProfile = ({ user, setUser, show, shows, subs, setSubs, getSubs, setShow }) => {
   const { name, friends } = user; 
   const [ addFriendView, setAddFriendView] = useState(false);
   const [ users, setUsers] = useState();
@@ -139,7 +139,7 @@ const UserProfile = ({ user, setUser }) => {
             <div className="favorites">
               <h3>youre shows</h3>
               <p>based on your subscriptions</p>
-              <Favorites user={user}/>
+              <Favorites user={user} shows={shows} setShow={setShow} subs={subs} setSubs={setSubs} getSubs={getSubs}/>
             </div>
             <div className="recommendations">
               <h3>Your Recommendations</h3>

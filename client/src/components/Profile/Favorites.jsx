@@ -24,11 +24,21 @@ const Img = styled.div`
     }
 `;
 
-const favorites = ({ user }) => {
-const { subscriptions } = user; 
-  console.log("in favorites", subscriptions); 
+const favorites = ({ user, shows, subs }) => { 
+
+  const images = [];
+  
+  subs.forEach(sub => {
+    const temp = `https://image.tmdb.org/t/p/original${sub.posterPath}`; 
+    images.push(temp); 
+  });
+  
+  console.log(images); 
+
+  console.log('in favorites', images); 
  
-  const images = [image3, image2, image4, image5, image1, image7];
+ 
+  
   return (
     <Carousel >
       { images.map((image, i) => (
@@ -37,7 +47,7 @@ const { subscriptions } = user;
             <img
               className="rounded mx-auto d-block w-100"
               src={image}
-              alt="Responsive image"
+              alt="image"
             />
           </Img>
         </Carousel.Item>

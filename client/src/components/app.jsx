@@ -39,6 +39,8 @@ const App = () => {
   const [gotSubs, setGotSubs] = useState(false);
   const [theme, setTheme] = useState(classicTheme);
   const [show, setShow] = useState({});
+  const [shows, setShows] = useState({}); 
+
 
   const changeView = (newView) => {
     setView(newView);
@@ -71,17 +73,18 @@ const App = () => {
     // }
   };
 
+  
 
   const getSubs = () => {
     if (user && !gotSubs) {
-      console.log('heres da user subscriptions', user.subscriptions);
+      //console.log('heres da user subscriptions', user.subscriptions);
       const promises = user.subscriptions.map((showId) => axios.get(`/show/${showId}`).catch());
       Promise.all(promises)
         .then((results) => results.map((show) => show.data))
         .then((shows) => {
           setGotSubs(true);
           setSubs(shows);
-          console.log('heres thos shows', shows);
+          // console.log('heres thos shows', shows);
         })
         .catch();
     }
@@ -157,14 +160,14 @@ const App = () => {
       ))
       .catch();
   };
-///////
+  ///////
   const getTrailer = () => {
     axios.get('/trailer')
-    .then(({data}) =>
-    console.log(data),
-    setTrailers(data))
-    .catch()
-  }
+      .then(({data}) =>
+        console.log(data),
+      setTrailers(data))
+      .catch();
+  };
 
   const getView = () => {
     if (view === 'homePage') {
@@ -177,7 +180,7 @@ const App = () => {
       return <Post user={user} createPost={createPost} />;
     }
     if (view === 'user') {
-      return <UserProfile user={user} createPost={createPost} setUser={setUser} />;
+      return <UserProfile user={user} createPost={createPost} setUser={setUser} shows={shows} setShow={setShow} subs={subs} setSubs={setSubs} getSubs={getSubs}/>;
     }
     if (view === 'home') {
       return <HomeFeed handleUserClick={handleUserClick} user={user} posts={posts} setPosts={setPosts} />;
