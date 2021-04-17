@@ -177,7 +177,7 @@ const App = () => {
       return <Post user={user} createPost={createPost} />;
     }
     if (view === 'user') {
-      return <UserProfile user={user} createPost={createPost} />;
+      return <UserProfile user={user} createPost={createPost} setUser={setUser} />;
     }
     if (view === 'home') {
       return <HomeFeed handleUserClick={handleUserClick} user={user} posts={posts} setPosts={setPosts} />;
