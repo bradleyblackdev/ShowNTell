@@ -18,38 +18,34 @@ export const MovieMode = ({subs, theme, setTheme}) => {
     sub.name === 'classic' ?
       setTheme(classicTheme) :
       axios.get('/theme', {
-        params: sub
+        params: {
+          backdropPath: sub.backdropPath,
+          id: sub.id
+        }
       })
-        .then(({data: {palette, backdropURL, neutral, neutraltoo}}) => {
-          console.log(neutral, neutraltoo);
-          const {Vibrant, DarkVibrant, LightVibrant, Muted, LightMuted, DarkMuted} = palette;
-          // const pickNeutral = (r, g, b) => {
-          // console.log(((r * 0.299) + (g * 0.587) + (b * 0.114)));
-          // return (((r * 0.299) + (g * 0.587) + (b * 0.114)) > 186) ?
-          // 'black' : 
-          // 'white';
-          // };
-          setTheme({
-            // neutral: pickNeutral(...Vibrant.rgb),
-            neutral: neutral,
-            primary: `rgb(${DarkVibrant.rgb})`,
-            secondary: `rgb(${LightVibrant.rgb})`,
-            tertiary: `rgb(${DarkMuted.rgb})`,
-            quaternary: `rgb(${LightMuted.rgb})`,
-            quinary: `rgb(${Vibrant.rgb})`,
-            opaque: `rgba(${Muted.rgb}, 0.8)`,
-            image: backdropURL
-          });
-        }).catch(() => setTheme(classicTheme));
+        .then(({data}) => {
+          if (data) {
+            const {palette, backdropUrl, neutral} = data;
+            const {Vibrant, DarkVibrant, LightVibrant, Muted, LightMuted, DarkMuted} = palette;
+            setTheme({
+              neutral: neutral,
+              primary: `rgb(${DarkVibrant._rgb})`,
+              secondary: `rgb(${LightVibrant._rgb})`,
+              tertiary: `rgb(${DarkMuted._rgb})`,
+              quaternary: `rgb(${LightMuted._rgb})`,
+              quinary: `rgb(${Vibrant._rgb})`,
+              opaque: `rgba(${Muted._rgb}, 0.75)`,
+              image: backdropUrl
+            });
+          } else {
+            setTheme(classicTheme);
+          }
+        }).catch((err) => console.warn(err));
   };
 
-
-
-  const [opacity, setOpacity] = useState(0);
-  
   useEffect(() => {
     const onScroll = () => {
-      setOpacity(window.scrollY / 200);
+      // setOpacity(window.scrollY / 200);
     };
   
     window.addEventListener('scroll', onScroll);

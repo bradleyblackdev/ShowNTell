@@ -8,6 +8,7 @@ export const GlobalStyles = createGlobalStyle`
 
     transition: all 1.0s linear;
     background-image: url(${({ theme }) => theme.image});
+    background-color: ${({ theme }) => theme.classic && theme.primary};
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -23,7 +24,9 @@ export const GlobalStyles = createGlobalStyle`
   }
   .main-post-container{
     backdrop-filter: blur(10px) saturate(40%);
-    background-color: ${({ theme }) => theme.opaque};
+    background-color: ${({ theme }) => theme.classic ? 
+    theme.primary : 
+    theme.opaque};
     border-color: ${({ theme }) => theme.neutral};
 
     color: ${({ theme }) => theme.neutral};
@@ -64,7 +67,9 @@ export const GlobalStyles = createGlobalStyle`
   }
   .comment {
     backdrop-filter: blur(20px) saturate(40%);
-    background-color: ${({ theme }) => theme.opaque};
+    background-color: ${({ theme }) => theme.classic ? 
+    theme.primary : 
+    theme.opaque};
     border-color: ${({ theme }) => theme.neutral};
     color: ${({ theme }) => theme.neutral};
    }
@@ -98,7 +103,9 @@ export const GlobalStyles = createGlobalStyle`
     color:${({ theme }) => theme.neutral};
     border-color: ${({ theme }) => theme.neutral};
     backdrop-filter: blur(10px) saturate(40%);
-    background-color: ${({ theme }) => theme.opaque};
+    background-color: ${({ theme }) => theme.classic ? 
+    theme.primary : 
+    theme.opaque};
   }
   .navbutton:hover{
     color:${({ theme }) => theme.quinary};
@@ -116,6 +123,7 @@ export const GlobalStyles = createGlobalStyle`
   }
   
   .srch-button {
+    // display: none;
     border:${({ theme }) => theme.secondary};
     background: ${({ theme }) => theme.neutral};
     color: ${({ theme }) => theme.primary};
@@ -124,7 +132,9 @@ export const GlobalStyles = createGlobalStyle`
   //MovieMode*************************
   .dropbtn {
     backdrop-filter: blur(20px) saturate(40%);
-    background-color: ${({ theme }) => theme.opaque};
+    background-color: ${({ theme }) => theme.classic ? 
+    theme.primary : 
+    theme.opaque};
     border-width: 2.4px;
     border-color: ${({ theme }) => theme.neutral};
     color: ${({ theme }) => theme.neutral};
@@ -132,11 +142,13 @@ export const GlobalStyles = createGlobalStyle`
   }
   .dropdown-content a:hover {
     cursor: pointer;
-    ${({ theme }) => theme.quaternary};
+    background-color: ${({ theme }) => theme.quaternary};
   }
   .dropdown-content {
     backdrop-filter: blur(20px) saturate(40%);
-    background-color: ${({ theme }) => theme.opaque};
+    background-color: ${({ theme }) => theme.classic ? 
+    theme.primary : 
+    theme.opaque};
     border-width: 2.4px;
     border-color: ${({ theme }) => theme.neutral};
   }

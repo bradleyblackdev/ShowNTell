@@ -24,6 +24,7 @@ li {
     /* color: #ffffff; */
     height: 5%;
     width: 5%;
+    cursor: pointer;
   }
 
 .navbar {

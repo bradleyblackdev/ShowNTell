@@ -21,7 +21,7 @@ const Nav = ({ user, onClick, logout, search, setSearch, onSearch }) => (
         {/* <p id="home-icon-hover">home</p> */}
         {' '}
       </li>
-      <li onClick={() => onClick('sub')} className="navbutton views" title="subscriptions">
+      <li onClick={() => onClick('user')} className="navbutton views" title="subscriptions">
         {' '}
         <FaStar />
       </li>

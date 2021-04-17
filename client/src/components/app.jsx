@@ -17,16 +17,15 @@ import Notifs from './Notifications/notifs.jsx';
 import SearchFeed from './SearchBar/searchFeed.jsx';
 import ShowFeed from './Subscriptions/showFeed.jsx';
 import {MovieMode, classicTheme} from './MovieMode/MovieMode.jsx';
+import ShowPage from './ShowPage/showPage.jsx';
 
 import styled from 'styled-components';
 import {ThemeProvider} from 'styled-components';
 import {GlobalStyles} from './Styles/globalstyles';
 
 
-const Body = styled.body`
-backdrop-filter: blur(8px);
-`
-;
+
+import UserProfile from './Profile/UserProfile.jsx';
 
 const App = () => {
   const [posts, setPosts] = useState();
@@ -39,6 +38,7 @@ const App = () => {
   const [subs, setSubs] = useState([]);
   const [gotSubs, setGotSubs] = useState(false);
   const [theme, setTheme] = useState(classicTheme);
+  const [show, setShow] = useState({});
 
   const changeView = (newView) => {
     setView(newView);
@@ -74,12 +74,14 @@ const App = () => {
 
   const getSubs = () => {
     if (user && !gotSubs) {
+      console.log('heres da user subscriptions', user.subscriptions);
       const promises = user.subscriptions.map((showId) => axios.get(`/show/${showId}`).catch());
       Promise.all(promises)
         .then((results) => results.map((show) => show.data))
         .then((shows) => {
-          setSubs(shows);
           setGotSubs(true);
+          setSubs(shows);
+          console.log('heres thos shows', shows);
         })
         .catch();
     }
@@ -102,14 +104,26 @@ const App = () => {
       .catch();
   };
 
+  // const searchShows = () => {
+  //   axios.get(`/search/${search}`).then(({ data }) => {
+  //     setView('search');
+  //     setSearch('');
+  //     setSearchedShows(data);
+  //   }).catch();
+  // };
+
+  // makes initial search from search bar onclick
   const searchShows = () => {
-    axios.get(`/search/${search}`).then(({ data }) => {
+    console.log('serching shows', search);
+    axios.get(`/search/${search}`).then(({data}) => {
+      console.log('data-------', data);
+      setSearchedShows(data);
       setView('search');
       setSearch('');
-      setSearchedShows(data);
+      // console.log('LINE 117', searchedShows);
     }).catch();
   };
-
+    
   const handleUserClick = (e) => {
     setUsersClicked(!userClicked);
     const usersName = e.target.innerHTML;
@@ -124,15 +138,23 @@ const App = () => {
     getPosts();
   };
 
+  //CHANGE SETVIEW
   const addShow = (show) => {
+    console.log(show.id, 'SHOW ID');
     axios.get(`/show/${show.id}`)
       .then(({ data }) => setView(data.id))
       .catch();
   };
 
-  const subscribe = (showId) => {
-    axios.put(`/subscribe/${showId}`)
-      .then(() => axios.get('/user').then(({ data }) => setUser(data)))
+  const subscribe = (show) => {
+    axios.put('/subscribe/', show)
+      .then(() => axios.get('/user').then(({ user }) => {
+        setGotSubs(false);
+        // console.log('heres user scrips from subscribe', user);
+        setUser(user);
+        getSubs();
+      }
+      ))
       .catch();
   };
 
@@ -146,6 +168,9 @@ const App = () => {
     if (view === 'post') {
       return <Post user={user} createPost={createPost} />;
     }
+    if (view === 'user') {
+      return <UserProfile user={user} createPost={createPost} />;
+    }
     if (view === 'home') {
       return <HomeFeed handleUserClick={handleUserClick} user={user} posts={posts} setPosts={setPosts} />;
     }
@@ -156,7 +181,12 @@ const App = () => {
       return <Notifs user={user} setUser={setUser} />;
     }
     if (view === 'search') {
-      return <SearchFeed shows={searchedShows} onClick={addShow} />;
+      return <SearchFeed shows={searchedShows} onClick={changeView} setShow={setShow} />;
+    }
+    if (view === 'showPage') {
+      return (
+        <ShowPage show={show} setShow={setShow} showId={show.id} subscribe={subscribe} setView={setView} />
+      );
     }
     return <ShowFeed showId={view} subscribe={subscribe} />;
   };
