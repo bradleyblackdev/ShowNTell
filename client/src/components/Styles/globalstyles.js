@@ -19,8 +19,9 @@ export const GlobalStyles = createGlobalStyle`
   //HomeFeed*************************************
 
   .home-title{
-  color: ${({ theme }) => theme.neutral};
-  margin-top: ${({ theme }) => !theme.classic && '500px'};
+    color: ${({ theme }) => theme.neutral};
+    margin-top: ${({ theme }) => !theme.classic && '500px'};
+    display: ${({ theme }) => !theme.classic && 'none'}
   }
   .main-post-container{
     backdrop-filter: blur(10px) saturate(40%);
@@ -115,7 +116,7 @@ export const GlobalStyles = createGlobalStyle`
   .search-term {
     border: ${({ theme }) => theme.neutral};
     // background-color: ${({ theme }) => theme.secondary};
-    color: ${({ theme }) => theme.ternary};
+    color: ${({ theme }) => theme.tertiary};
   }
   
   .search-term:focus{
@@ -156,6 +157,62 @@ export const GlobalStyles = createGlobalStyle`
     color: ${({ theme }) => theme.neutral};
   }
   .dropdown:hover .dropbtn {
-    ${({ theme }) => theme.primary};
+    color: ${({ theme }) => theme.tertiary};
   }
+
+  //Posts*********
+  #header {
+    color: ${({ theme }) => theme.neutral};
+  }
+
+  #post-sub-header {
+    color: ${({ theme }) => theme.neutral};
+  }
+
+  .create-post-form{
+    background-color: ${({ theme }) => theme.classic ? theme.primary : theme.opaque};
+    border-color: ${({ theme }) => theme.neutral};
+    backdrop-filter: blur(10px) saturate(40%);
+  }
+
+  
+.choose-show {
+  color: ${({ theme }) => theme.neutral};
+  background-color: ${({ theme }) => theme.classic ? theme.primary : theme.opaque};
+  border-color: ${({ theme }) => theme.neutral};
+  max-width: 180px;
+
+}
+
+#post-title {
+  background-color: rgba(0, 0, 0, 0);
+  color: ${({ theme }) => theme.neutral};
+}
+
+#post-text {
+  background-color: rgba(0, 0, 0, 0);
+  color: ${({ theme }) => theme.neutral};
+}
+
+#submit-button {
+  background-color: ${({ theme }) => theme.classic ? theme.neutral : theme.tertiary};
+  color: ${({ theme }) => theme.classic ? theme.primary : theme.neutral};
+}
+
+#submit-button:hover {
+  background-color: ${({ theme }) => theme.primary};
+  color: ${({ theme }) => theme.neutral};
+}
+
+::placeholder{
+  color: ${({ theme }) => theme.tertiary};
+}
+
+#error-message {
+  color: ${({ theme }) => theme.secondary};
+}
+
+#pic {
+  display: ${({ theme }) => !theme.classic && 'none'}
+}
 `;

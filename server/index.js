@@ -66,14 +66,11 @@ app.get(
   passport.authenticate('google', { failureRedirect: '/logout' }),
   (req, res) => {
     const newUser = new Users({
-      id: Number(req.user.id),
-      // id: Number(req.cookies.showNTellId),
+      id: req.user.id,
       name: req.user.displayName,
     });
     res.cookie('ShowNTellId', req.user.id);
-    // Users.findOne({ id: req.cookies.showNTellId }).then((data) => {
     Users.findOne({ id: Number(req.user.id) }).then((data) => {
-      // console.log('heres tha sign in data', data);
       if (data) {
         res.redirect('/');
         userInfo = data;
@@ -88,9 +85,8 @@ app.get(
 );
 
 app.get('/user', (req, res) => {
-  // console.log('heres req.cookies.showntell', req.cookies.ShowNTellId);
   Users.findOne({ id: req.cookies.ShowNTellId }).then((userInfo) => {
-    res.json(userInfo);
+    res.send(userInfo);
   });
 });
 
@@ -226,28 +222,24 @@ app.put('/subscribe', (req, res) => {
         });
       }
     }).then(() => {
-      Users.findOne({ id: req.cookies.ShowNTellId }).then(userInfo => {
-        Users.findById(userInfo._id)
-          .then((user) => {
-            if (!user.subscriptions.includes(show.id)) {
-              userInfo.subscriptions = [...user.subscriptions, show.id];
-              Users.updateOne(
-                { _id: user._id },
-                { subscriptions: [...user.subscriptions, show.id] },
-              )
-                .then(() => {
-                  Shows.findOne({ id: show.id })
-                    .then((record) => {
-                      Shows.updateOne(
-                        { id: show.id },
-                        { subscriberCount: record.subscriberCount + 1 },
-                      ).catch();
-                    })
-                    .catch();
+      Users.findOne({ id: req.cookies.ShowNTellId }).then(user => {
+        if (!user.subscriptions.includes(show.id)) {
+          Users.updateOne(
+            { id: user.id },
+            { subscriptions: [...user.subscriptions, show.id] },
+          )
+            .then(() => {
+              Shows.findOne({ id: show.id })
+                .then((record) => {
+                  Shows.updateOne(
+                    { id: show.id },
+                    { subscriberCount: record.subscriberCount + 1 },
+                  ).catch();
                 })
                 .catch();
-            }
-          });
+            })
+            .catch();
+        }
       })
         .then(() => res.status(200).send())
         .catch(() => res.status(500).send());
@@ -547,7 +539,6 @@ app.get('/theme', (req, res) => {
           Vibrant.from(backdropUrl).getPalette()
             .then(palette => {
               const neutral = palette.Muted.getBodyTextColor();
-              // }).then(() => {
               res.send({id, backdropPath, palette, neutral, backdropUrl});
               Themes.create({id, backdropPath, palette, neutral, backdropUrl});
             });

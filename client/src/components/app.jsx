@@ -77,14 +77,12 @@ const App = () => {
 
   const getSubs = () => {
     if (user && !gotSubs) {
-      //console.log('heres da user subscriptions', user.subscriptions);
       const promises = user.subscriptions.map((showId) => axios.get(`/show/${showId}`).catch());
       Promise.all(promises)
         .then((results) => results.map((show) => show.data))
         .then((shows) => {
           setGotSubs(true);
           setSubs(shows);
-          // console.log('heres thos shows', shows);
         })
         .catch();
     }
@@ -123,7 +121,6 @@ const App = () => {
       setSearchedShows(data);
       setView('search');
       setSearch('');
-      // console.log('LINE 117', searchedShows);
     }).catch();
   };
 
@@ -131,7 +128,6 @@ const App = () => {
     setUsersClicked(!userClicked);
     const usersName = e.target.innerHTML;
     axios.get(`/user/posts/${usersName}`).then(({ data }) => {
-      // console.log('TESTING', data);
       setPosts(data);
     });
   };
@@ -151,10 +147,9 @@ const App = () => {
 
   const subscribe = (show) => {
     axios.put('/subscribe/', show)
-      .then(() => axios.get('/user').then(({ user }) => {
+      .then(() => axios.get('/user').then(({data}) => {
         setGotSubs(false);
-        // console.log('heres user scrips from subscribe', user);
-        setUser(user);
+        setUser(data);
         getSubs();
       }
       ))
