@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const userSchema = mongoose.Schema({
   id: String,
   name: String,
+  avatar: String,
+  cloudinaryId: String,
   posts: Array,
   messages: Array,
   phone: String,
@@ -11,8 +13,6 @@ const userSchema = mongoose.Schema({
   subscriptions: Array,
   friends: Array,
   bio: String,
-  imageUrl: String,
-  img: { data: Buffer, contentType: String }
 });
 
 const Users = mongoose.model('Users', userSchema);
