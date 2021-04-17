@@ -5,25 +5,27 @@ export const GlobalStyles = createGlobalStyle`
   //global***************************************
 
   body {
-    background: ${({ theme }) => theme.primary};
+
+    transition: all 1.0s linear;
     background-image: url(${({ theme }) => theme.image});
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
     color: ${({ theme }) => theme.neutral};
     border-color: ${({ theme }) => theme.secondary}
-    transition: all 0.50s linear;
   }
 
   //HomeFeed*************************************
 
   .home-title{
   color: ${({ theme }) => theme.neutral};
-  margin-top: ${({ theme }) => !theme.classic && '400px'};
+  margin-top: ${({ theme }) => !theme.classic && '500px'};
   }
   .main-post-container{
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(10px) saturate(40%);
+    background-color: ${({ theme }) => theme.opaque};
     border-color: ${({ theme }) => theme.neutral};
+
     color: ${({ theme }) => theme.neutral};
   }
   .post-show{
@@ -61,7 +63,8 @@ export const GlobalStyles = createGlobalStyle`
     color: ${({ theme }) => theme.neutral};
   }
   .comment {
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px) saturate(40%);
+    background-color: ${({ theme }) => theme.opaque};
     border-color: ${({ theme }) => theme.neutral};
     color: ${({ theme }) => theme.neutral};
    }
@@ -74,10 +77,10 @@ export const GlobalStyles = createGlobalStyle`
    .reply-comment-txt-box{
     color: ${({ theme }) => theme.neutral};
     border-color: ${({ theme }) => theme.neutral};
-    background-color: ${({ theme }) => theme.quinary};
+    background-color: ${({ theme }) => theme.primary};
   }
   .submit-reply-comment-btn{
-    background-color: ${({ theme }) => theme.quinary};
+    background-color: ${({ theme }) => theme.primary};
     border-color: ${({ theme }) => theme.neutral};
     color: ${({ theme }) => theme.neutral};
   }
@@ -85,7 +88,7 @@ export const GlobalStyles = createGlobalStyle`
     color: ${({ theme }) => theme.neutral};
   }
   .x-btn:hover{
-    color: ${({ theme }) => theme.secondary};
+    color: ${({ theme }) => theme.quinary};
   }
 
 
@@ -94,10 +97,11 @@ export const GlobalStyles = createGlobalStyle`
   .navbar{
     color:${({ theme }) => theme.neutral};
     border-color: ${({ theme }) => theme.neutral};
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(10px) saturate(40%);
+    background-color: ${({ theme }) => theme.opaque};
   }
   .navbutton:hover{
-    color:${({ theme }) => theme.quaternary};
+    color:${({ theme }) => theme.quinary};
   }
   .search {
   }
@@ -119,7 +123,8 @@ export const GlobalStyles = createGlobalStyle`
 
   //MovieMode*************************
   .dropbtn {
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px) saturate(40%);
+    background-color: ${({ theme }) => theme.opaque};
     border-width: 2.4px;
     border-color: ${({ theme }) => theme.neutral};
     color: ${({ theme }) => theme.neutral};
@@ -129,11 +134,16 @@ export const GlobalStyles = createGlobalStyle`
     cursor: pointer;
     ${({ theme }) => theme.quaternary};
   }
+  .dropdown-content {
+    backdrop-filter: blur(20px) saturate(40%);
+    background-color: ${({ theme }) => theme.opaque};
+    border-width: 2.4px;
+    border-color: ${({ theme }) => theme.neutral};
+  }
   .dropdown-content a {
     color: ${({ theme }) => theme.neutral};
-    backdrop-filter: blur(20px);
   }
-  // .dropdown:hover .dropbtn {
-  //   ${({ theme }) => theme.primary};
-  // }
+  .dropdown:hover .dropbtn {
+    ${({ theme }) => theme.primary};
+  }
 `;

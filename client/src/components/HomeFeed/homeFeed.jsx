@@ -4,7 +4,7 @@ import './homefeed.css';
 
 const HomeFeed = ({ posts, handleUserClick, user, setPosts }) => (
   <div >
-    <div className="home-title"> Home feed</div>
+    <div className="home-title"></div>
     <div style={{marginRight: '350px'}} className="home-feed-container">
       {posts
         ? posts.map((post, i) => (

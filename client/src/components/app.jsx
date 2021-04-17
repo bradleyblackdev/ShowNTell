@@ -18,11 +18,15 @@ import SearchFeed from './SearchBar/searchFeed.jsx';
 import ShowFeed from './Subscriptions/showFeed.jsx';
 import {MovieMode, classicTheme} from './MovieMode/MovieMode.jsx';
 
+import styled from 'styled-components';
 import {ThemeProvider} from 'styled-components';
 import {GlobalStyles} from './Styles/globalstyles';
 
 
-
+const Body = styled.body`
+backdrop-filter: blur(8px);
+`
+;
 
 const App = () => {
   const [posts, setPosts] = useState();
@@ -180,7 +184,7 @@ const App = () => {
             <a
               className="login-button"
               href="/auth/google"
-            // onClick={() => axios.get('/auth/google').then(({ data }) => console.log(data))}
+              // onClick={() => axios.get('/auth/google').then(({ data }) => console.log(data))}
             >
             LOGIN WITH GOOGLE
             </a>
@@ -195,7 +199,7 @@ const App = () => {
           null}
         {getView()}
       </ThemeProvider>
-    </div>
+    </ div>
   );
 };
 

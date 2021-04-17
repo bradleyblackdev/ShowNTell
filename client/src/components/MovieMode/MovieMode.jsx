@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from 'axios';
+import styled from 'styled-components';
 import './MovieMode.css';
 
 export const classicTheme = {
@@ -19,24 +20,44 @@ export const MovieMode = ({subs, theme, setTheme}) => {
       axios.get('/theme', {
         params: sub
       })
-        .then(({data: {palette, backdropURL}}) => {
+        .then(({data: {palette, backdropURL, neutral, neutraltoo}}) => {
+          console.log(neutral, neutraltoo);
           const {Vibrant, DarkVibrant, LightVibrant, Muted, LightMuted, DarkMuted} = palette;
-          const pickNeutral = (r, g, b) => {
-            return (((r * 0.299) + (g * 0.587) + (b * 0.114)) > 186) ?
-              'black' : 
-              'white';
-          };
+          // const pickNeutral = (r, g, b) => {
+          // console.log(((r * 0.299) + (g * 0.587) + (b * 0.114)));
+          // return (((r * 0.299) + (g * 0.587) + (b * 0.114)) > 186) ?
+          // 'black' : 
+          // 'white';
+          // };
           setTheme({
-            neutral: pickNeutral(...palette.DarkMuted.rgb),
+            // neutral: pickNeutral(...Vibrant.rgb),
+            neutral: neutral,
             primary: `rgb(${DarkVibrant.rgb})`,
             secondary: `rgb(${LightVibrant.rgb})`,
             tertiary: `rgb(${DarkMuted.rgb})`,
-            quaternary: `rgb(${Vibrant.rgb})`,
+            quaternary: `rgb(${LightMuted.rgb})`,
             quinary: `rgb(${Vibrant.rgb})`,
+            opaque: `rgba(${Muted.rgb}, 0.8)`,
             image: backdropURL
           });
-        });
+        }).catch(() => setTheme(classicTheme));
   };
+
+
+
+  const [opacity, setOpacity] = useState(0);
+  
+  useEffect(() => {
+    const onScroll = () => {
+      setOpacity(window.scrollY / 200);
+    };
+  
+    window.addEventListener('scroll', onScroll);
+  
+    return function cleanup() {
+      window.removeEventListener('scroll', onScroll);
+    };
+  }, []);
 
   return (
     <div className="dropdown">

@@ -55,8 +55,8 @@ li {
 } */
 
 #homeButton {
-    width: 20%;
-    height: 20%;
+    width: auto;
+    height: 80px;
     margin-left: 5%;
 }
 

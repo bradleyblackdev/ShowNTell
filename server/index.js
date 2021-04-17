@@ -25,6 +25,8 @@ app.use(express.static(client));
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors());
+app.use('/favicon.ico', express.static(path.resolve(__dirname, 'assets', 'sntfavicon.jpg')));
+
 
 passport.serializeUser((user, done) => {
   done(null, user);
@@ -484,11 +486,20 @@ app.get('/likedPost/:id', (req, res) => {
 app.get('/theme', (req, res) => {
   const query = req.query.name;
   return axios(`https://api.themoviedb.org/3/search/tv?api_key=${process.env.TMDB_API_KEY}cb&language=en-US&query=${query}}&page=1&include_adult=false`)
+  // return axios(`https://api.themoviedb.org/3/search/multi?api_key=${process.env.TMDB_API_KEY}cb&language=en-US&query=space jam&page=1&include_adult=false`)
     .then(({data: {results}}) => {
-      const backdropURL = `https://image.tmdb.org/t/p/original/${results[0].backdrop_path}`;
-      Vibrant.from(backdropURL).getPalette()
-        .then(palette => res.send({palette, backdropURL}));
-    });
+      if (results[0].backdrop_path) {
+        const backdropURL = `https://image.tmdb.org/t/p/original/${results[0].backdrop_path}`;
+        Vibrant.from(backdropURL).getPalette()
+          .then(palette => {
+            const neutral = palette.Muted.getBodyTextColor();
+            const neutraltoo = palette.Muted.getTitleTextColor();
+            res.send({palette, neutral, neutraltoo, backdropURL});
+          });
+      } else {
+        throw 'nope';
+      }
+    }).catch(() => res.sendStatus(500));
 });
 
 app.listen(3000, () => {
