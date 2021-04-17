@@ -123,7 +123,7 @@ const App = () => {
       // console.log('LINE 117', searchedShows);
     }).catch();
   };
-    
+
   const handleUserClick = (e) => {
     setUsersClicked(!userClicked);
     const usersName = e.target.innerHTML;
@@ -157,6 +157,14 @@ const App = () => {
       ))
       .catch();
   };
+///////
+  const getTrailer = () => {
+    axios.get('/trailer')
+    .then(({data}) =>
+    console.log(data),
+    setTrailers(data))
+    .catch()
+  }
 
   const getView = () => {
     if (view === 'homePage') {
@@ -225,7 +233,7 @@ const App = () => {
         {userClicked ?
           (
             <button onClick={handleShowFeed}>Show Home Feed</button>
-          ) : 
+          ) :
           null}
         {getView()}
       </ThemeProvider>

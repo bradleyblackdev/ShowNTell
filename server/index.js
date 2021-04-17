@@ -9,10 +9,11 @@ const Vibrant = require('node-vibrant');
 require('dotenv').config();
 require('./db/index');
 
-const youtubeApi = process.env.YOUTUBE_API_KEY;
+
 const tmdbApiKey = process.env.TMDB_API_KEY;
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
+const youtubeApi = process.env.YOUTUBE_API_KEY;
 const Notifs = require('twilio')(accountSid, authToken);
 const { GoogleStrategy } = require('./oauth/passport');
 const { Users, Posts, Shows, Replys, Themes } = require('./db/schema.js');
@@ -20,6 +21,7 @@ const { Users, Posts, Shows, Replys, Themes } = require('./db/schema.js');
 const app = express();
 
 const client = path.resolve(__dirname, '..', 'client', 'dist');
+
 
 let userInfo = null;
 
@@ -193,33 +195,7 @@ app.put('/sendMessage/:id/:text', (req, res) => {
   });
 });
 
-// app.get('/search/:query', (req, res) => {
-//   const url = `http://api.tvmaze.com/search/shows?q=${req.params.query}`;
-//   return axios(url)
-//     .then(({ data }) => data)
-//     .then((data) => res.status(200).send(data))
-//     .catch();
-// });
 
-// app.get('/show/:id', (req, res) => {
-//   Shows.find({ id: req.params.id })
-//     .then((record) => {
-//       if (record.length > 0) {
-//         return record[0];
-//       }
-//       return axios(`http://api.tvmaze.com/shows/${req.params.id}`)
-//         .then(({ data }) => Shows.create({
-//           id: data.id,
-//           name: data.name,
-//           posts: [],
-//           subscriberCount: 0,
-//         }))
-//         .then((result) => result)
-//         .catch();
-//     })
-//     .then((result) => res.status(200).send(result))
-//     .catch(() => res.status(500).send());
-// });
 
 app.put('/subscribe', (req, res) => {
   const { id } = req.params;
@@ -548,7 +524,7 @@ app.get('/show/:id', (req, res) => {
     .then((result) => res.status(200).send(result))
     .catch(() => res.status(500).send());
 });
-  
+
 //Get Trailers
 app.get('/trailer/:query', (req, res) => {
   const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${req.params.query}trailer&channelType=any&key=${youtubeApi}`;

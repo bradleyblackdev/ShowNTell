@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import noImgAvail from '../SearchBar/no_img_avail.png';
 import './showPage.css';
+import Youtube from './youtube.jsx'
 // import DummieData from '../../data.json';
 
 
@@ -68,6 +69,7 @@ const ShowPage = ({ show, subscribe, showId }) => {
       </div>
       <button className="sub-btn" onClick={() => subscribe(show)}>subscribe</button>
       <button className="trailer-button" onClick={() => getTrailer(show.title)}>Trailer</button>
+      <Youtube show={show}/>
     </div>
   );
 };

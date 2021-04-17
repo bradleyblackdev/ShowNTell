@@ -8,7 +8,7 @@ const SearchFeedEntry = ({ show, onClick, setShow }) => {
   const [state, setState] = useState('');
 
   const setShowPageObj = (newShow) => {
-    
+
     setShow(newShow);
     onClick('showPage');
   };
@@ -43,23 +43,9 @@ const SearchFeedEntry = ({ show, onClick, setShow }) => {
   return (
     <div className="show-card">
       <div className="show-name" value={show.id} onClick={() => setShowPageObj(show)}>
-        <div className="show-name">{show.title}</div>
         <img className="show-img" src={getImage()} alt="" />
         <img className="unavail-img" src={getPicUnavail()} alt="" />
-        <button
-          className="summary-button"
-          onClick={(event) => {
-            event.stopPropagation();
-            setState(getSummary());
-          }}
-        >
-          show summary
-        </button>
-
-        <div className="show-summary">
-          {state}
-        </div>
-
+        <div className="show-name">{show.title}</div>
       </div>
     </div>
   );

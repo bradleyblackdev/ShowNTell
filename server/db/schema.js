@@ -62,10 +62,19 @@ const themeSchema = mongoose.Schema({
 
 const Themes = mongoose.model('Themes', themeSchema);
 
+const trailerSchema = mongoose.Schema({
+  title: String,
+  content: String,
+  video: String
+});
+
+const Trailer = mongoose.model('Trailer', trailerSchema);
+
 module.exports = {
   Users,
   Shows,
   Posts,
   Replys,
-  Themes
+  Themes,
+  Trailer
 };
