@@ -589,11 +589,19 @@ app.get('/algo', (req, res) => {
       const ratingStart = storage['voteAverage'].sort()[0];
       const ratingEnd = storage['voteAverage'].sort()[storage['voteAverage'].length - 1];
 
-      res.send({genre, releaseStart, releaseEnd, ratingStart, ratingEnd}).status(200);
+      axios.get(`${tvRec}api_key=${tmdbApiKey}&air_date.gte=${releaseStart}&air_date.lte=${releaseEnd}&with_genres=${genre}&vote_average.gte=${ratingStart}&vote_average.lte=${ratingEnd}`)
+        .then(({data: {results} }) => {
+          const tvRecs = results.splice(0, 3);
+
+          axios.get(`${movieRec}api_key=${tmdbApiKey}&primary_release_date.gte=${releaseStart}&primary_release_date.lte=${releaseEnd}&with_genres=${genre}&vote_average.gte=${ratingStart}&vote_average.lte=${ratingEnd}`)
+            .then(({data: {results} }) => {
+              const movieRecs = results.splice(0, 3);
+              res.send(tvRecs.concat(movieRecs));
+            });
+        });
     })
     .catch();
 }); 
-
 
 const movieRec = 'https://api.themoviedb.org/3/discover/movie?';
 const tvRec = 'https://api.themoviedb.org/3/discover/tv?';
