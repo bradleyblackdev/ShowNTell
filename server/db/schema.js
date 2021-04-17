@@ -10,6 +10,8 @@ const userSchema = mongoose.Schema({
   follows: Array,
   subscriptions: Array,
   friends: Array,
+  bio: String,
+  imageUrl: String,
   img: { data: Buffer, contentType: String }
 });
 
