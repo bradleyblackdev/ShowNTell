@@ -10,6 +10,7 @@
 }
 
 .dropdown {
+  font-family: 'Work Sans', sans-serif;
   float: right;
 }
 
@@ -30,4 +31,4 @@
   display: block;
 }
 
-.dropdown:hover .dropdown-content {display: block;}
+.dropdown:hover .dropdown-content {display: block};

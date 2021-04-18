@@ -1,12 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Carousel } from 'react-bootstrap/';
 import axios from 'axios'; 
-import image1 from './carouselPhotos/drive.jpg';
-import image2 from './carouselPhotos/kingkong.jpg';
-import image3 from './carouselPhotos/tesla.jpg';
-import image4 from './carouselPhotos/shining.jpg';
-import image5 from './carouselPhotos/castle.jpg';
-import image7 from './carouselPhotos/bebop.jpg';
 import './profile.css'; 
 import styled from 'styled-components';
 
@@ -24,11 +18,15 @@ const Img = styled.div`
     }
 `;
 
-const favorites = ({ sub }) => {
-  // axios.get('/theme', {
-  //   params: sub
-  // }).then()
-  const images = [image3, image2, image4, image5, image1, image7];
+const favorites = ({ user, subs }) => { 
+
+  const images = [];
+  
+  subs.forEach(sub => {
+    const temp = `https://image.tmdb.org/t/p/original${sub.posterPath}`; 
+    images.push(temp); 
+  });
+
   return (
     <Carousel >
       { images.map((image, i) => (
@@ -37,7 +35,7 @@ const favorites = ({ sub }) => {
             <img
               className="rounded mx-auto d-block w-100"
               src={image}
-              alt="Responsive image"
+              alt="image"
             />
           </Img>
         </Carousel.Item>

@@ -29,12 +29,12 @@ export const MovieMode = ({subs, theme, setTheme}) => {
             const {Vibrant, DarkVibrant, LightVibrant, Muted, LightMuted, DarkMuted} = palette;
             setTheme({
               neutral: neutral,
-              primary: `rgb(${DarkVibrant._rgb})`,
-              secondary: `rgb(${LightVibrant._rgb})`,
-              tertiary: `rgb(${DarkMuted._rgb})`,
-              quaternary: `rgb(${LightMuted._rgb})`,
-              quinary: `rgb(${Vibrant._rgb})`,
-              opaque: `rgba(${Muted._rgb}, 0.75)`,
+              primary: `rgb(${DarkVibrant._rgb || DarkVibrant.rgb})`,
+              secondary: `rgb(${LightVibrant._rgb || LightVibrant.rgb})`,
+              tertiary: `rgb(${DarkMuted._rgb || DarkMuted.rgb})`,
+              quaternary: `rgb(${LightMuted._rgb || LightMuted.rgb})`,
+              quinary: `rgb(${Vibrant._rgb || Vibrant.rgb})`,
+              opaque: `rgba(${Muted._rgb || Muted.rgb}, 0.75)`,
               image: backdropUrl
             });
           } else {
@@ -42,18 +42,6 @@ export const MovieMode = ({subs, theme, setTheme}) => {
           }
         }).catch((err) => console.warn(err));
   };
-
-  useEffect(() => {
-    const onScroll = () => {
-      // setOpacity(window.scrollY / 200);
-    };
-  
-    window.addEventListener('scroll', onScroll);
-  
-    return function cleanup() {
-      window.removeEventListener('scroll', onScroll);
-    };
-  }, []);
 
   return (
     <div className="dropdown">

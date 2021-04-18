@@ -39,6 +39,10 @@ const App = () => {
   const [gotSubs, setGotSubs] = useState(false);
   const [theme, setTheme] = useState(classicTheme);
   const [show, setShow] = useState({});
+  const [shows, setShows] = useState({}); 
+  const [gotRecs, setGotRecs] = useState(false);
+  const [recs, setRecs] = useState([]);
+
 
   const changeView = (newView) => {
     setView(newView);
@@ -71,17 +75,27 @@ const App = () => {
     // }
   };
 
+  
 
   const getSubs = () => {
     if (user && !gotSubs) {
-      console.log('heres da user subscriptions', user.subscriptions);
       const promises = user.subscriptions.map((showId) => axios.get(`/show/${showId}`).catch());
       Promise.all(promises)
         .then((results) => results.map((show) => show.data))
         .then((shows) => {
           setGotSubs(true);
           setSubs(shows);
-          console.log('heres thos shows', shows);
+        })
+        .catch();
+    }
+  };
+
+  const getRecs = () => {
+    if (user && !gotRecs) {
+      axios.get(`/algo/${user.id}`)
+        .then(({data}) => {
+          setGotRecs(true);
+          setRecs(data);
         })
         .catch();
     }
@@ -104,14 +118,6 @@ const App = () => {
       .catch();
   };
 
-  // const searchShows = () => {
-  //   axios.get(`/search/${search}`).then(({ data }) => {
-  //     setView('search');
-  //     setSearch('');
-  //     setSearchedShows(data);
-  //   }).catch();
-  // };
-
   // makes initial search from search bar onclick
   const searchShows = () => {
     console.log('serching shows', search);
@@ -120,7 +126,6 @@ const App = () => {
       setSearchedShows(data);
       setView('search');
       setSearch('');
-      // console.log('LINE 117', searchedShows);
     }).catch();
   };
 
@@ -128,7 +133,6 @@ const App = () => {
     setUsersClicked(!userClicked);
     const usersName = e.target.innerHTML;
     axios.get(`/user/posts/${usersName}`).then(({ data }) => {
-      // console.log('TESTING', data);
       setPosts(data);
     });
   };
@@ -148,23 +152,22 @@ const App = () => {
 
   const subscribe = (show) => {
     axios.put('/subscribe/', show)
-      .then(() => axios.get('/user').then(({ user }) => {
+      .then(() => axios.get('/user').then(({data}) => {
         setGotSubs(false);
-        // console.log('heres user scrips from subscribe', user);
-        setUser(user);
+        setUser(data);
         getSubs();
       }
       ))
       .catch();
   };
-///////
+  ///////
   const getTrailer = () => {
     axios.get('/trailer')
-    .then(({data}) =>
-    console.log(data),
-    setTrailers(data))
-    .catch()
-  }
+      .then(({data}) =>
+        console.log(data),
+      setTrailers(data))
+      .catch();
+  };
 
   const getView = () => {
     if (view === 'homePage') {
@@ -177,7 +180,8 @@ const App = () => {
       return <Post user={user} createPost={createPost} />;
     }
     if (view === 'user') {
-      return <UserProfile user={user} createPost={createPost} />;
+
+      return <UserProfile user={user} createPost={createPost} setUser={setUser} shows={shows} setShow={setShow} subs={subs} setSubs={setSubs} getSubs={getSubs} recs={recs}/>;
     }
     if (view === 'home') {
       return <HomeFeed handleUserClick={handleUserClick} user={user} posts={posts} setPosts={setPosts} />;
@@ -230,6 +234,7 @@ const App = () => {
         {getUser()}
         {getPosts()}
         {getSubs()}
+        {getRecs()}
         {userClicked ?
           (
             <button onClick={handleShowFeed}>Show Home Feed</button>
