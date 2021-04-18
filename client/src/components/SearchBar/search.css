@@ -32,7 +32,7 @@
 
  .show-name {
   font-family: 'Work Sans', sans-serif;
-  font-size: 28px;
+  /* font-size: 28px; */
   margin-top: 0.5rem;
   color: #408ac8;
   font-weight: bold;
@@ -53,6 +53,7 @@
   color: white;
   font-family: 'Work Sans', sans-serif;
   max-width: 100%;
+
 }
 
 .unavail-img {
@@ -72,7 +73,8 @@
     display:inline-block;
     margin-left: 2%;
     margin-bottom: 5%;
-    border: 2px solid #f3f3f3;
+    border-radius: 10px;
+    border: 2px solid;
   }
 
   .summary-button{
@@ -91,17 +93,6 @@
   .summary-button:hover{
     background-color: #f0ccb3;
     color: #dd3e42;
-  }
-
-  .shw-title{
-    font-family: 'Work Sans', sans-serif;
-    color:#f0ccb3;
-    font-weight: bold;
-    font-size: 32px;
-    margin-left: 10%;
-    margin-top: 5%;
-    text-decoration-line: underline;
-    text-decoration-color: #dd3e42;
   }
 
   .sub-btn{

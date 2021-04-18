@@ -7,29 +7,6 @@ import Youtube from './youtube.jsx'
 
 
 const ShowPage = ({ show, subscribe, showId }) => {
-  // const [show, setShow] = useState({});
-  // const [gotShow, setGotShow] = useState(false);
-  const getShowInfo = () => {
-    // setShow(DummieData);
-    // if (!gotShow) {
-    //   axios.get(`/show/${showId}`)
-    //     .then(({ data }) => {
-    //       setShow(data);
-    //       setGotShow(true);
-    //     }).then(() => {
-    //       if (show.posts) {
-    //         const promises = show.posts.map((post) => axios.get(`/post/${post}`).catch());
-    //         return Promise.all(promises);
-    //       }
-    //     }).then((results) => {
-    //       if (results) {
-    //         setPosts(results.map((result) => result.data));
-    //       }
-    //     })
-    //     .catch();
-    // }
-  };
-
 
   const getImage = () => {
     if (show.poster_path !== null) {
@@ -40,26 +17,13 @@ const ShowPage = ({ show, subscribe, showId }) => {
     }
   };
 
-  //DAVIDS TRAILER -- MAKE SURE TO PLACE ON NEW COMPONENT
-  const getTrailer = (title) => {
-    axios.get(`/trailer/${title}`)
-      .then((data) => {
-        console.log('DATA FROM SHOW PAGE', data);
-      // setTrailer(data)
-      })
-      .catch();
-  };
-
   return (
     <div className="show-page-container">
-      <h1 className="shw-title">
-        Title:
-        {show.title}
-      </h1>
       <div>
         <img className="show-page-img" src={getImage()} alt="" />
       </div>
-      {/* trailer modal goes here */}
+      <h3 className="show-header">Title:</h3>
+      <div className="show-release-date">{show.title}</div>
       <h3 className="show-header">Release Date:</h3>
       <div className="show-release-date">{show.release_date}</div>
       <h3 className="show-header">Overview:</h3>
@@ -67,8 +31,7 @@ const ShowPage = ({ show, subscribe, showId }) => {
         Overview:
         {show.overview}
       </div>
-      <button className="sub-btn" onClick={() => subscribe(show)}>subscribe</button>
-      {/* <button className="trailer-button" onClick={() => getTrailer(show.title)}>Trailer</button> */}
+      <button className="trailer-button" onClick={() => subscribe(show)}>Subscribe</button>
       <Youtube show={show}/>
     </div>
   );
