@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import ChatMessage from './chatMessage.jsx';
 import './chatWindow.css';
 import ChatFriendsList from './friendsList.jsx';
+import SubsChatList from './subRooms.jsx';
 import axios from 'axios';
 import moment from 'moment';
 import SocketIOclient from 'socket.io-client';
@@ -11,12 +12,17 @@ const socket = SocketIOclient(endpoint);
 
 const ChatWindow = ({ toggleChatWindow, user, subs }) => {
   //const [newMessage, setNewMessage] = useState();
-  const [messages, setMessages] = useState([{username:'eebs', message: 'hey', time: '2:12'},{username:'ibrahim', message: 'hi', time: '2:12'},{username:'eebs', message: 'wyd', time: '2:14'},{username:'ibrahim', message: 'nothing', time: '2:20'}]);
+  const [messages, setMessages] = useState([]);
   //const [open, setOpen] = useState(false);
   const [friendListView, setfriendListView] = useState(true);
+  const [ chatView, setChatView] = useState(false);
   const [newMessagesCount, setNewMessagesCount] = useState(0);
   const [friends, setFriends] = useState(user.friends);
   const [chatText, setChatText] = useState('');
+
+  socket.on('message', msg => {
+    setMessages(messages.concat(msg));
+  });
 
   const retrieveMessages = (chatId) => {
     axios.get(`/retrieveMessages/${chatId}`)
@@ -33,21 +39,25 @@ const ChatWindow = ({ toggleChatWindow, user, subs }) => {
       messages: messages
     }).catch(err =>{
       throw err;
-    })
+    });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setMessages(messages.concat({
+
+    const newMessage = {
       username: user.name,
       message: chatText,
       time: moment().format('h:mm a')
-    }));
-    //console.log(messages);
+    };
+
+    //setMessages(messages.concat(newMessage));
+
+    socket.emit('chatMessage', newMessage);
+
     setChatText('');
     e.target.focus();
-    //console.log(socket);
-    console.log(subs, 'subs');
+    console.log(socket);
   };
 
   return (
@@ -62,11 +72,25 @@ const ChatWindow = ({ toggleChatWindow, user, subs }) => {
               <h4>{user.name}</h4>
             </header>
             <div className='chat'>
-              <div className='chat-history'>
-                <ul>
-                  {friends.map(friend => <ChatFriendsList  key={friend.id} friend={friend} retrieveMessages={retrieveMessages}/>)}
-                </ul>
-              </div>
+              { chatView ? 
+                (
+                  <div className='chat-history'>
+                    <header><h5>Friends</h5></header>
+                    <ul>
+                      {friends.map(friend => <ChatFriendsList  key={friend.id} friend={friend} retrieveMessages={retrieveMessages}/>)}
+                    </ul>
+                  </div>
+                )
+                :
+                (
+                  <div className='chat-history'>
+                    <header><h3>Chatrooms</h3></header>
+                    <ul>
+                      {subs.map(sub => <SubsChatList  key={sub.id} subs={sub} retrieveMessages={retrieveMessages}/>)}
+                    </ul>
+                  </div>
+                )
+              }
             </div>
           </div>
           // <div>

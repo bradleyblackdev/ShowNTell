@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import noImgAvail from '../SearchBar/no_img_avail.png';
+//import noImgAvail from '../SearchBar/no_img_avail.png';
 import './showPage.css';
-import Youtube from './youtube.jsx'
+import Youtube from './youtube.jsx';
 // import DummieData from '../../data.json';
 
 

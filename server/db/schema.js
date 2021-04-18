@@ -55,14 +55,6 @@ const replySchema = mongoose.Schema({
 
 const Replys = mongoose.model('Replys', replySchema);
 
-<<<<<<< HEAD
-const messageSchema = mongoose.Schema({
-  messages: Array,
-  messageid: Number,
-});
-
-const Messages = mongoose.model('Messages', messageSchema);
-=======
 const themeSchema = mongoose.Schema({
   id: Number,
   palette: Object,
@@ -79,17 +71,12 @@ const trailerSchema = mongoose.Schema({
 });
 
 const Trailer = mongoose.model('Trailer', trailerSchema);
->>>>>>> e30ca6bf1f54c5acb6270f11d1ab67efc1ff74b8
 
 module.exports = {
   Users,
   Shows,
   Posts,
   Replys,
-<<<<<<< HEAD
-  Messages,
-=======
   Themes,
   Trailer
->>>>>>> e30ca6bf1f54c5acb6270f11d1ab67efc1ff74b8
 };

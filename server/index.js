@@ -21,13 +21,8 @@ const authToken = process.env.TWILIO_AUTH_TOKEN;
 const youtubeApi = process.env.YOUTUBE_API_KEY;
 const Notifs = require('twilio')(accountSid, authToken);
 const { GoogleStrategy } = require('./oauth/passport');
-<<<<<<< HEAD
-const { Users, Posts, Shows, Replys, Messages } = require('./db/schema.js');
-=======
 const { Users, Posts, Shows, Replys, Themes } = require('./db/schema.js');
 
-const app = express();
->>>>>>> e30ca6bf1f54c5acb6270f11d1ab67efc1ff74b8
 
 const client = path.resolve(__dirname, '..', 'client', 'dist');
 
@@ -58,6 +53,10 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('user disconnected');
     console.log(socket.id);
+  });
+
+  socket.on('chatMessage', (msg) => {
+    io.emit('message', msg);
   });
 });
 
