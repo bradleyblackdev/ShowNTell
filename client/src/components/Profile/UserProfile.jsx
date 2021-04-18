@@ -3,6 +3,7 @@ import axios from 'axios';
 import cartoon from './carouselPhotos/cartooncircle.jpg';
 import Favorites from './Favorites.jsx';
 import '../MovieMode/MovieMode.css'; 
+import RecCarousel from './RecCarousel.jsx';
 import './profile.css'; 
 
 // const Button = styled.button`
@@ -21,8 +22,62 @@ import './profile.css';
 
 
 
-const UserProfile = ({ user, subs, }) => {
+const UserProfile = ({ user, setUser, show, shows, subs, setSubs, getSubs, setShow, recs }) => {
   const { name, friends } = user; 
+  const [ addFriendView, setAddFriendView] = useState(false);
+  const [ users, setUsers] = useState();
+  const [ friendsList, setFriendsList ] = useState(friends); 
+  const [ find, setFind ] = useState(); 
+  //const [ friends, setFriends ] = useState({});
+
+  // setFriends = () => {
+    
+  // }; 
+
+  const searchUser = (find) => {
+    
+    users.forEach(user => {
+      let searchUserBool = false; 
+      if (find.toLowerCase() === user.name.toLowerCase()) {
+        addFriend(user);
+        searchUserBool = true; 
+      } 
+      if (searchUserBool === false) {
+        alert ('No user found with that name');
+      }
+    });
+  }; 
+
+  const addFriend = (user) => {
+    const { name, id, _id} = user;
+    if (!friendsList.length) {
+      setFriendsList(friendsList.concat({name, id, _id}));
+    } else {
+      const hasFriendBool = false;
+      friendsList.forEach(friend => {
+        if (friend.name === name) {
+          alert(`You are already friends with ${name}`);
+          hasFriendBool === true;
+        }
+      });
+      if (!hasFriendBool) {
+        setFriendsList(friendsList.concat({name, id, _id}));
+      }
+    }
+    console.log('this is user!!', user);
+    console.log('thisis users', users); 
+  };
+
+  const getAllUsers = () => {
+    axios.get('/users')
+      .then(({ data }) => {
+        setUsers(data);
+        axios.get('/user')
+          .then((result) => setUser(result.data));
+      })
+      .catch();
+  };
+  
 
   return (
     <div>
@@ -48,16 +103,17 @@ const UserProfile = ({ user, subs, }) => {
                 <a>friends</a>
               </div>
             </div>
-          </div>
-          <div className="favorites">
-            <h3>youre shows</h3>
-            <p>based on your subscriptions</p>
-            <Favorites user={user} subs={subs} />
-          </div>
-          <div className="recommendations">
-            <h3>Your Recommendations</h3>
-            <p>Shows you might like.</p>
-            <img className="moto" alt=""/>
+
+            <div className="favorites">
+              <h3>youre shows</h3>
+              <p>based on your subscriptions</p>
+              <Favorites user={user} shows={shows} setShow={setShow} subs={subs} setSubs={setSubs} getSubs={getSubs}/>
+            </div>
+            <div className="recommendations">
+              <h3>Your Recommendations</h3>
+              <p>Shows you might like.</p>
+              <RecCarousel recs={recs}/>
+            </div>
           </div>
         </div>
       </div>
