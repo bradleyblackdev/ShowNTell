@@ -43,7 +43,7 @@ const Post = ({ user, createPost }) => {
       <div className="create-post-form">
         <select className="choose-show" onChange={(e) => setShow(e.target.value)}>
           <option className="choose-show" value="none">Choose a Show</option>
-          {subs.map((sub, i) => <option key={sub + i} value={sub.id}>{sub.name}</option>)}
+          {subs.map((sub, i) => <option className="option-show" key={sub + i} value={sub.id}>{sub.name}</option>)}
           {getSubs()}
         </select>
         <div className="title-container">
