@@ -71,7 +71,6 @@ app.get(
     });
     res.cookie('ShowNTellId', req.user.id);
     Users.findOne({ id: req.user.id }).then((data) => {
-      console.log('whats the data here', data);
       if (data) {
         res.redirect('/');
         userInfo = data;
@@ -166,7 +165,7 @@ app.put('/sendMessage/:id/:text', (req, res) => {
         }
         if (test) {
           Users.updateOne(
-            { id: Number(req.params.id) },
+            { id: req.params.id },
             {
               messages: replace,
               notifs: [...data.notifs, `${userInfo.name} messaged you`],
@@ -174,7 +173,7 @@ app.put('/sendMessage/:id/:text', (req, res) => {
           ).then((results) => res.json(results));
         } else {
           Users.updateOne(
-            { id: Number(req.params.id) },
+            { id: req.params.id },
             {
               messages: [
                 ...replace,
