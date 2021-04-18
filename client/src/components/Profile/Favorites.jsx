@@ -1,12 +1,6 @@
 import React, { useState } from 'react';
 import { Carousel } from 'react-bootstrap/';
 import axios from 'axios'; 
-import image1 from './carouselPhotos/drive.jpg';
-import image2 from './carouselPhotos/kingkong.jpg';
-import image3 from './carouselPhotos/tesla.jpg';
-import image4 from './carouselPhotos/shining.jpg';
-import image5 from './carouselPhotos/castle.jpg';
-import image7 from './carouselPhotos/bebop.jpg';
 import './profile.css'; 
 import styled from 'styled-components';
 
@@ -24,7 +18,7 @@ const Img = styled.div`
     }
 `;
 
-const favorites = ({ user, shows, subs }) => { 
+const favorites = ({ user, subs }) => { 
 
   const images = [];
   

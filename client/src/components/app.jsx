@@ -38,9 +38,6 @@ const App = () => {
   const [subs, setSubs] = useState([]);
   const [gotSubs, setGotSubs] = useState(false);
   const [theme, setTheme] = useState(classicTheme);
-  const [show, setShow] = useState({});
-  const [shows, setShows] = useState({}); 
-
 
   const changeView = (newView) => {
     setView(newView);
@@ -175,7 +172,7 @@ const App = () => {
       return <Post user={user} createPost={createPost} />;
     }
     if (view === 'user') {
-      return <UserProfile user={user} createPost={createPost} setUser={setUser} shows={shows} setShow={setShow} subs={subs} setSubs={setSubs} getSubs={getSubs}/>;
+      return <UserProfile user={user} subs={subs} />;
     }
     if (view === 'home') {
       return <HomeFeed handleUserClick={handleUserClick} user={user} posts={posts} setPosts={setPosts} />;
