@@ -50,30 +50,12 @@ hr {
     margin: 100px auto; /* keep centered in the middle (100px top and bottum, auto right and left)*/
 }
 
-
-
-/****** classes *****/
-
-
-.top-container {
-    background-color: #e3fdfd;
-    position: relative;
-    /*set at a relative position so that you can arrange the bottom cloud with it as its parent (top cloud is inside top container)*/
-    padding-top: 100px;
-}
-
 .userProfile {
    
     margin: 70px 0; /* shorthand, hundred for top and bottum 0 for left and right */
     text-align: left;
     
     
-}
-
-.bottom-container {
-   background-color: #66BFBF; 
-  padding: 50px 0 20px; /* 50px top, 0 left right, 20 buttom*/
-  
 }
 
 .profile {
@@ -91,41 +73,6 @@ hr {
     margin: 14px 300px 200px auto;
     text-align: center;
 }
-
-
-.intro {
-    width: 30%; 
-    margin: auto; /* centers the text */
-}
-
-.contact-message {
-    width: 40%; /*change width of text. on two lines instead of one*/ 
-    margin: 40px auto 60px; /*40 for top left and right are auto and then 60 for buttom*/
-}
-
-.copyright {
-    color: #eaf6f6;
-    font-size: 0.75rem; 
-    padding: 20px 0; 
-}
-
-.top-cloud {
-    position: absolute;
-    right: 300px;
-    top: 40px;
-    /* position 300px from the top of its parent (top container)*/
-
-}
-
-.bottom-cloud {
-    position: absolute;
-    /**take something out of the flow position, make it absolute position instead**/
-    left: 250px;
-    /* moves something to the right **/
-    bottom: 10px;
-}
-
-
 
 .cartoon {
     width: 45%;

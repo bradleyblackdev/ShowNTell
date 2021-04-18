@@ -1,16 +1,10 @@
 import React, { useState } from 'react'; 
 import axios from 'axios'; 
-//import RecCarousel from './RecCarousel.jsx';
 import cartoon from './carouselPhotos/cartooncircle.jpg';
-//import kong from './carouselPhotos/kingkong.jpg';
-import drive from './carouselPhotos/drive.jpg'; 
 import Favorites from './Favorites.jsx';
-import styled from 'styled-components'; 
 import '../MovieMode/MovieMode.css'; 
 import RecCarousel from './RecCarousel.jsx';
-
 import './profile.css'; 
-//import { get } from 'jquery';
 
 // const Button = styled.button`
 // color: white;
@@ -102,35 +96,14 @@ const UserProfile = ({ user, setUser, show, shows, subs, setSubs, getSubs, setSh
 
               
             </div>
-            <div>
-              {addFriendView ? 
-                (
-                  <div>
-
-                    <input onChange={(e) => setFind(e.target.value)} type="text"></input>
-                    <button onClick={() => {
-                      searchUser(find);
-                    }} type="submit">Add</button>
-                  </div>
-                
-                )  
-                :
-                (
-                  <div>
-                    <button onClick={() => {
-                      setAddFriendView(!addFriendView);
-                      getAllUsers();
-                    }}>Add Friend</button>
-                  </div>
-                )
-              }
-              <div className="dropdown2">
-                <button className="dropbtn2">Friends</button>
-                <div className="dropdown-content2">
-                  <a>friends</a>
-                </div>
+            
+            <div className="dropdown2">
+              <button className="dropbtn2">Friends</button>
+              <div className="dropdown-content2">
+                <a>friends</a>
               </div>
             </div>
+
             <div className="favorites">
               <h3>youre shows</h3>
               <p>based on your subscriptions</p>
@@ -145,31 +118,9 @@ const UserProfile = ({ user, setUser, show, shows, subs, setSubs, getSubs, setSh
         </div>
       </div>
     </div>
+    
   );
 };
 
 export default UserProfile;
 
-// const UserProfile = () => {
-//     return (
-//       <div>
-  
-  
-//       <div>
-  
-  
-//       </div>
-  
-//       <h1></h1>
-//       <div className="user container-fluid movie-app">
-//         <div className="row">
-  
-//           <RecCarousel />
-//         </div>
-//       </div>
-  
-  
-  
-//       </div>
-//     );
-//   };
