@@ -7,6 +7,7 @@ import drive from './carouselPhotos/drive.jpg';
 import Favorites from './Favorites.jsx';
 import styled from 'styled-components'; 
 import '../MovieMode/MovieMode.css'; 
+import RecCarousel from './RecCarousel.jsx';
 
 import './profile.css'; 
 //import { get } from 'jquery';
@@ -27,7 +28,7 @@ import './profile.css';
 
 
 
-const UserProfile = ({ user, setUser, show, shows, subs, setSubs, getSubs, setShow }) => {
+const UserProfile = ({ user, setUser, show, shows, subs, setSubs, getSubs, setShow, recs }) => {
   const { name, friends } = user; 
   const [ addFriendView, setAddFriendView] = useState(false);
   const [ users, setUsers] = useState();
@@ -52,12 +53,6 @@ const UserProfile = ({ user, setUser, show, shows, subs, setSubs, getSubs, setSh
       }
     });
   }; 
-
-
-  
-    
-
-
 
   const addFriend = (user) => {
     const { name, id, _id} = user;
@@ -144,7 +139,7 @@ const UserProfile = ({ user, setUser, show, shows, subs, setSubs, getSubs, setSh
             <div className="recommendations">
               <h3>Your Recommendations</h3>
               <p>Shows you might like.</p>
-              <img className="moto" src={drive} alt=""/>
+              <RecCarousel recs={recs}/>
             </div>
           </div>
         </div>

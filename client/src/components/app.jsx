@@ -40,6 +40,8 @@ const App = () => {
   const [theme, setTheme] = useState(classicTheme);
   const [show, setShow] = useState({});
   const [shows, setShows] = useState({}); 
+  const [gotRecs, setGotRecs] = useState(false);
+  const [recs, setRecs] = useState([]);
 
 
   const changeView = (newView) => {
@@ -83,6 +85,18 @@ const App = () => {
         .then((shows) => {
           setGotSubs(true);
           setSubs(shows);
+        })
+        .catch();
+    }
+  };
+
+  const getRecs = () => {
+    if (user && !gotRecs) {
+      axios.get('/algo')
+        .then(({data}) => {
+          setGotRecs(true);
+          setRecs(data);
+          console.log('DATACHECK______', data);
         })
         .catch();
     }
@@ -167,7 +181,7 @@ const App = () => {
       return <Post user={user} createPost={createPost} />;
     }
     if (view === 'user') {
-      return <UserProfile user={user} createPost={createPost} setUser={setUser} shows={shows} setShow={setShow} subs={subs} setSubs={setSubs} getSubs={getSubs}/>;
+      return <UserProfile user={user} createPost={createPost} setUser={setUser} shows={shows} setShow={setShow} subs={subs} setSubs={setSubs} getSubs={getSubs} recs={recs}/>;
     }
     if (view === 'home') {
       return <HomeFeed handleUserClick={handleUserClick} user={user} posts={posts} setPosts={setPosts} />;
@@ -220,6 +234,7 @@ const App = () => {
         {getUser()}
         {getPosts()}
         {getSubs()}
+        {getRecs()}
         {userClicked ?
           (
             <button onClick={handleShowFeed}>Show Home Feed</button>
