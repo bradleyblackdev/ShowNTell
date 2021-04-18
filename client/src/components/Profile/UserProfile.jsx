@@ -1,17 +1,17 @@
-import React, { useState } from 'react'; 
-import axios from 'axios'; 
+import React, { useState } from 'react';
+import axios from 'axios';
 import cartoon from './carouselPhotos/cartooncircle.jpg';
 import Favorites from './Favorites.jsx';
-import '../MovieMode/MovieMode.css'; 
+import '../MovieMode/MovieMode.css';
 import RecCarousel from './RecCarousel.jsx';
-import './profile.css'; 
+import './profile.css';
 
 // const Button = styled.button`
 // color: white;
 // font-size: 1em;
 // margin-top: 25px;
 // padding: 0.25em 1em;
-// border: 1px solid black; 
+// border: 1px solid black;
 // border-radius: 3px;
 // font-family: 'Montserrat', sans-serif;
 // background: transparent;
@@ -23,30 +23,30 @@ import './profile.css';
 
 
 const UserProfile = ({ user, setUser, show, shows, subs, setSubs, getSubs, setShow, recs }) => {
-  const { name, friends } = user; 
+  const { name, friends } = user;
   const [ addFriendView, setAddFriendView] = useState(false);
   const [ users, setUsers] = useState();
-  const [ friendsList, setFriendsList ] = useState(friends); 
-  const [ find, setFind ] = useState(); 
+  const [ friendsList, setFriendsList ] = useState(friends);
+  const [ find, setFind ] = useState();
   //const [ friends, setFriends ] = useState({});
 
   // setFriends = () => {
-    
-  // }; 
+
+  // };
 
   const searchUser = (find) => {
-    
+
     users.forEach(user => {
-      let searchUserBool = false; 
+      let searchUserBool = false;
       if (find.toLowerCase() === user.name.toLowerCase()) {
         addFriend(user);
-        searchUserBool = true; 
-      } 
+        searchUserBool = true;
+      }
       if (searchUserBool === false) {
         alert ('No user found with that name');
       }
     });
-  }; 
+  };
 
   const addFriend = (user) => {
     const { name, id, _id} = user;
@@ -65,7 +65,7 @@ const UserProfile = ({ user, setUser, show, shows, subs, setSubs, getSubs, setSh
       }
     }
     console.log('this is user!!', user);
-    console.log('thisis users', users); 
+    console.log('thisis users', users);
   };
 
   const getAllUsers = () => {
@@ -77,14 +77,14 @@ const UserProfile = ({ user, setUser, show, shows, subs, setSubs, getSubs, setSh
       })
       .catch();
   };
-  
+
 
   return (
     <div>
       <div className="body">
         <div className="userProfile">
           <div>
-            
+
             <div className="profile">
               <img className="cartoon" src={cartoon} alt=""/>
               <h3>Name:</h3>
@@ -94,9 +94,9 @@ const UserProfile = ({ user, setUser, show, shows, subs, setSubs, getSubs, setSh
               <h3>Genres:</h3>
               <p>Romantic Comedies</p>
 
-              
+
             </div>
-            
+
             <div className="dropdown2">
               <button className="dropbtn2">Friends</button>
               <div className="dropdown-content2">
@@ -105,7 +105,7 @@ const UserProfile = ({ user, setUser, show, shows, subs, setSubs, getSubs, setSh
             </div>
 
             <div className="favorites">
-              <h3>youre shows</h3>
+              <h3>Your Shows</h3>
               <p>based on your subscriptions</p>
               <Favorites user={user} shows={shows} setShow={setShow} subs={subs} setSubs={setSubs} getSubs={getSubs}/>
             </div>
@@ -118,7 +118,7 @@ const UserProfile = ({ user, setUser, show, shows, subs, setSubs, getSubs, setSh
         </div>
       </div>
     </div>
-    
+
   );
 };
 
