@@ -558,49 +558,49 @@ const genreFinder = (genreIds) => {
     popular;
 };
 
-app.get('/algo', (req, res) => {
+app.get('/algo/:id', (req, res) => {
   //QUERY USERS COLLECTION FOR SUBSCRIPTIONS IDs (plural) =>
-  // Users.find({ id: req.cookies.ShowNTellId }).then((data) => {
-  //   userInfo = data;
-  //   console.log(data, 'our findONE data maybe');
-    
-  //QUERY SHOWS COLLECTION FOR releaseDate, genreIds, voteAverage RETURN THESE IN ARRAYS ?
-  const data = [ 76341, 1044, 694, 74313];
-  const storage = {
-    'title': [],
-    'genreIds': [],
-    'releaseDate': [],
-    'voteAverage': []
-  };
-  Shows.find({ id: data })
-    .then((dataResults) => {
-      dataResults.map(result => {
-        storage['title'].push(result.title);
-        storage['genreIds'].push(...result.genreIds);
-        storage['releaseDate'].push(result.releaseDate);
-        storage['voteAverage'].push(result.voteAverage);
-      });
-      return storage;
-    })
-    .then(storage => {
-      const genre = genreFinder(storage['genreIds']);
-      const releaseStart = storage['releaseDate'].sort()[0];
-      const releaseEnd = storage['releaseDate'].sort()[storage['releaseDate'].length - 1];
-      const ratingStart = storage['voteAverage'].sort()[0];
-      const ratingEnd = storage['voteAverage'].sort()[storage['voteAverage'].length - 1];
-
-      axios.get(`${tvRec}api_key=${tmdbApiKey}&air_date.gte=${releaseStart}&air_date.lte=${releaseEnd}&with_genres=${genre}&vote_average.gte=${ratingStart}&vote_average.lte=${ratingEnd}`)
-        .then(({data: {results} }) => {
-          const tvRecs = results.splice(0, 3);
-
-          axios.get(`${movieRec}api_key=${tmdbApiKey}&primary_release_date.gte=${releaseStart}&primary_release_date.lte=${releaseEnd}&with_genres=${genre}&vote_average.gte=${ratingStart}&vote_average.lte=${ratingEnd}`)
+  Users.findOne({ id: req.params.id }).then(({subscriptions}) => {
+    const data = subscriptions;
+    return subscriptions;
+  })
+    .then(data => {
+      const storage = {
+        'title': [],
+        'genreIds': [],
+        'releaseDate': [],
+        'voteAverage': []
+      };
+      Shows.find({ id: data })
+        .then((dataResults) => {
+          dataResults.map(result => {
+            storage['title'].push(result.title);
+            storage['genreIds'].push(...result.genreIds);
+            storage['releaseDate'].push(result.releaseDate);
+            storage['voteAverage'].push(result.voteAverage);
+          });
+          return storage;
+        })
+        .then(storage => {
+          const genre = genreFinder(storage['genreIds']);
+          const releaseStart = storage['releaseDate'].sort()[0];
+          const releaseEnd = storage['releaseDate'].sort()[storage['releaseDate'].length - 1];
+          const ratingStart = storage['voteAverage'].sort()[0];
+          const ratingEnd = storage['voteAverage'].sort()[storage['voteAverage'].length - 1];
+  
+          axios.get(`${tvRec}api_key=${tmdbApiKey}&air_date.gte=${releaseStart}&air_date.lte=${releaseEnd}&with_genres=${genre}&vote_average.gte=${ratingStart}&vote_average.lte=${ratingEnd}`)
             .then(({data: {results} }) => {
-              const movieRecs = results.splice(0, 3);
-              res.send(tvRecs.concat(movieRecs));
+              const tvRecs = results.splice(0, 3);
+  
+              axios.get(`${movieRec}api_key=${tmdbApiKey}&primary_release_date.gte=${releaseStart}&primary_release_date.lte=${releaseEnd}&with_genres=${genre}&vote_average.gte=${ratingStart}&vote_average.lte=${ratingEnd}`)
+                .then(({data: {results} }) => {
+                  const movieRecs = results.splice(0, 3);
+                  res.send(tvRecs.concat(movieRecs));
+                });
             });
-        });
-    })
-    .catch();
+        })
+        .catch();
+    });
 }); 
 
 const movieRec = 'https://api.themoviedb.org/3/discover/movie?';

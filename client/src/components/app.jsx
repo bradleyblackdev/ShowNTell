@@ -92,11 +92,10 @@ const App = () => {
 
   const getRecs = () => {
     if (user && !gotRecs) {
-      axios.get('/algo')
+      axios.get(`/algo/${user.id}`)
         .then(({data}) => {
           setGotRecs(true);
           setRecs(data);
-          console.log('DATACHECK______', data);
         })
         .catch();
     }

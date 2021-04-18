@@ -32,13 +32,7 @@ const favorites = ({ user, shows, subs }) => {
     const temp = `https://image.tmdb.org/t/p/original${sub.posterPath}`; 
     images.push(temp); 
   });
-  
-  console.log(images); 
 
-  console.log('in favorites', images); 
- 
- 
-  
   return (
     <Carousel >
       { images.map((image, i) => (
