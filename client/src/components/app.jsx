@@ -105,15 +105,6 @@ const App = () => {
       .catch();
   };
 
-  //algoREC
-  // air_date => RANGE
-  // genre_id => MODE
-  // rating => +/- 2 pt of AVERAGE
-
-  const algoRec = () => {
-
-  };
-
   // makes initial search from search bar onclick
   const searchShows = () => {
     console.log('serching shows', search);

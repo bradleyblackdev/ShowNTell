@@ -525,6 +525,76 @@ app.get('/trailer/:query', (req, res) => {
     .catch();
 });
 
+//algoREC
+// USER Subscriptions =>
+// releaseDate => RANGE
+// genreIds => MODE
+// voteAverage => +/- 2 pt of AVERAGE
+
+const genreFinder = (genreIds) => {
+
+  if (genreIds == null || genreIds.length == 0) {
+    return 0;
+  }
+  genreIds.sort();
+
+  let previous = genreIds[0];
+  let popular = genreIds[0];
+  let count = 1;
+  let maxCount = 1;
+
+  for (let i = 1; i < genreIds.length; i++) {
+    if (genreIds[i] == previous) { count++; } else {
+      if (count > maxCount) {
+        popular = genreIds[i - 1];
+        maxCount = count;
+      }
+      previous = genreIds[i];
+      count = 1;
+    }
+  }
+  return count > maxCount ? 
+    genreIds[genreIds.length - 1] : 
+    popular;
+};
+
+app.get('/algo', (req, res) => {
+  //QUERY USERS COLLECTION FOR SUBSCRIPTIONS IDs (plural) =>
+  // Users.find({ id: req.cookies.ShowNTellId }).then((data) => {
+  //   userInfo = data;
+  //   console.log(data, 'our findONE data maybe');
+    
+  //QUERY SHOWS COLLECTION FOR releaseDate, genreIds, voteAverage RETURN THESE IN ARRAYS ?
+  const data = [ 76341, 1044, 694, 74313];
+  const storage = {
+    'title': [],
+    'genreIds': [],
+    'releaseDate': [],
+    'voteAverage': []
+  };
+  Shows.find({ id: data })
+    .then((dataResults) => {
+      dataResults.map(result => {
+        storage['title'].push(result.title);
+        storage['genreIds'].push(...result.genreIds);
+        storage['releaseDate'].push(result.releaseDate);
+        storage['voteAverage'].push(result.voteAverage);
+      });
+      return storage;
+    })
+    .then(storage => {
+      const genre = genreFinder(storage['genreIds']);
+      const releaseStart = storage['releaseDate'].sort()[0];
+      const releaseEnd = storage['releaseDate'].sort()[storage['releaseDate'].length - 1];
+      const ratingStart = storage['voteAverage'].sort()[0];
+      const ratingEnd = storage['voteAverage'].sort()[storage['voteAverage'].length - 1];
+
+      res.send({genre, releaseStart, releaseEnd, ratingStart, ratingEnd}).status(200);
+    })
+    .catch();
+}); 
+
+
 const movieRec = 'https://api.themoviedb.org/3/discover/movie?';
 const tvRec = 'https://api.themoviedb.org/3/discover/tv?';
 
