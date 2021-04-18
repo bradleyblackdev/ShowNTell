@@ -40,6 +40,8 @@ const App = () => {
   const [theme, setTheme] = useState(classicTheme);
   const [show, setShow] = useState({});
   const [shows, setShows] = useState({}); 
+  const [gotRecs, setGotRecs] = useState(false);
+  const [recs, setRecs] = useState([]);
 
 
   const changeView = (newView) => {
@@ -88,6 +90,17 @@ const App = () => {
     }
   };
 
+  const getRecs = () => {
+    if (user && !gotRecs) {
+      axios.get(`/algo/${user.id}`)
+        .then(({data}) => {
+          setGotRecs(true);
+          setRecs(data);
+        })
+        .catch();
+    }
+  };
+
   const logout = () => {
     axios.get('/logout').then(() => {
       setView('homePage');
@@ -104,14 +117,6 @@ const App = () => {
       .then(() => axios.get('/posts').then(({ data }) => setPosts(data)))
       .catch();
   };
-
-  // const searchShows = () => {
-  //   axios.get(`/search/${search}`).then(({ data }) => {
-  //     setView('search');
-  //     setSearch('');
-  //     setSearchedShows(data);
-  //   }).catch();
-  // };
 
   // makes initial search from search bar onclick
   const searchShows = () => {
@@ -175,7 +180,8 @@ const App = () => {
       return <Post user={user} createPost={createPost} />;
     }
     if (view === 'user') {
-      return <UserProfile user={user} createPost={createPost} setUser={setUser} shows={shows} setShow={setShow} subs={subs} setSubs={setSubs} getSubs={getSubs}/>;
+
+      return <UserProfile user={user} createPost={createPost} setUser={setUser} shows={shows} setShow={setShow} subs={subs} setSubs={setSubs} getSubs={getSubs} recs={recs}/>;
     }
     if (view === 'home') {
       return <HomeFeed handleUserClick={handleUserClick} user={user} posts={posts} setPosts={setPosts} />;
@@ -228,6 +234,7 @@ const App = () => {
         {getUser()}
         {getPosts()}
         {getSubs()}
+        {getRecs()}
         {userClicked ?
           (
             <button onClick={handleShowFeed}>Show Home Feed</button>

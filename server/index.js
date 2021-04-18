@@ -525,6 +525,119 @@ app.get('/trailer/:query', (req, res) => {
     .catch();
 });
 
+//algoREC
+// USER Subscriptions =>
+// releaseDate => RANGE
+// genreIds => MODE
+// voteAverage => +/- 2 pt of AVERAGE
+
+const genreFinder = (genreIds) => {
+
+  if (genreIds == null || genreIds.length == 0) {
+    return 0;
+  }
+  genreIds.sort();
+
+  let previous = genreIds[0];
+  let popular = genreIds[0];
+  let count = 1;
+  let maxCount = 1;
+
+  for (let i = 1; i < genreIds.length; i++) {
+    if (genreIds[i] == previous) { count++; } else {
+      if (count > maxCount) {
+        popular = genreIds[i - 1];
+        maxCount = count;
+      }
+      previous = genreIds[i];
+      count = 1;
+    }
+  }
+  return count > maxCount ? 
+    genreIds[genreIds.length - 1] : 
+    popular;
+};
+//final
+app.get('/algo/:id', (req, res) => {
+  //QUERY USERS COLLECTION FOR SUBSCRIPTIONS IDs (plural) =>
+  Users.findOne({ id: req.params.id }).then(({subscriptions}) => {
+    const data = subscriptions;
+    return subscriptions;
+  })
+    .then(data => {
+      const storage = {
+        'title': [],
+        'genreIds': [],
+        'releaseDate': [],
+        'voteAverage': []
+      };
+      Shows.find({ id: data })
+        .then((dataResults) => {
+          dataResults.map(result => {
+            storage['title'].push(result.title);
+            storage['genreIds'].push(...result.genreIds);
+            storage['releaseDate'].push(result.releaseDate);
+            storage['voteAverage'].push(result.voteAverage);
+          });
+          return storage;
+        })
+        .then(storage => {
+          const genre = genreFinder(storage['genreIds']);
+          const releaseStart = storage['releaseDate'].sort()[0];
+          const releaseEnd = storage['releaseDate'].sort()[storage['releaseDate'].length - 1];
+          const ratingStart = storage['voteAverage'].sort()[0];
+          const ratingEnd = storage['voteAverage'].sort()[storage['voteAverage'].length - 1];
+  
+          axios.get(`${tvRec}api_key=${tmdbApiKey}&air_date.gte=${releaseStart}&air_date.lte=${releaseEnd}&with_genres=${genre}&vote_average.gte=${ratingStart}&vote_average.lte=${ratingEnd}`)
+            .then(({data: {results} }) => {
+              const tvRecs = results.splice(0, 3);
+  
+              axios.get(`${movieRec}api_key=${tmdbApiKey}&primary_release_date.gte=${releaseStart}&primary_release_date.lte=${releaseEnd}&with_genres=${genre}&vote_average.gte=${ratingStart}&vote_average.lte=${ratingEnd}`)
+                .then(({data: {results} }) => {
+                  const movieRecs = results.splice(0, 3);
+                  res.send(tvRecs.concat(movieRecs));
+                });
+            });
+        })
+        .catch();
+    });
+}); 
+
+const movieRec = 'https://api.themoviedb.org/3/discover/movie?';
+const tvRec = 'https://api.themoviedb.org/3/discover/tv?';
+
+//https://api.themoviedb.org/3/discover/movie?api_key=c4beeba3761a8ef52fff82a164fa4205&first_air_date=2006-09-15&with_genres=80&vote_average.gte=5&vote_average.lte=10
+
+//TV RECOMMENDATIONS
+app.get('/tvRecs', ((req, res) => {
+  
+  const releaseStart = '2006-09-15'; //beginning release date from subscribe
+  const releaseEnd = '2014-10-22';
+  const genre = 18; //genre from subscribe
+  const ratingStart = 5; //average rating from subscribe
+  const ratingEnd = 10; //average rating end
+
+  axios.get(`${tvRec}api_key=${tmdbApiKey}&air_date.gte=${releaseStart}&air_date.lte=${releaseEnd}&with_genres=${genre}&vote_average.gte=${ratingStart}&vote_average.lte=${ratingEnd}`)
+    .then(({data: {results} }) => {
+      res.send(results);
+    });
+}));
+
+//MOVIE RECOMMENDATIONS
+app.get('/movieRecs', ((req, res) => {
+  
+  const releaseStart = '2014-09-15'; //beginning release date from subscribe
+  const releaseEnd = '2014-10-22'; //ending release date from subscribe
+  const genre = 80; //genre from subscribe
+  const ratingStart = 5; //average rating from subscribe
+  const ratingEnd = 10; //average rating end
+
+  axios.get(`${movieRec}api_key=${tmdbApiKey}&primary_release_date.gte=${releaseStart}&primary_release_date.lte=${releaseEnd}&with_genres=${genre}&vote_average.gte=${ratingStart}&vote_average.lte=${ratingEnd}`)
+    .then(({data: {results} }) => {
+      res.send(results);
+    });
+}));
+
 app.get('/theme', (req, res) => {
   const id = req.query.id;
   Themes.findOne({ id })
