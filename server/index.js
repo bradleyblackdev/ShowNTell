@@ -557,7 +557,7 @@ const genreFinder = (genreIds) => {
     genreIds[genreIds.length - 1] : 
     popular;
 };
-
+//final
 app.get('/algo/:id', (req, res) => {
   //QUERY USERS COLLECTION FOR SUBSCRIPTIONS IDs (plural) =>
   Users.findOne({ id: req.params.id }).then(({subscriptions}) => {
