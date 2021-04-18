@@ -70,7 +70,8 @@ app.get(
       name: req.user.displayName,
     });
     res.cookie('ShowNTellId', req.user.id);
-    Users.findOne({ id: Number(req.user.id) }).then((data) => {
+    Users.findOne({ id: req.user.id }).then((data) => {
+      console.log('whats the data here', data);
       if (data) {
         res.redirect('/');
         userInfo = data;
@@ -194,12 +195,11 @@ app.put('/sendMessage/:id/:text', (req, res) => {
 
 
 app.put('/subscribe', (req, res) => {
-  const { id } = req.params;
   const show = req.body;
-  Shows.find({ id })
+  Shows.findOne({id: show.id})
     .then((record) => {
-      if (record.length > 0) {
-        return record[0];
+      if (record) {
+        return record;
       } else {
         const releaseDate = show.media_type === 'tv' ? 
           show.first_air_date : 
