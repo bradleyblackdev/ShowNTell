@@ -21,8 +21,8 @@ h1 {
     font-size: 5.265rem;
     margin: 50px auto 0 auto;
     font-family: 'Sacramento', cursive;
-   
-    
+
+
 }
 
 h2 {
@@ -46,16 +46,17 @@ p {
 hr {
     border: dotted #EAF6F6 6px;
     border-bottom: none;  /* how to get just a single line */
-    width: 4%; /* use percent so it scales with the website */ 
+    width: 4%; /* use percent so it scales with the website */
     margin: 100px auto; /* keep centered in the middle (100px top and bottum, auto right and left)*/
 }
 
 .userProfile {
-   
     margin: 70px 0; /* shorthand, hundred for top and bottum 0 for left and right */
     text-align: left;
-    
-    
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 20px;
+    border-radius: 10px;
+
 }
 
 .profile {
@@ -100,15 +101,15 @@ hr {
   .carousel-item-next:not(.carousel-item-left){-webkit-transform:translateX(100%);transform:translateX(100%)}.active
   .carousel-item-left,
   .carousel-item-prev:not(.carousel-item-right){-webkit-transform:translateX(-100%);transform:translateX(-100%)}
-  .carousel-fade 
+  .carousel-fade
   .carousel-item{opacity:0;transition-property:opacity;-webkit-transform:none;transform:none}
-  .carousel-fade 
+  .carousel-fade
   .carousel-item-next
   .carousel-item-left,
-  .carousel-fade 
+  .carousel-fade
   .carousel-item-prev
   .carousel-item-right,
-  .carousel-fade 
+  .carousel-fade
   .carousel-item.active{z-index:1;opacity:1}
   .carousel-fade .active
   .carousel-item-left,
@@ -147,13 +148,13 @@ hr {
     border-style: solid;
     background-color: rgba(0, 0, 0, 0);
   }
-  
+
   .dropdown2 {
     float: left;
     margin-left: 91px;
-   
+
 }
-  
+
   .dropdown-content2 {
     display: none;
     position: absolute;
@@ -161,11 +162,11 @@ hr {
     min-width: 160px;
     z-index: 1;
   }
-  
+
   .dropdown-content2 a {
     padding: 12px 12px;
     text-decoration: none;
     display: block;
   }
-  
+
   .dropdown2:hover .dropdown-content2 {display: block;}
