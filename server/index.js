@@ -205,11 +205,11 @@ app.put('/subscribe', (req, res) => {
       if (record.length > 0) {
         return record[0];
       } else {
-        const releaseDate = show.media_type === 'tv' ? 
-          show.first_air_date : 
+        const releaseDate = show.media_type === 'tv' ?
+          show.first_air_date :
           show.release_date;
-        const title = show.media_type === 'tv' ? 
-          show.name : 
+        const title = show.media_type === 'tv' ?
+          show.name :
           show.title;
         Shows.create({
           name: title,
@@ -529,7 +529,7 @@ app.get('/show/:id', (req, res) => {
 app.get('/trailer/:query', (req, res) => {
   const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${req.params.query}trailer&channelType=any&key=${youtubeApi}`;
   return axios(url)
-    .then(({ data }) => data.items[0])
+    .then(({ data }) => data.items[0].id.videoId)
     .then((data) => res.status(200).send(data))
     .catch();
 });

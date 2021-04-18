@@ -65,6 +65,7 @@ const themeSchema = mongoose.Schema({
 const Themes = mongoose.model('Themes', themeSchema);
 
 const trailerSchema = mongoose.Schema({
+  id: String,
   title: String,
   content: String,
   video: String
