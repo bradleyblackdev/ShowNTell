@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Carousel } from 'react-bootstrap/';
 import './profile.css'; 
-import axios from 'axios';
 import styled from 'styled-components';
 
 const Img = styled.div`
@@ -9,7 +8,7 @@ const Img = styled.div`
     width: 100%;
     height: 50vh;
     padding: 1rem 1.5rem;
-    margin-top: 30px; 
+    margin-top: 30px;
     img {
       object-fit: cover;
       margin-left: 180px;
@@ -26,7 +25,7 @@ const RecCarousel = ({ recs }) => {
     const temp = `https://image.tmdb.org/t/p/original${rec.poster_path}`;
     images.push(temp);
   });
-  
+
   return (
     <Carousel>
       { images.map((image, i) => (

@@ -1,8 +1,12 @@
 .show-page-container{
-    margin: 1rem;
-    margin-top: 0.5rem;
+    /* margin: 1rem; */
+    /* margin-top: 0.5rem; */
+    margin: 70px 0;
     color: white;
     font-family: 'Work Sans', sans-serif;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 20px;
+    border-radius: 10px;
   }
    .show-name {
     font-family: 'Work Sans', sans-serif;
@@ -68,9 +72,9 @@
     font-family: 'Work Sans', sans-serif;
     color:#f0ccb3;
     font-weight: bold;
-    font-size: 32px;
-    margin-left: 10%;
+    font-size: 18px;
+    /* margin-left: 10%;
     margin-top: 5%;
     text-decoration-line: underline;
-    text-decoration-color: #dd3e42;
+    text-decoration-color: #dd3e42; */
   }
