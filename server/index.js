@@ -20,7 +20,7 @@ const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const Notifs = require('twilio')(accountSid, authToken);
 const { GoogleStrategy } = require('./oauth/passport');
-const { Users, Posts, Shows, Replys } = require('./db/schema.js');
+const { Users, Posts, Shows, Replys, Messages } = require('./db/schema.js');
 
 const client = path.resolve(__dirname, '..', 'client', 'dist');
 
@@ -39,13 +39,19 @@ passport.deserializeUser((user, done) => {
   done(null, user);
 });
 
+
+//SOCKET CHAT FEATURES!!!!!!
+//socket connection
 io.on('connection', (socket) => {
   console.log('a user connected');
+  socket.emit('hello!')
   socket.on('disconnect', () => {
     console.log('user disconnected');
+    console.log(socket.id);
   });
 });
 
+//SOCKET CHAT FEATURES!!!!!!!!!!!!!!!
 app.use(
   session({
     secret: process.env.GOOGLE_CLIENT_SECRET,
@@ -129,21 +135,32 @@ app.get('/user/posts/:name', (req, res) => {
     .catch();
 });
 
-app.put('/startMessage/:user/:name', (req, res) => {
-  Users.findOne({ id: req.cookies.ShowNTellId }).then((data) => {
-    userInfo = data;
-    Users.updateOne(
-      { id: userInfo.id },
-      {
-        messages: [
-          ...userInfo.messages,
-          { id: req.params.user, name: req.params.name, text: [] },
-        ],
-      },
-    )
-      .then((result) => res.json(result))
-      .catch();
-  });
+// app.put('/startMessage/:user/:name', (req, res) => {
+//   Users.findOne({ id: req.cookies.ShowNTellId }).then((data) => {
+//     userInfo = data;
+//     Users.updateOne(
+//       { id: userInfo.id },
+//       {
+//         messages: [
+//           ...userInfo.messages,
+//           { id: req.params.user, name: req.params.name, text: [] },
+//         ],
+//       },
+//     )
+//       .then((result) => res.json(result))
+//       .catch();
+//   });
+// });
+
+
+app.get('/retrieveMessages/:chatId', (req, res) => {
+  Messages.findOne({ messageid: req.params.id})
+    .then(data => {
+      res.status(201).send(data)
+    })
+    .catch(err => {
+      res.sendStatus(500);
+    })
 });
 
 app.put('/sendMessage/:id/:text', (req, res) => {
@@ -194,9 +211,9 @@ app.put('/sendMessage/:id/:text', (req, res) => {
               notifs: [...data.notifs, `${userInfo.name} messaged you`],
             },
           ).then((allResult) => res.json(allResult));
-        }
+         }
       });
-  });
+   });
 });
 
 // app.get('/search/:query', (req, res) => {
@@ -547,7 +564,7 @@ app.get('/theme', (req, res) => {
     });
 });
 
-app.listen(3000, () => {
+server.listen(3000, () => {
   // eslint-disable-next-line no-console
   console.log('http://localhost:3000');
 });

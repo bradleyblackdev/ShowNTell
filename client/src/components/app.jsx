@@ -226,8 +226,11 @@ const App = () => {
         {getView()}
       </ThemeProvider>
       { cWindowOpen ? 
-          <ChatWindow user={user} toggleChatWindow={toggleChatWindow}/>
-          : ''
+        <ChatWindow 
+          user={user} 
+          toggleChatWindow={toggleChatWindow}
+          subs={subs}/>
+        : ''
       }
     </div>
   );

@@ -1,23 +1,53 @@
 import React, { useState } from 'react';
 import ChatMessage from './chatMessage.jsx';
 import './chatWindow.css';
-import ChatFriendsList from './friendsList.jsx'
+import ChatFriendsList from './friendsList.jsx';
+import axios from 'axios';
+import moment from 'moment';
+import SocketIOclient from 'socket.io-client';
+const endpoint = 'http://localhost:3000';
+const socket = SocketIOclient(endpoint);
 
-const ChatWindow = ({ toggleChatWindow, user }) => {
+
+const ChatWindow = ({ toggleChatWindow, user, subs }) => {
   //const [newMessage, setNewMessage] = useState();
   const [messages, setMessages] = useState([{username:'eebs', message: 'hey', time: '2:12'},{username:'ibrahim', message: 'hi', time: '2:12'},{username:'eebs', message: 'wyd', time: '2:14'},{username:'ibrahim', message: 'nothing', time: '2:20'}]);
   //const [open, setOpen] = useState(false);
   const [friendListView, setfriendListView] = useState(true);
   const [newMessagesCount, setNewMessagesCount] = useState(0);
-  const [friends, setFriends] = useState([{name: 'eebs'}, {name: 'eebs2'}, {name: 'eebs3'}])
+  const [friends, setFriends] = useState(user.friends);
+  const [chatText, setChatText] = useState('');
 
-  const retrieveMessages = () => {
-    axios.put(`/startMessage/${user.id}/${user.name}`)
-    .then(() => {
-      setMessages(String(id));
-      axios.get('/user')
-        .then((result) => setUser(result.data));
-    });
+  const retrieveMessages = (chatId) => {
+    axios.get(`/retrieveMessages/${chatId}`)
+      .then((res) => {
+        setMessages(res.data)
+      }).then(() => setfriendListView(false))
+      .catch(err => {
+        throw err;
+      });
+  };
+
+  const updateMessages = (chatId, messages) => {
+    axios.put(`/updateMessages/${chatId}`, {
+      messages: messages
+    }).catch(err =>{
+      throw err;
+    })
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setMessages(messages.concat({
+      username: user.name,
+      message: chatText,
+      time: moment().format('h:mm a')
+    }));
+    //console.log(messages);
+    setChatText('');
+    e.target.focus();
+    //console.log(socket);
+    console.log(subs, 'subs');
   };
 
   return (
@@ -25,7 +55,7 @@ const ChatWindow = ({ toggleChatWindow, user }) => {
       {friendListView ? 
         (
           <div id="live-chat">
-            <header className="clearfix">
+            <header className="clearfix" >
               <a className='chat-close' onClick={() => toggleChatWindow()}>close</a>
               <a className='chat-back' onClick={() => setfriendListView(!friendListView)}>friends</a>
               <span className='chat-message-counter'>{newMessagesCount}</span>
@@ -34,7 +64,7 @@ const ChatWindow = ({ toggleChatWindow, user }) => {
             <div className='chat'>
               <div className='chat-history'>
                 <ul>
-                  {friends.map(friend => <ChatFriendsList  key={friend.id} friend={friend}/>)}
+                  {friends.map(friend => <ChatFriendsList  key={friend.id} friend={friend} retrieveMessages={retrieveMessages}/>)}
                 </ul>
               </div>
             </div>
@@ -57,10 +87,10 @@ const ChatWindow = ({ toggleChatWindow, user }) => {
               <div className='chat-history'>
                 {messages.map(message => <ChatMessage message={message} key={message.id}/>)}
               </div>
-              <form action="#" method="post">
-                <fieldset>
-                  <input type="text" placeholder={user.name}></input>
-                  <input type="hidden"></input>
+              <form onSubmit={(e) => handleSubmit(e)}>
+                <fieldset >
+                  <input type="text" value={chatText} onChange={(e) => setChatText(e.target.value)} placeholder={user.name}></input>
+                  <button>send</button>
                 </fieldset>
               </form>
             </div>
@@ -169,3 +199,4 @@ const ChatWindow = ({ toggleChatWindow, user }) => {
 
 
 export default ChatWindow;
+
