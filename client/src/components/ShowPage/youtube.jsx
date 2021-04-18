@@ -22,7 +22,7 @@ const getTrailer = (title) => {
     return (
         <React.Fragment>
             <ModalVideo channel='youtube' autoplay isOpen={isOpen} videoId={trailer} onClose={() => setOpen(false)} />
-            <button className="sub-btn" onClick={()=> prepTrailer(show.title)}>VIEW TRAILER</button>
+            <button className="trailer-button" onClick={()=> prepTrailer(show.title)}>View Trailer</button>
         </React.Fragment>
     )
 }
