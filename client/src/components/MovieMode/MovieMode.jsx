@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from 'axios';
+import styled from 'styled-components';
 import './MovieMode.css';
 
 export const classicTheme = {
@@ -17,25 +18,29 @@ export const MovieMode = ({subs, theme, setTheme}) => {
     sub.name === 'classic' ?
       setTheme(classicTheme) :
       axios.get('/theme', {
-        params: sub
+        params: {
+          backdropPath: sub.backdropPath,
+          id: sub.id
+        }
       })
-        .then(({data: {palette, backdropURL}}) => {
-          const {Vibrant, DarkVibrant, LightVibrant, Muted, LightMuted, DarkMuted} = palette;
-          const pickNeutral = (r, g, b) => {
-            return (((r * 0.299) + (g * 0.587) + (b * 0.114)) > 186) ?
-              'black' : 
-              'white';
-          };
-          setTheme({
-            neutral: pickNeutral(...palette.DarkMuted.rgb),
-            primary: `rgb(${DarkVibrant.rgb})`,
-            secondary: `rgb(${LightVibrant.rgb})`,
-            tertiary: `rgb(${DarkMuted.rgb})`,
-            quaternary: `rgb(${Vibrant.rgb})`,
-            quinary: `rgb(${Vibrant.rgb})`,
-            image: backdropURL
-          });
-        });
+        .then(({data}) => {
+          if (data) {
+            const {palette, backdropUrl, neutral} = data;
+            const {Vibrant, DarkVibrant, LightVibrant, Muted, LightMuted, DarkMuted} = palette;
+            setTheme({
+              neutral: neutral,
+              primary: `rgb(${DarkVibrant._rgb || DarkVibrant.rgb})`,
+              secondary: `rgb(${LightVibrant._rgb || LightVibrant.rgb})`,
+              tertiary: `rgb(${DarkMuted._rgb || DarkMuted.rgb})`,
+              quaternary: `rgb(${LightMuted._rgb || LightMuted.rgb})`,
+              quinary: `rgb(${Vibrant._rgb || Vibrant.rgb})`,
+              opaque: `rgba(${Muted._rgb || Muted.rgb}, 0.75)`,
+              image: backdropUrl
+            });
+          } else {
+            setTheme(classicTheme);
+          }
+        }).catch((err) => console.warn(err));
   };
 
   return (

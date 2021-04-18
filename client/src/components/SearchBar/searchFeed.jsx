@@ -3,8 +3,6 @@ import SearchFeedEntry from './searchEntry.jsx';
 import './search.css';
 
 const SearchFeed = ({ shows, onClick, arrow, setShow }) => {
-  console.log(shows, 'SHOWS ON SEARCH FEED');
-
   return (
     <div>
       <div className="search-results-header">Search results: </div>
