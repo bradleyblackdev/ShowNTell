@@ -553,8 +553,8 @@ const genreFinder = (genreIds) => {
       count = 1;
     }
   }
-  return count > maxCount ? 
-    genreIds[genreIds.length - 1] : 
+  return count > maxCount ?
+    genreIds[genreIds.length - 1] :
     popular;
 };
 //final
@@ -587,11 +587,11 @@ app.get('/algo/:id', (req, res) => {
           const releaseEnd = storage['releaseDate'].sort()[storage['releaseDate'].length - 1];
           const ratingStart = storage['voteAverage'].sort()[0];
           const ratingEnd = storage['voteAverage'].sort()[storage['voteAverage'].length - 1];
-  
+
           axios.get(`${tvRec}api_key=${tmdbApiKey}&air_date.gte=${releaseStart}&air_date.lte=${releaseEnd}&with_genres=${genre}&vote_average.gte=${ratingStart}&vote_average.lte=${ratingEnd}`)
             .then(({data: {results} }) => {
               const tvRecs = results.splice(0, 3);
-  
+
               axios.get(`${movieRec}api_key=${tmdbApiKey}&primary_release_date.gte=${releaseStart}&primary_release_date.lte=${releaseEnd}&with_genres=${genre}&vote_average.gte=${ratingStart}&vote_average.lte=${ratingEnd}`)
                 .then(({data: {results} }) => {
                   const movieRecs = results.splice(0, 3);
@@ -601,7 +601,7 @@ app.get('/algo/:id', (req, res) => {
         })
         .catch();
     });
-}); 
+});
 
 const movieRec = 'https://api.themoviedb.org/3/discover/movie?';
 const tvRec = 'https://api.themoviedb.org/3/discover/tv?';
@@ -610,7 +610,7 @@ const tvRec = 'https://api.themoviedb.org/3/discover/tv?';
 
 //TV RECOMMENDATIONS
 app.get('/tvRecs', ((req, res) => {
-  
+
   const releaseStart = '2006-09-15'; //beginning release date from subscribe
   const releaseEnd = '2014-10-22';
   const genre = 18; //genre from subscribe
@@ -625,7 +625,7 @@ app.get('/tvRecs', ((req, res) => {
 
 //MOVIE RECOMMENDATIONS
 app.get('/movieRecs', ((req, res) => {
-  
+
   const releaseStart = '2014-09-15'; //beginning release date from subscribe
   const releaseEnd = '2014-10-22'; //ending release date from subscribe
   const genre = 80; //genre from subscribe
