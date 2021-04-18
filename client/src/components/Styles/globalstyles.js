@@ -5,7 +5,6 @@ export const GlobalStyles = createGlobalStyle`
   //global***************************************
 
   body {
-
     transition: all 1.0s linear;
     background-image: url(${({ theme }) => theme.image});
     background-color: ${({ theme }) => theme.classic && theme.primary};
@@ -13,15 +12,26 @@ export const GlobalStyles = createGlobalStyle`
     background-repeat: no-repeat;
     background-attachment: fixed;
     color: ${({ theme }) => theme.neutral};
-    border-color: ${({ theme }) => theme.secondary}
+    border-color: ${({ theme }) => theme.secondary};    
   }
 
   //HomeFeed*************************************
 
+  @keyframes classicToMovie {
+    from {margin-top: 0px;}
+    to {margin-top: 500px;}
+  }
+  @keyframes movieToClassic {
+    from {margin-top: 500px;}
+    to {margin-top: 0px;}
+  }
+
   .home-title{
-    color: ${({ theme }) => theme.neutral};
-    margin-top: ${({ theme }) => !theme.classic && '500px'};
-    display: ${({ theme }) => !theme.classic && 'none'}
+    color: ${({ theme }) => !theme.classic ? 'rgba(0, 0, 0, 0)' : theme.neutral};
+    animation-name: ${({ theme }) => !theme.classic ? 'classicToMovie' : 'movieToClassic'};
+    margin-top: ${({ theme }) => !theme.classic ? '500px' : '0px'};
+
+    animation-duration: 1s;
   }
   .main-post-container{
     backdrop-filter: blur(10px) saturate(40%);
@@ -29,6 +39,7 @@ export const GlobalStyles = createGlobalStyle`
     theme.primary : 
     theme.opaque};
     border-color: ${({ theme }) => theme.neutral};
+    max-width: 500px;
 
     color: ${({ theme }) => theme.neutral};
   }
@@ -57,7 +68,7 @@ export const GlobalStyles = createGlobalStyle`
     color: ${({ theme }) => theme.tertiary};
   }
   .comment-txt-box{
-    background-color: ${({ theme }) => theme.primary};
+    background-color: ${({ theme }) => 'rgba(0, 0, 0, 0.2)'};
     color: ${({ theme }) => theme.neutral};
     border-color: ${({ theme }) => theme.neutral};
   }
@@ -73,6 +84,7 @@ export const GlobalStyles = createGlobalStyle`
     theme.opaque};
     border-color: ${({ theme }) => theme.neutral};
     color: ${({ theme }) => theme.neutral};
+    max-width: 500px;
    }
    .comment-author{
     color: ${({ theme }) => theme.quaternary};
@@ -83,7 +95,7 @@ export const GlobalStyles = createGlobalStyle`
    .reply-comment-txt-box{
     color: ${({ theme }) => theme.neutral};
     border-color: ${({ theme }) => theme.neutral};
-    background-color: ${({ theme }) => theme.primary};
+    background-color: ${({ theme }) => 'rgba(0, 0, 0, 0.2)'};
   }
   .submit-reply-comment-btn{
     background-color: ${({ theme }) => theme.primary};
@@ -132,6 +144,7 @@ export const GlobalStyles = createGlobalStyle`
 
   //MovieMode*************************
   .dropbtn {
+    background-clip: padding-box;
     backdrop-filter: blur(20px) saturate(40%);
     background-color: ${({ theme }) => theme.classic ? 
     theme.primary : 
@@ -146,6 +159,7 @@ export const GlobalStyles = createGlobalStyle`
     background-color: ${({ theme }) => theme.quaternary};
   }
   .dropdown-content {
+    overflow:hidden;
     backdrop-filter: blur(20px) saturate(40%);
     background-color: ${({ theme }) => theme.classic ? 
     theme.primary : 
