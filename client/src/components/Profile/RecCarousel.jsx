@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Carousel } from 'react-bootstrap/';
 import './profile.css';
+import axios from 'axios';
 import styled from 'styled-components';
 
 const Img = styled.div`
