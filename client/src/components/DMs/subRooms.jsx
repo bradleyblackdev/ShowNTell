@@ -1,12 +1,12 @@
 import React, { } from 'react';
 import './chatWindow.css';
 
-const SubsChatList = ({ subs, }) => {
+const SubsChatList = ({ sub, setRoom}) => {
 
   return (
     <div>
-      <li value={subs.name} className="friendlist-friend clearfix">
-        <h3 onClick={()=> retrieveMessages(friend.chatId)}>{subs.name}</h3>
+      <li value={sub.name} className="friendlist-friend clearfix">
+        <h3 onClick={()=> setRoom(sub.name)}>{sub.name}</h3>
       </li>
     </div>
   );

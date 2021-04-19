@@ -9,6 +9,7 @@ const Vibrant = require('node-vibrant');
 require('dotenv').config();
 require('./db/index');
 const http = require('http');
+const moment = require('moment');
 
 const app = express();
 const server = http.createServer(app);
@@ -45,22 +46,40 @@ passport.deserializeUser((user, done) => {
 });
 
 
+
+
 //SOCKET CHAT FEATURES!!!!!!
 //socket connection
-io.on('connection', (socket) => {
-  console.log('a user connected');
-  socket.emit('hello!')
+io.sockets.on('connection', (socket) => {
   socket.on('disconnect', () => {
-    console.log('user disconnected');
-    console.log(socket.id);
   });
 
-  socket.on('chatMessage', (msg) => {
-    io.emit('message', msg);
+  socket.on('joinRoom', ({ name, room}) => {
+    
+    socket.join(room);
+    
+    socket.emit('message', {
+      username: 'ShownTell Chat Bot',
+      message: `Welcome to ${room} chat, ${name}`,
+      time: moment().format('h:mm a')
+    });
+    
+    socket.on('chatMessage', (msg) => { 
+      io.to(msg.room).emit('message', msg);
+    });
+
+    socket.on('leave', (room) => {
+      socket.leave(room);
+      socket.disconnect();
+    });
   });
 });
 
-//SOCKET CHAT FEATURES!!!!!!!!!!!!!!!
+//SOCKET CHAT FEATURES ENDS!!!!!!!!!!!!!!!
+
+
+
+
 app.use(
   session({
     secret: process.env.GOOGLE_CLIENT_SECRET,
