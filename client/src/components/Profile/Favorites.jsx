@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Carousel } from 'react-bootstrap/';
-import axios from 'axios'; 
 import './profile.css'; 
 import styled from 'styled-components';
 
@@ -12,13 +11,13 @@ const Img = styled.div`
     margin-top: 30px; 
     img {
       object-fit: cover;
-      margin-left: 180px;
+      margin-left: 182px;
       height: 100%;
       display: block;
     }
 `;
 
-const favorites = ({ user, subs }) => { 
+const favorites = ({ subs }) => { 
 
   const images = [];
   
@@ -26,7 +25,9 @@ const favorites = ({ user, subs }) => {
     const temp = `https://image.tmdb.org/t/p/original${sub.posterPath}`; 
     images.push(temp); 
   });
-
+  
+  
+  
   return (
     <Carousel >
       { images.map((image, i) => (
