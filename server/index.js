@@ -6,6 +6,8 @@ const cors = require('cors');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const Vibrant = require('node-vibrant');
+const { cloudinary } = require('./utils/cloudinary.js'); 
+const upload = require('./utils/multer.js'); 
 require('dotenv').config();
 require('./db/index');
 
@@ -17,6 +19,7 @@ const youtubeApi = process.env.YOUTUBE_API_KEY;
 const Notifs = require('twilio')(accountSid, authToken);
 const { GoogleStrategy } = require('./oauth/passport');
 const { Users, Posts, Shows, Replys, Themes } = require('./db/schema.js');
+const { resolveSoa } = require('dns');
 
 const app = express();
 
@@ -30,6 +33,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors());
 app.use('/favicon.ico', express.static(path.resolve(__dirname, 'assets', 'sntfavicon.jpg')));
+
 
 
 passport.serializeUser((user, done) => {
@@ -660,6 +664,23 @@ app.get('/theme', (req, res) => {
       }
     });
 });
+
+// app.post('/users/bio', (req, res) => {
+//   console.log(req.body); 
+//   Users.insertMany(req.body)
+//   .then(data => res.send(data))
+//   .catch(err => console.log('error not working', err));
+// });
+
+app.post('/users', upload.single('image'), async (req, res) => { // image is what you wil use in front in ( input type= file name='image')
+  try {
+  
+    const result = await cloudinary.uploader.upload(req.file.path); 
+    res.json(result);
+  } catch (err) {
+    console.log('err uploading to cloudinary', err); 
+  } 
+}); 
 
 app.listen(3000, () => {
   // eslint-disable-next-line no-console
