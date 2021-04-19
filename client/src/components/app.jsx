@@ -1,9 +1,9 @@
 /* eslint-disable max-len */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-return-assign */
-// /* eslint-disable import/no-named-as-default */
-// /* eslint-disable import/no-named-as-default-member */
-// /* eslint-disable import/extensions */
+/* eslint-disable import/no-named-as-default */
+/* eslint-disable import/no-named-as-default-member */
+/* eslint-disable import/extensions */
 /* eslint-disable consistent-return */
 import React, { useState } from 'react';
 import axios from 'axios';
@@ -16,6 +16,7 @@ import DMs from './DMs/dms.jsx';
 import Notifs from './Notifications/notifs.jsx';
 import SearchFeed from './SearchBar/searchFeed.jsx';
 import ShowFeed from './Subscriptions/showFeed.jsx';
+import ChatWindow from './DMs/chatWindow.jsx';
 import {MovieMode, classicTheme} from './MovieMode/MovieMode.jsx';
 import ShowPage from './ShowPage/showPage.jsx';
 
@@ -35,6 +36,7 @@ const App = () => {
   const [searchedShows, setSearchedShows] = useState([]);
   const [userClicked, setUsersClicked] = useState(false);
   const [test, setTest] = useState(false);
+  const [cWindowOpen, setcWindowOpen] = useState(false);
   const [subs, setSubs] = useState([]);
   const [gotSubs, setGotSubs] = useState(false);
   const [theme, setTheme] = useState(classicTheme);
@@ -169,6 +171,10 @@ const App = () => {
       .catch();
   };
 
+  const toggleChatWindow = () => {
+    setcWindowOpen(!cWindowOpen);
+  };
+
   const getView = () => {
     if (view === 'homePage') {
       return <HomePage />;
@@ -210,6 +216,7 @@ const App = () => {
           ? (
             <div>
               <Nav
+                toggleChatWindow={toggleChatWindow}
                 user={user}
                 search={search}
                 onClick={changeView}
@@ -241,7 +248,14 @@ const App = () => {
           null}
         {getView()}
       </ThemeProvider>
-    </ div>
+      { cWindowOpen ? 
+        <ChatWindow 
+          user={user} 
+          toggleChatWindow={toggleChatWindow}
+          subs={subs}/>
+        : ''
+      }
+    </div>
   );
 };
 

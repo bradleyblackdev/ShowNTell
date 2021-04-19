@@ -66,6 +66,7 @@ li {
 }
 
 .search {
+  font-size: small;
   left: 55px;
   bottom: 80px;
   width: 90%;

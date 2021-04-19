@@ -119,4 +119,14 @@ const DMs = ({ user, setUser }) => {
   );
 };
 
+const getAllUsers = () => {
+  axios.get('/users')
+    .then(({ data }) => {
+      setUsers(data);
+      axios.get('/user')
+        .then((result) => setUser(result.data));
+    })
+    .catch();
+}
+
 export default DMs;

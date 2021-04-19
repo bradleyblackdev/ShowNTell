@@ -10,6 +10,12 @@ const { cloudinary } = require('./utils/cloudinary.js');
 const upload = require('./utils/multer.js'); 
 require('dotenv').config();
 require('./db/index');
+const http = require('http');
+const moment = require('moment');
+
+const app = express();
+const server = http.createServer(app);
+const io = require('socket.io')(server);
 
 
 const tmdbApiKey = process.env.TMDB_API_KEY;
@@ -21,7 +27,6 @@ const { GoogleStrategy } = require('./oauth/passport');
 const { Users, Posts, Shows, Replys, Themes } = require('./db/schema.js');
 const { resolveSoa } = require('dns');
 
-const app = express();
 
 const client = path.resolve(__dirname, '..', 'client', 'dist');
 
@@ -43,6 +48,41 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((user, done) => {
   done(null, user);
 });
+
+
+
+
+//SOCKET CHAT FEATURES!!!!!!
+//socket connection
+io.sockets.on('connection', (socket) => {
+  socket.on('disconnect', () => {
+  });
+
+  socket.on('joinRoom', ({ name, room}) => {
+    
+    socket.join(room);
+    
+    socket.emit('message', {
+      username: 'ShownTell Chat Bot',
+      message: `Welcome to ${room} chat, ${name}`,
+      time: moment().format('h:mm a')
+    });
+    
+    socket.on('chatMessage', (msg) => { 
+      io.to(msg.room).emit('message', msg);
+    });
+
+    socket.on('leave', (room) => {
+      socket.leave(room);
+      socket.disconnect();
+    });
+  });
+});
+
+//SOCKET CHAT FEATURES ENDS!!!!!!!!!!!!!!!
+
+
+
 
 app.use(
   session({
@@ -125,21 +165,32 @@ app.get('/user/posts/:name', (req, res) => {
     .catch();
 });
 
-app.put('/startMessage/:user/:name', (req, res) => {
-  Users.findOne({ id: req.cookies.ShowNTellId }).then((data) => {
-    userInfo = data;
-    Users.updateOne(
-      { id: userInfo.id },
-      {
-        messages: [
-          ...userInfo.messages,
-          { id: req.params.user, name: req.params.name, text: [] },
-        ],
-      },
-    )
-      .then((result) => res.json(result))
-      .catch();
-  });
+// app.put('/startMessage/:user/:name', (req, res) => {
+//   Users.findOne({ id: req.cookies.ShowNTellId }).then((data) => {
+//     userInfo = data;
+//     Users.updateOne(
+//       { id: userInfo.id },
+//       {
+//         messages: [
+//           ...userInfo.messages,
+//           { id: req.params.user, name: req.params.name, text: [] },
+//         ],
+//       },
+//     )
+//       .then((result) => res.json(result))
+//       .catch();
+//   });
+// });
+
+
+app.get('/retrieveMessages/:chatId', (req, res) => {
+  Messages.findOne({ messageid: req.params.id})
+    .then(data => {
+      res.status(201).send(data)
+    })
+    .catch(err => {
+      res.sendStatus(500);
+    })
 });
 
 app.put('/sendMessage/:id/:text', (req, res) => {
@@ -627,6 +678,7 @@ app.get('/tvRecs', ((req, res) => {
     });
 }));
 
+//minor change
 //MOVIE RECOMMENDATIONS
 app.get('/movieRecs', ((req, res) => {
 
@@ -678,11 +730,11 @@ app.post('/users', upload.single('image'), async (req, res) => { // image is wha
     const result = await cloudinary.uploader.upload(req.file.path); 
     res.json(result);
   } catch (err) {
-    console.log('err uploading to cloudinary', err); 
+    //console.log('err uploading to cloudinary', err); 
   } 
 }); 
 
-app.listen(3000, () => {
+server.listen(3000, () => {
   // eslint-disable-next-line no-console
   console.log('http://localhost:3000');
 });

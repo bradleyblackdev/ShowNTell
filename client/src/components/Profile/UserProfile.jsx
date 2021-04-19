@@ -88,4 +88,3 @@ const UserProfile = ({ user, subs, recs }) => {
 };
 
 export default UserProfile;
-
