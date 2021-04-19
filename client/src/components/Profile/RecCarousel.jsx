@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Carousel } from 'react-bootstrap/';
-import './profile.css'; 
+import './profile.css';
 import styled from 'styled-components';
 
 const Img = styled.div`
