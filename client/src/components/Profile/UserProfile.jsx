@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+
 import cartoon from './carouselPhotos/cartooncircle.jpg';
 import Favorites from './Favorites.jsx';
+import '../MovieMode/MovieMode.css';
+import RecCarousel from './RecCarousel.jsx';
+import './profile.css';
 import EditProfile from './EditProfile.jsx';
 import '../MovieMode/MovieMode.css'; 
 import './profile.css'; 
@@ -22,7 +25,7 @@ import './profile.css';
 
 
 
-const UserProfile = ({ user, subs }) => {
+const UserProfile = ({ user, subs, recs }) => {
   const [bio, setBio] = useState(''); 
   const { name, friends } = user; 
   const [show, setShow] = useState(false);
@@ -60,16 +63,17 @@ const UserProfile = ({ user, subs }) => {
               <h3>Genres:</h3>
               <p>Romantic Comedies</p>
             </div>
-          </div>
-          <div className="favorites">
-            <h3>Your Favorites</h3>
-            <p>based on your subscriptions</p>
-            <Favorites user={user} subs={subs} />
-          </div>
-          <div className="recommendations">
-            <h3>Your Recommendations</h3>
-            <p>Things you might like.</p>
-            <img className="moto" alt=""/>
+
+            <div className="favorites">
+              <h3>Your Shows</h3>
+              <p>based on your subscriptions</p>
+              <Favorites user={user} setShow={setShow} subs={subs}/>
+            </div>
+            <div className="recommendations">
+              <h3>Your Recommendations</h3>
+              <p>Shows you might like.</p>
+              <RecCarousel recs={recs}/>
+            </div>
           </div>
           <div>
             <div className="dropdown2">
