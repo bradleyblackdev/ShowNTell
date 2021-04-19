@@ -241,9 +241,9 @@ app.put('/sendMessage/:id/:text', (req, res) => {
               notifs: [...data.notifs, `${userInfo.name} messaged you`],
             },
           ).then((allResult) => res.json(allResult));
-         }
+        }
       });
-   });
+  });
 });
 
 
@@ -678,6 +678,7 @@ app.get('/tvRecs', ((req, res) => {
     });
 }));
 
+//minor change
 //MOVIE RECOMMENDATIONS
 app.get('/movieRecs', ((req, res) => {
 
