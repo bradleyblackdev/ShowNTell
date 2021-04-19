@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+
 import cartoon from './carouselPhotos/cartooncircle.jpg';
 import Favorites from './Favorites.jsx';
 import '../MovieMode/MovieMode.css';
 import RecCarousel from './RecCarousel.jsx';
 import './profile.css';
+import EditProfile from './EditProfile.jsx';
+import '../MovieMode/MovieMode.css'; 
+import './profile.css'; 
 
 // const Button = styled.button`
 // color: white;
@@ -22,62 +25,28 @@ import './profile.css';
 
 
 
-const UserProfile = ({ user, setUser, show, shows, subs, setSubs, getSubs, setShow, recs }) => {
-  const { name, friends } = user;
-  const [ addFriendView, setAddFriendView] = useState(false);
-  const [ users, setUsers] = useState();
-  const [ friendsList, setFriendsList ] = useState(friends);
-  const [ find, setFind ] = useState();
-  //const [ friends, setFriends ] = useState({});
+const UserProfile = ({ user, subs, recs }) => {
+  const [bio, setBio] = useState(''); 
+  const { name, friends } = user; 
+  const [show, setShow] = useState(false);
 
-  // setFriends = () => {
+ 
 
-  // };
-
-  const searchUser = (find) => {
-
-    users.forEach(user => {
-      let searchUserBool = false;
-      if (find.toLowerCase() === user.name.toLowerCase()) {
-        addFriend(user);
-        searchUserBool = true;
-      }
-      if (searchUserBool === false) {
-        alert ('No user found with that name');
-      }
-    });
+  const handleSubmit = (e, bioData) => {
+    e.preventDefault(); 
+    setBio(bioData); 
   };
-
-  const addFriend = (user) => {
-    const { name, id, _id} = user;
-    if (!friendsList.length) {
-      setFriendsList(friendsList.concat({name, id, _id}));
-    } else {
-      const hasFriendBool = false;
-      friendsList.forEach(friend => {
-        if (friend.name === name) {
-          alert(`You are already friends with ${name}`);
-          hasFriendBool === true;
-        }
-      });
-      if (!hasFriendBool) {
-        setFriendsList(friendsList.concat({name, id, _id}));
-      }
-    }
-    console.log('this is user!!', user);
-    console.log('thisis users', users);
-  };
-
-  const getAllUsers = () => {
-    axios.get('/users')
-      .then(({ data }) => {
-        setUsers(data);
-        axios.get('/user')
-          .then((result) => setUser(result.data));
-      })
-      .catch();
-  };
-
+  // createbio(newBio) {
+  //   axios.post('/user/bio', newBio)
+   
+  //     .catch(err=>{
+  //       if (err) {
+  //         console.log(err);
+  //       } else {
+  //         console.log('got the bio');
+  //       }
+  //     });
+  // }
 
   return (
     <div>
@@ -90,29 +59,25 @@ const UserProfile = ({ user, setUser, show, shows, subs, setSubs, getSubs, setSh
               <h3>Name:</h3>
               <p>{ name }</p>
               <h3>Bio:</h3>
-              <p>see ya space-cowboy</p>
+              <p>{bio}</p>
               <h3>Genres:</h3>
               <p>Romantic Comedies</p>
-
-
-            </div>
-
-            <div className="dropdown2">
-              <button className="dropbtn2">Friends</button>
-              <div className="dropdown-content2">
-                <a>friends</a>
-              </div>
             </div>
 
             <div className="favorites">
               <h3>Your Shows</h3>
               <p>based on your subscriptions</p>
-              <Favorites user={user} shows={shows} setShow={setShow} subs={subs} setSubs={setSubs} getSubs={getSubs}/>
+              <Favorites user={user} setShow={setShow} subs={subs}/>
             </div>
             <div className="recommendations">
               <h3>Your Recommendations</h3>
               <p>Shows you might like.</p>
               <RecCarousel recs={recs}/>
+            </div>
+          </div>
+          <div>
+            <div className="dropdown2">
+              <EditProfile handleSubmit={handleSubmit}/>
             </div>
           </div>
         </div>
