@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaHome, FaStar, FaPen, FaBell, FaEnvelope, FaSearch, FaDoorOpen } from 'react-icons/fa';
+import { FaHome, FaStar, FaPen, FaComment, FaSearch, FaDoorOpen } from 'react-icons/fa';
 import logo from './HomePage/img/logo1.png';
 
 const Nav = ({ user, onClick, logout, search, setSearch, onSearch, toggleChatWindow }) => (
@@ -30,12 +30,8 @@ const Nav = ({ user, onClick, logout, search, setSearch, onSearch, toggleChatWin
         <FaPen />
         {' '}
       </li>
-      <li onClick={() => onClick('notifs')} className="navbutton views" title="notifications">
-        <FaBell />
-        {' '}
-      </li>
       <li onClick={() => toggleChatWindow()} className="navbutton views" title="messages">
-        <FaEnvelope />
+        <FaComment />
         {' '}
       </li>
       <li className="navbutton" onClick={logout} title="log out"><FaDoorOpen /></li>

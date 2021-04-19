@@ -37,13 +37,13 @@ const ChatWindow = ({ toggleChatWindow, user, subs }) => {
       });
   };
 
-  const updateMessages = (chatId, messages) => {
-    axios.put(`/updateMessages/${chatId}`, {
-      messages: messages
-    }).catch(err =>{
-      throw err;
-    });
-  };
+  // const updateMessages = (chatId, messages) => {
+  //   axios.put(`/updateMessages/${chatId}`, {
+  //     messages: messages
+  //   }).catch(err =>{
+  //     throw err;
+  //   });
+  // };
 
   const joinSubChatRoom = (room) => {
     socket.connect();
@@ -69,7 +69,7 @@ const ChatWindow = ({ toggleChatWindow, user, subs }) => {
 
     setChatText('');
     e.target.focus();
-    console.log(socket);
+    //console.log(socket);
   };
 
   return (
@@ -89,7 +89,7 @@ const ChatWindow = ({ toggleChatWindow, user, subs }) => {
             socket.emit('leave', room);
             setRoom('');
             setMessages(['']);
-            console.log(messages);
+            //console.log(messages);
           }}>Chat Rooms</a>
           <a className='chat-close' onClick={() => toggleChatWindow()}>close</a>
           <h4>{user.name}</h4>

@@ -33,7 +33,7 @@ li {
     /* margin-right: 21%;
     margin-top: 5%; */
     padding-top: 8px;
-    padding-right: 280px;
+    padding-right: 220px;
     margin-right: 80px;
     padding-left: 20px;
     padding-bottom: 0px;
@@ -78,7 +78,7 @@ li {
 
 .search-term {
   font-family: 'Work Sans', sans-serif;
-  width: 75%;
+  width: 180px;
   border: 3px solid/* #5c637b*/;
   border-right: none;
   padding: 5px;
@@ -90,6 +90,7 @@ li {
   text-indent: 8px;
   display: inline-block;
   margin-left: 5%;
+  margin-top: 11px;
 }
 
 .search-term:focus{
@@ -99,7 +100,7 @@ li {
 }
 
 .srch-button {
-  right: 15%;
+  right: 10%;
   position: absolute;
   border: 7px solid/* #5c637b*/;
   /* background: #5c637b; */

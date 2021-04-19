@@ -13,20 +13,19 @@ const SearchFeedEntry = ({ show, onClick, setShow }) => {
     onClick('showPage');
   };
   const getSummary = () => {
-    if (show.overview !== null) {
+    if (show.overview) {
       return show.overview;
     }
   };
   const getImage = () => {
-    if (show.poster_path !== null) {
+    if (show.poster_path) {
       return `https://image.tmdb.org/t/p/original/${show.poster_path}`;
     }
-  };
-  const getPicUnavail = () => {
-    if (show.poster_path === null) {
+    if (!show.poster_path) {
       return noImgAvail;
     }
   };
+
   const Arrow = ({ text, className }) => {
     return (
       <div
@@ -44,8 +43,9 @@ const SearchFeedEntry = ({ show, onClick, setShow }) => {
     <div className="show-card">
       <div className="show-name" value={show.id} onClick={() => setShowPageObj(show)}>
         <img className="show-img" src={getImage()} alt="" />
-        <img className="unavail-img" src={getPicUnavail()} alt="" />
-        <div className="show-name">{show.title}</div>
+        {/* <img className="unavail-img" src={getPicUnavail()} alt="" /> */}
+        {!show.poster_path ? <div className="show-name">{show.title}</div> : null}
+
       </div>
     </div>
   );
