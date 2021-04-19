@@ -11,7 +11,7 @@ const Img = styled.div`
     margin-top: 30px; 
     img {
       object-fit: cover;
-      margin-left: 182px;
+      margin-left: 175px;
       height: 100%;
       display: block;
     }

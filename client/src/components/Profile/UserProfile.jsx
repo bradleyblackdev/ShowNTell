@@ -2,15 +2,9 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import cartoon from './carouselPhotos/cartooncircle.jpg';
 import Favorites from './Favorites.jsx';
-<<<<<<< HEAD
-import '../MovieMode/MovieMode.css';
-import RecCarousel from './RecCarousel.jsx';
-import './profile.css';
-=======
 import EditProfile from './EditProfile.jsx';
 import '../MovieMode/MovieMode.css'; 
 import './profile.css'; 
->>>>>>> 594cc5c (posted photo to cloudinary database, added input to change the bio)
 
 // const Button = styled.button`
 // color: white;
@@ -65,30 +59,7 @@ const UserProfile = ({ user, subs }) => {
               <p>{bio}</p>
               <h3>Genres:</h3>
               <p>Romantic Comedies</p>
-<<<<<<< HEAD
-
-
             </div>
-
-=======
-            </div>
->>>>>>> 594cc5c (posted photo to cloudinary database, added input to change the bio)
-            <div className="dropdown2">
-              <EditProfile handleSubmit={handleSubmit}/>
-            </div>
-<<<<<<< HEAD
-
-            <div className="favorites">
-              <h3>Your Shows</h3>
-              <p>based on your subscriptions</p>
-              <Favorites user={user} shows={shows} setShow={setShow} subs={subs} setSubs={setSubs} getSubs={getSubs}/>
-            </div>
-            <div className="recommendations">
-              <h3>Your Recommendations</h3>
-              <p>Shows you might like.</p>
-              <RecCarousel recs={recs}/>
-            </div>
-=======
           </div>
           <div className="favorites">
             <h3>Your Favorites</h3>
@@ -99,10 +70,11 @@ const UserProfile = ({ user, subs }) => {
             <h3>Your Recommendations</h3>
             <p>Things you might like.</p>
             <img className="moto" alt=""/>
->>>>>>> 594cc5c (posted photo to cloudinary database, added input to change the bio)
           </div>
           <div>
-          
+            <div className="dropdown2">
+              <EditProfile handleSubmit={handleSubmit}/>
+            </div>
           </div>
         </div>
       </div>
