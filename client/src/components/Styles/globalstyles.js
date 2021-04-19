@@ -7,7 +7,6 @@ export const GlobalStyles = createGlobalStyle`
   body {
     transition: all 1.0s linear;
     background-image: url(${({ theme }) => theme.image});
-    background-color: ${({ theme }) => theme.classic && theme.primary};
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -195,7 +194,14 @@ export const GlobalStyles = createGlobalStyle`
   background-color: ${({ theme }) => theme.classic ? theme.primary : theme.opaque};
   border-color: ${({ theme }) => theme.neutral};
   max-width: 180px;
+}
 
+.option-show:hover {
+  background-color: ${({ theme }) => theme.primary};
+}
+
+.option-show {
+  border-radius: 25px;
 }
 
 #post-title {

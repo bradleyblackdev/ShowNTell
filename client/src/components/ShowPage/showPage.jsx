@@ -23,9 +23,9 @@ const ShowPage = ({ show, subscribe, showId }) => {
         <img className="show-page-img" src={getImage()} alt="" />
       </div>
       <h3 className="show-header">Title:</h3>
-      <div className="show-release-date">{show.title}</div>
+      <div className="show-release-date">{show.media_type === 'tv' ? show.name : show.title}</div>
       <h3 className="show-header">Release Date:</h3>
-      <div className="show-release-date">{show.release_date}</div>
+      <div className="show-release-date">{show.media_type === 'tv' ? show.first_air_date : show.release_date}</div>
       <h3 className="show-header">Overview:</h3>
       <div className="show-overview">
         Overview:
