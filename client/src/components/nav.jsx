@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { FaHome, FaStar, FaPen, FaComment, FaSearch, FaDoorOpen } from 'react-icons/fa';
 import logo from './HomePage/img/logo1.png';
 
@@ -18,7 +18,6 @@ const Nav = ({ user, onClick, logout, search, setSearch, onSearch, toggleChatWin
     <ul className="navbar">
       <li onClick={() => onClick('home')} id="home-icon" className="navbutton views" title="home feed">
         <FaHome />
-        {/* <p id="home-icon-hover">home</p> */}
         {' '}
       </li>
       <li onClick={() => onClick('user')} className="navbutton views" title="subscriptions">

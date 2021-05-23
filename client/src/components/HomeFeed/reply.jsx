@@ -68,43 +68,43 @@ const Reply = ({ id, place, user, setPosts }) => {
         </FaHeart>
         <div>
           {
-          reply ? (
-            <div className="comment-box">
-              <input
-                className="reply-comment-txt-box"
-                placeholder="what are your thoughts?"
-                value={content}
-                onChange={(e) => {
-                  setContent(e.target.value);
-                }}
-              />
-              <button
-                className="submit-reply-comment-btn"
-                onClick={() => {
-                  setReply(false);
-                  axios.post(`/replys/${feed}/${content}`)
-                    .then(({ data }) => {
-                      setContent('');
-                      setArray(data.comment);
-                      axios
-                        .get('/posts')
-                        .then((result) => {
-                          setPosts(result.data);
-                        });
-                    });
-                }}
-              >
+            reply ? (
+              <div className="comment-box">
+                <input
+                  className="reply-comment-txt-box"
+                  placeholder="what are your thoughts?"
+                  value={content}
+                  onChange={(e) => {
+                    setContent(e.target.value);
+                  }}
+                />
+                <button
+                  className="submit-reply-comment-btn"
+                  onClick={() => {
+                    setReply(false);
+                    axios.post(`/replys/${feed}/${content}`)
+                      .then(({ data }) => {
+                        setContent('');
+                        setArray(data.comment);
+                        axios
+                          .get('/posts')
+                          .then((result) => {
+                            setPosts(result.data);
+                          });
+                      });
+                  }}
+                >
                 submit
-              </button>
-              <FaTimes
-                className="x-btn"
-                onClick={() => {
-                  setReply(false);
-                }}
-              />
-            </div>
-          ) : <FaRegCommentDots className="post-comment-btn" onClick={() => setReply(true)} />
-        }
+                </button>
+                <FaTimes
+                  className="x-btn"
+                  onClick={() => {
+                    setReply(false);
+                  }}
+                />
+              </div>
+            ) : <FaRegCommentDots className="post-comment-btn" onClick={() => setReply(true)} />
+          }
         </div>
       </div>
       <div style={{ left: `${place}px`, position: 'relative' }}>

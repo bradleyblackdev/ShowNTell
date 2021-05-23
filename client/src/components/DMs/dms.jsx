@@ -127,6 +127,6 @@ const getAllUsers = () => {
         .then((result) => setUser(result.data));
     })
     .catch();
-}
+};
 
 export default DMs;

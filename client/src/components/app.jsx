@@ -1,10 +1,3 @@
-/* eslint-disable max-len */
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-return-assign */
-/* eslint-disable import/no-named-as-default */
-/* eslint-disable import/no-named-as-default-member */
-/* eslint-disable import/extensions */
-/* eslint-disable consistent-return */
 import React, { useState } from 'react';
 import axios from 'axios';
 import HomePage from './HomePage/HomePage.jsx';
@@ -19,8 +12,6 @@ import ShowFeed from './Subscriptions/showFeed.jsx';
 import ChatWindow from './DMs/chatWindow.jsx';
 import {MovieMode, classicTheme} from './MovieMode/MovieMode.jsx';
 import ShowPage from './ShowPage/showPage.jsx';
-
-import styled from 'styled-components';
 import {ThemeProvider} from 'styled-components';
 import {GlobalStyles} from './Styles/globalstyles';
 
@@ -41,7 +32,6 @@ const App = () => {
   const [gotSubs, setGotSubs] = useState(false);
   const [theme, setTheme] = useState(classicTheme);
   const [show, setShow] = useState({});
-  const [shows, setShows] = useState({}); 
   const [gotRecs, setGotRecs] = useState(false);
   const [recs, setRecs] = useState([]);
 
@@ -65,8 +55,6 @@ const App = () => {
 
   const getPosts = () => {
     if (!posts && user) {
-    // if (!userClicked) {
-    //   executed = !executed;
       axios
         .get('/posts')
         .then(({ data }) => {
@@ -120,11 +108,8 @@ const App = () => {
       .catch();
   };
 
-  // makes initial search from search bar onclick
   const searchShows = () => {
-    console.log('serching shows', search);
     axios.get(`/search/${search}`).then(({data}) => {
-      console.log('data-------', data);
       setSearchedShows(data);
       setView('search');
       setSearch('');
@@ -144,14 +129,6 @@ const App = () => {
     getPosts();
   };
 
-  //CHANGE SETVIEW
-  const addShow = (show) => {
-    console.log(show.id, 'SHOW ID');
-    axios.get(`/show/${show.id}`)
-      .then(({ data }) => setView(data.id))
-      .catch();
-  };
-
   const subscribe = (show) => {
     axios.put('/subscribe/', show)
       .then(() => axios.get('/user').then(({data}) => {
@@ -160,14 +137,6 @@ const App = () => {
         getSubs();
       }
       ))
-      .catch();
-  };
-  ///////
-  const getTrailer = () => {
-    axios.get('/trailer')
-      .then(({data}) =>
-        console.log(data),
-      setTrailers(data))
       .catch();
   };
 

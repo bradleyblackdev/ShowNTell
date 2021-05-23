@@ -18,20 +18,20 @@ const Messages = (props = {}) => {
     <div>
       <div className="message-content">
         {
-        message
-          ? message.text.map((data, i) => {
-            let test = true;
-            if (current === data.name) {
-              test = false;
-            }
-            current = data.name;
-            return (
-              <div key={data.message + i}>
-                <h2 className="msg-from">{test ? data.name : null}</h2>
-                <div className="msg-text">{data.message}</div>
-              </div>
-            );
-          }) : null
+          message
+            ? message.text.map((data, i) => {
+              let test = true;
+              if (current === data.name) {
+                test = false;
+              }
+              current = data.name;
+              return (
+                <div key={data.message + i}>
+                  <h2 className="msg-from">{test ? data.name : null}</h2>
+                  <div className="msg-text">{data.message}</div>
+                </div>
+              );
+            }) : null
         }
       </div>
       <div className="send-msg-area">

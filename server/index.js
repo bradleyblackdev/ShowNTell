@@ -616,7 +616,6 @@ const genreFinder = (genreIds) => {
 app.get('/algo/:id', (req, res) => {
   //QUERY USERS COLLECTION FOR SUBSCRIPTIONS IDs (plural) =>
   Users.findOne({ id: req.params.id }).then(({subscriptions}) => {
-    const data = subscriptions;
     return subscriptions;
   })
     .then(data => {
@@ -661,7 +660,6 @@ app.get('/algo/:id', (req, res) => {
 const movieRec = 'https://api.themoviedb.org/3/discover/movie?';
 const tvRec = 'https://api.themoviedb.org/3/discover/tv?';
 
-//https://api.themoviedb.org/3/discover/movie?api_key=c4beeba3761a8ef52fff82a164fa4205&first_air_date=2006-09-15&with_genres=80&vote_average.gte=5&vote_average.lte=10
 
 //TV RECOMMENDATIONS
 app.get('/tvRecs', ((req, res) => {
@@ -716,13 +714,6 @@ app.get('/theme', (req, res) => {
       }
     });
 });
-
-// app.post('/users/bio', (req, res) => {
-//   console.log(req.body); 
-//   Users.insertMany(req.body)
-//   .then(data => res.send(data))
-//   .catch(err => console.log('error not working', err));
-// });
 
 app.post('/users', upload.single('image'), async (req, res) => { // image is what you wil use in front in ( input type= file name='image')
   try {

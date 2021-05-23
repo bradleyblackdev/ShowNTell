@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import ChatMessage from './chatMessage.jsx';
 import './chatWindow.css';
-import ChatFriendsList from './friendsList.jsx';
 import SubsChatList from './subRooms.jsx';
 import axios from 'axios';
 import moment from 'moment';
@@ -10,13 +9,8 @@ const endpoint = 'http://localhost:3000';
 const socket = SocketIOclient(endpoint);
 
 const ChatWindow = ({ toggleChatWindow, user, subs }) => {
-  const { name } = user;
   const [ messages, setMessages ] = useState([]);
-  //const [open, setOpen] = useState(false);
   const [ friendListView, setfriendListView ] = useState(true);
-  const [ chatView, setChatView ] = useState(true);
-  const [ newMessagesCount, setNewMessagesCount ] = useState(0);
-  const [ friends, setFriends ] = useState(user.friends);
   const [ chatText, setChatText ] = useState('');
   const [ room, setRoom ] = useState('');
 
@@ -24,8 +18,6 @@ const ChatWindow = ({ toggleChatWindow, user, subs }) => {
   socket.on('message', msg => {
     setMessages(messages.concat(msg));
   });
-
-  //socket.emit('joinRoom', { username, room});
 
   const retrieveMessages = (chatId) => {
     axios.get(`/retrieveMessages/${chatId}`)
@@ -36,14 +28,6 @@ const ChatWindow = ({ toggleChatWindow, user, subs }) => {
         throw err;
       });
   };
-
-  // const updateMessages = (chatId, messages) => {
-  //   axios.put(`/updateMessages/${chatId}`, {
-  //     messages: messages
-  //   }).catch(err =>{
-  //     throw err;
-  //   });
-  // };
 
   const joinSubChatRoom = (room) => {
     socket.connect();
@@ -63,28 +47,17 @@ const ChatWindow = ({ toggleChatWindow, user, subs }) => {
       room: room
     };
 
-    //setMessages(messages.concat(newMessage));
-
     socket.emit('chatMessage', newMessage);
 
     setChatText('');
     e.target.focus();
-    //console.log(socket);
   };
 
   return (
     <div className="chat-window">
       <div id="live-chat">
         <header className="clearfix">
-          {/* <a className='chat-friends' onClick={() => {
-            setChatView(true);
-            setfriendListView(true);
-            socket.emit('leave', room);
-            setRoom('');
-            setMessages([]);
-          }}>Messages</a> */}
           <a className='chat-subs' onClick={() => {
-            setChatView(false);
             setfriendListView(true);
             socket.emit('leave', room);
             setRoom('');
